@@ -9,7 +9,7 @@ import {
 } from "react-icons/fa";
 import Container from "../../components/shared/Container";
 import { useEffect, useState } from "react";
-import { apiGetBasket, apiGetSingleProduct, apiPostBasket } from "../../services/HomeService";
+import { apiDeleteBasket, apiGetBasket, apiGetSingleProduct, apiPostBasket } from "../../services/HomeService";
 import { session } from "../../services/session";
 
 const Basket = () => {
@@ -24,7 +24,7 @@ const Basket = () => {
       console.log(!!token)
       try {
         const response = await apiGetBasket();
-
+        
         if (response && response.data) {
           setBasket(response.data);
         } else {
@@ -62,6 +62,14 @@ const Basket = () => {
           : item
       )
     );
+  };
+  const handleRemove = async (id) => {
+    try {
+      await apiDeleteBasket(id);
+      setBasket((prevBasket) => prevBasket.filter(item => item.id !== id));
+    } catch (error) {
+      console.error('Error removing item from basket:', error);
+    }
   };
 
   return (
@@ -103,6 +111,8 @@ const Basket = () => {
                               </a>
                               <a href="#0" className="remove-btn"
                               // onClick={() => handleRemove(item.id)}
+                              onClick={() => handleRemove(isToken ? item.id : item.data.id)}
+
                               > <FaTrashAlt /></a>
                             </div>
                             <a href="#0" className="img">

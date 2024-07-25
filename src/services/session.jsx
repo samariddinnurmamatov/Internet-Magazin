@@ -6,11 +6,9 @@ export const session = {
     storedData.push(data);
     store.set(key, storedData);
   },
-  removeAll: () => {
-    store.clearAll();
-  },
-  remove: (user) => {
-    store.remove(user);
+  
+  remove: (product) => {
+    store.remove(product);
   },
   get: (key) => store.get(key)
 };
