@@ -4,11 +4,11 @@ import { BASE_URL } from '../utils/constants';
 const API_BASE_URL = BASE_URL;
 
 const ApiService = {
-  fetchData: async ({ url, method, data, params, requireAuth = false }) => {
+  fetchData: async ({ url, method, data, params}) => {
     const token = localStorage.getItem('token');
     const headers = {
       'Content-Type': 'application/json',
-      ...(requireAuth && token && { 'Authorization': `Bearer ${token}` })
+      ...(token && { 'Authorization': `Bearer ${token}` })
     };
     try {
       const response = await axios({
