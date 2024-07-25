@@ -151,8 +151,6 @@ const Home = () => {
         [favorites]
     );
 
-    // const isFavorite = (productId) => favorites.includes(productId);
-
 
     return (
         <Fragment>
@@ -401,14 +399,7 @@ const Home = () => {
                                 </div>
                             </div>
                         </div>
-                        {/* <ul className="nav nav-pills mb-40" id="pills-tabs" role="tablist">
-                        <li className="nav-item" role="presentation">
-                        <button className="nav-link active" id="pills-tab1-tab" data-bs-toggle="pill" data-bs-target="#pills-tab1" type="button" role="tab" aria-selected="true">Top 30</button>
-                        </li> 
-                        <li className="nav-item" role="presentation">
-                        <button className="nav-link" id="pills-tab2-tab" data-bs-toggle="pill" data-bs-target="#pills-tab2" type="button" role="tab" aria-selected="false">Televisions</button>
-                        </li> 
-                    </ul> */}
+                        
                         <ul className="nav nav-pills mb-40" id="pills-tabs" role="tablist">
                             {categories.map(category => (
 
