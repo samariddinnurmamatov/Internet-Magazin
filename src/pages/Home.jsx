@@ -201,7 +201,7 @@ const Home = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-lg-3">
+                            <div className="col-lg-6">
                                 <div className="card-overlay wow fadeInUp slow" data-wow-delay="0.4s">
                                     <div className="img th-230">
                                         <img src={Head4} alt="" className="img-cover" />
@@ -215,7 +215,7 @@ const Home = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-lg-3">
+                            {/* <div className="col-lg-6">
                                 <div className="card-overlay wow fadeInUp slow" data-wow-delay="0.6s">
                                     <div className="img th-230">
                                         <img src={Head5} alt="" className="img-cover" />
@@ -228,7 +228,7 @@ const Home = () => {
                                         <a href="../inner_pages/single_product.html" className="butn px-4 py-2 bg-white color-000 rounded-pill fw-600 fsz-12 mt-50"> <span> Shop Now </span> </a>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
@@ -236,17 +236,6 @@ const Home = () => {
 
         <section className="tc-popular-cat-style1 pt-30 pb-50">
                     <div className="container">
-                        <div className="search-cat d-block d-lg-none">
-                            <div className="input-group">
-                                <select name="name" className="form-select">
-                                    <option value=""> All Categories </option>
-                                    <option value=""> Categories 1 </option>
-                                    <option value=""> Categories 2 </option>
-                                </select>
-                                <input type="text" className="form-control" placeholder="Search anything..." />
-                                <a href="#" className="search-btn"><CiSearch /> </a>
-                            </div>
-                        </div>
                         <div className="sec-title">
                             <div className="row align-items-center">
                                 <div className="col-lg-6">

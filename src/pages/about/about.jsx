@@ -9,7 +9,12 @@ import { BsTwitterX } from "react-icons/bs";
 import { FaInstagram } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
+import AboutBan2 from "../../assets/about-ban2.png";
+import AboutBan3 from "../../assets/about-ban3.png";
 
+import Mem1 from "../../assets/mem1.png";
+
+import Logo9 from "../../assets/lonex.png";
 
 const About = () => {
   return (
@@ -69,7 +74,7 @@ const About = () => {
               <div className="row gx-2">
                 <div className="col-lg-6 mt-3">
                   <div className="img">
-                    <img src="assets/img/about/about2.png" alt="" className="img-cover" />
+                    <img src={AboutBan2} alt="" className="img-cover" />
                   </div>
                 </div>
                 <div className="col-lg-6 mt-3">
@@ -85,7 +90,7 @@ const About = () => {
             </div>
           </section>
           <section className="tc-about-cards">
-            <div className="row gx-2 " >
+            <div className="row container">
               <div className="col-lg-4 mt-3 radius-4 bg-white" >
                 <div className="about-card  wow fadeInUp" style={{
                   position: "relative",
@@ -148,7 +153,7 @@ const About = () => {
                 Nam maximus nunc a augue pulvinar, non euismod mauris tempus. Cras non elit vel magna molestie pellentesque in eu dui. Donec laoreet quis erat vitae finibus. Vestibulum enim eros, porta eget quam et, euismod dictum elit. Nullam eu tempus magna. Fusce malesuada nisi id felis placerat porta vel sed augue. <strong> Vivamus mollis mauris </strong> vitae rhoncus egestas. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
               </div>
               <div className="img th-400">
-                <img src="assets/img/about/about3.png" alt="" className="img-cover radius-4" />
+                <img src={AboutBan3} alt="" className="img-cover radius-4" />
               </div>
             </div>
             <div className="years-content pt-30 pb-30 border-bottom">
@@ -240,7 +245,7 @@ const About = () => {
                 <div className="leader-card">
                   <div className="img">
                     <a href="#" className="d-block">
-                      <img src="assets/img/about/members/mem1.png" alt="" className="main-img img-cover" />
+                      <img src={Mem1} alt="" className="main-img img-cover" />
                     </a>
                     <div className="social-icons">
                       <a href="#"><BsTwitterX /> </a>
@@ -256,7 +261,7 @@ const About = () => {
                 <div className="leader-card">
                   <div className="img">
                     <a href="#" className="d-block">
-                      <img src="assets/img/about/members/mem2.png" alt="" className="main-img img-cover" />
+                      <img src={Mem1} alt="" className="main-img img-cover" />
                     </a>
                     <div className="social-icons">
                       <a href="#"><BsTwitterX /> </a>
@@ -272,7 +277,7 @@ const About = () => {
                 <div className="leader-card">
                   <div className="img">
                     <a href="#" className="d-block">
-                      <img src="assets/img/about/members/mem3.png" alt="" className="main-img img-cover" />
+                      <img src={Mem1} alt="" className="main-img img-cover" />
                     </a>
                     <div className="social-icons">
                     <a href="#"><BsTwitterX /> </a>
@@ -288,7 +293,7 @@ const About = () => {
                 <div className="leader-card">
                   <div className="img">
                     <a href="#" className="d-block">
-                      <img src="assets/img/about/members/mem4.png" alt="" className="main-img img-cover" />
+                      <img src={Mem1} alt="" className="main-img img-cover" />
                     </a>
                     <div className="social-icons">
                     <a href="#"><BsTwitterX /> </a>
@@ -304,7 +309,7 @@ const About = () => {
                 <div className="leader-card">
                   <div className="img">
                     <a href="#" className="d-block">
-                      <img src="assets/img/about/members/mem5.png" alt="" className="main-img img-cover" />
+                      <img src={Mem1} alt="" className="main-img img-cover" />
                     </a>
                     <div className="social-icons">
                     <a href="#"><BsTwitterX /> </a>
@@ -328,49 +333,49 @@ const About = () => {
                   <h6 className="fsz-18 fw-bold text-uppercase mb-10"> our partners </h6>
                   <div className="logos">
                     <a href="#" className="logo">
-                      <img src="assets/img/about/logos/logo9.png" alt="" />
+                      <img src={Logo9} alt="" />
                     </a>
                     <a href="#" className="logo">
-                      <img src="assets/img/about/logos/logo10.png" alt="" />
+                      <img src={Logo9} alt="" />
                     </a>
                     <a href="#" className="logo">
-                      <img src="assets/img/about/logos/logo2.png" alt="" />
+                      <img src={Logo9} alt="" />
                     </a>
                     <a href="#" className="logo">
-                      <img src="assets/img/about/logos/logo3.png" alt="" />
+                      <img src={Logo9} alt="" />
                     </a>
                     <a href="#" className="logo">
-                      <img src="assets/img/about/logos/logo8.png" alt="" />
+                      <img src={Logo9} alt="" />
                     </a>
                     <a href="#" className="logo">
-                      <img src="assets/img/about/logos/logo4.png" alt="" />
+                      <img src={Logo9} alt="" />
                     </a>
                     <a href="#" className="logo">
-                      <img src="assets/img/about/logos/logo5.png" alt="" />
+                      <img src={Logo9} alt="" />
                     </a>
                     <a href="#" className="logo">
-                      <img src="assets/img/about/logos/logo1.png" alt="" />
+                      <img src={Logo9} alt="" />
                     </a>
                     <a href="#" className="logo">
-                      <img src="assets/img/about/logos/logo2.png" alt="" />
+                      <img src={Logo9} alt="" />
                     </a>
                     <a href="#" className="logo">
-                      <img src="assets/img/about/logos/logo3.png" alt="" />
+                      <img src={Logo9} alt="" />
                     </a>
                     <a href="#" className="logo">
-                      <img src="assets/img/about/logos/logo6.png" alt="" />
+                      <img src={Logo9} alt="" />
                     </a>
                     <a href="#" className="logo">
-                      <img src="assets/img/about/logos/logo7.png" alt="" />
+                      <img src={Logo9} alt="" />
                     </a>
                     <a href="#" className="logo">
-                      <img src="assets/img/about/logos/logo8.png" alt="" />
+                      <img src={Logo9} alt="" />
                     </a>
                     <a href="#" className="logo">
-                      <img src="assets/img/about/logos/logo9.png" alt="" />
+                      <img src={Logo9} alt="" />
                     </a>
                     <a href="#" className="logo">
-                      <img src="assets/img/about/logos/logo10.png" alt="" />
+                      <img src={Logo9} alt="" />
                     </a>
                   </div>
                 </div>

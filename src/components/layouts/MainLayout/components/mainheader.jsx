@@ -51,7 +51,7 @@ const Mainheader = () => {
     <Fragment>
         <header className="bg-white sticky top-0 z-50 w-full px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32">
             <nav className="navbar tc-navbar-style1 navbar-expand-lg navbar-light">
-                  <div className="d-flex items-center justify-around w-full ">
+                  <div className="d-flex items-center justify-between w-full ">
                       <a className="navbar-brand" href="/" >
                           <img src={HeaderLogo} alt="" className="logo" />
                       </a>
@@ -73,20 +73,15 @@ const Mainheader = () => {
                       
 
                       
-                      <div className="d-flex">
+                      <div className="d-flex gap-2">
                           <span className="icon"><IoIosCall className="icon-call"/></span>
                           <div className="">
                               <h6 className="fsz-20 inf color-blue1 fw-bold"> <a href="tel:(025)36862516"> (025) 3686 25 16 </a> </h6>
                           </div>
-                      </div>
-
-                      <div className="d-flex">
+                          <div className="d-flex">
                             <Link to="about" className="dropdown-item" style={{width: "100%"}}>About</Link>
                             <Link to="contact" className="dropdown-item" style={{width: "100%"}}>Contact</Link>
-                            <Link to="login" className="dropdown-item" style={{width: "100%"}}>Login</Link>
-                            {/* <Link to="profile" className="dropdown-item" style={{width: "100%"}}>Profile</Link> */}
-                            <Link to="register" className="dropdown-item" style={{width: "100%"}}>Register</Link>
-                            <Link to="contact" className="dropdown-item" style={{width: "100%"}}>Contact</Link>
+                        </div>
                       </div>
 
                       <div className="d-flex gap-4 lg:none ">

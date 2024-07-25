@@ -2367,7 +2367,7 @@
     padding: 70px 5vw;
     border-radius: 10px;
     overflow: hidden;
-    background-image: url(../img/about/ban1.png);
+    background-image: url(../../assets/about-ban1.png);
     background-size: cover;
   }
   .about-pg-1 .tc-main-about .main-card .about-numbers {
@@ -2390,7 +2390,7 @@
         -ms-flex-align: center;
             align-items: center;
     background-color: #e2e4eb;
-    padding: 70px 5vw;
+    padding: 60px 5vw;
   }
   .about-pg-1 .tc-about-cards .about-card {
     position: relative;
@@ -2588,7 +2588,7 @@
   }
   .about-pg-1 .tc-banner-style3 .banner-card {
     padding: 35px;
-    background-image: url(../img/banner2.png);
+    background-image: url(../../assets/banner2.png);
     background-size: cover;
     border-radius: 15px;
     overflow: hidden;

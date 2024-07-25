@@ -40,3 +40,11 @@ export async function apiUserInfo() {
       method: "get",
     });
 }
+
+
+export async function apiUserPasswordUpd() {
+  return ApiService.fetchData({
+    url: "/change/password",
+    method: "post",
+  });
+}

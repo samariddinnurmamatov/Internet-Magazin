@@ -70,8 +70,8 @@ export async function apiPostBasket(data) {
 
 export async function apiUpdateBasket(data) {
   return ApiService.fetchData({
-      url: `/carts/${data.product_id}`,
-      method: "put",
+      url: `/carts/update`,
+      method: "post",
       data,
   });
 }
