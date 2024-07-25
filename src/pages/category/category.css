@@ -1,0 +1,104 @@
+/* --------------- categories style6 --------------- */
+.tc-categories-style6 .content {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    gap: 10px;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+  }
+  .tc-categories-style6 .content .number-item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: start;
+    padding: 15px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    margin: 10px 0;
+    width: 19%;
+    margin: 5px 0;
+  }
+  .tc-categories-style6 .content .number-item:hover {
+    border-color: #4B3EC4;
+  }
+  .tc-categories-style6 .content .number-item:hover .sm-title {
+    color: #4B3EC4;
+  }
+  .tc-categories-style6 .content .number-item .sm-title {
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+  }
+  .tc-categories-style6 .content .number-item .img {
+    height: 50px;
+    -ms-flex-negative: 0;
+        flex-shrink: 0;
+  }
+  
+  /* --------------- products style6 --------------- */
+
+
+  @media screen and (max-width: 991px) {
+    .tc-categories-style6 .content .number-item {
+      width: 49%;
+    }
+  }
+
+
+  /* --------------- header style6 --------------- */
+.tc-header-style6 .header-slider6 {
+  position: relative;
+}
+.tc-header-style6 .header-slider6 .slider-card {
+  position: relative;
+}
+.tc-header-style6 .header-slider6 .slider-card .img {
+  height: 310px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.tc-header-style6 .header-slider6 .slider-card .info {
+  position: absolute;
+  top: 40px;
+  left: 60px;
+  z-index: 10;
+  width: 50%;
+}
+.tc-header-style6 .header-slider6 .slider-controls {
+  position: absolute;
+  left: auto;
+  right: 20px;
+  bottom: 20px;
+  background-color: #fff;
+  padding: 4px 40px;
+  border-radius: 20px;
+  display: inline-block;
+  z-index: 20;
+}
+.tc-header-style6 .header-slider6 .slider-controls .swiper-pagination {
+  position: relative;
+  bottom: 0;
+}
+.tc-header-style6 .header-slider6 .slider-controls .swiper-button-next::after,
+.tc-header-style6 .header-slider6 .slider-controls .swiper-button-prev::after {
+  font-size: 11px;
+  color: #000;
+}
+.tc-header-style6 .sub-banner {
+  position: relative;
+}
+.tc-header-style6 .sub-banner .img {
+  height: 310px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.tc-header-style6 .sub-banner .info {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 40px;
+}

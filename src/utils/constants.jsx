@@ -1,0 +1,1 @@
+export const BASE_URL = "https://www.work.dora.uz/api"

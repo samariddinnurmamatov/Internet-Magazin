@@ -1,0 +1,18 @@
+.toast-success {
+    background-color: #28a745 !important;
+    color: white !important;
+    font-weight: bold;
+  }
+  
+  .toast-error {
+    background-color: #dc3545 !important;
+    color: white !important;
+    font-weight: bold;
+  }
+  
+  .toast-delete {
+    background-color: #ffc107 !important;
+    color: black !important;
+    font-weight: bold;
+  }
+  
