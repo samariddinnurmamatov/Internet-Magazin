@@ -15,11 +15,12 @@ import { IoSync } from "react-icons/io5";
 import { FaEye } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
 import { FaRegEnvelope } from "react-icons/fa";
-import { apiDeleteFavourites, apiGetBasket, apiGetBrands, apiGetCategory, apiGetFavourites, apiGetProducts, apiPostBasket, apiPostFavourites, apiUpdateBasket } from "../services/HomeService";
+import { apiDeleteFavourites, apiGetBasket, apiGetBrands, apiGetCategory, apiGetCategoryOfProduct, apiGetFavourites, apiGetProducts, apiPostBasket, apiPostFavourites, apiUpdateBasket } from "../services/HomeService";
 import { CiSearch } from "react-icons/ci";
 import { MdOutlineAddShoppingCart } from "react-icons/md";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { session } from "../services/session";
 
 
 
@@ -29,21 +30,31 @@ const Home = () => {
     const [brands, setBrands] = useState([]);
     const [favorites, setFavorites] = useState([]);
     const [basket, setBasket] = useState([]);
+    const [categoryOfProduct, setCategoryOfProduct] = useState([]);
     const [activeCategory, setActiveCategory] = useState('');
+    const [isToken, setIsToken] = useState(false);
+
+
 
     useEffect(() => {
+        const token = session.get("token");
+        setIsToken(!!token)
+  
         const fetchData = async () => {
             try {
-                const [categoryData, productData, brandData] = await Promise.all([
+                const [categoryData, productData, brandData , categoryProduct] = await Promise.all([
                     apiGetCategory(),
                     apiGetProducts(),
-                    apiGetBrands(),
+                    apiGetBrands(), 
+                    apiGetCategoryOfProduct(1),
                 ]);
-
+                
                 if (categoryData.success) setCategories(categoryData.data);
                 if (productData.success) setProducts(productData.data);
                 if (brandData.success) setBrands(brandData.data);
-
+                if (categoryProduct.success) setCategoryOfProduct(categoryProduct.data);
+                
+                console.log(categoryProduct.data )
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -71,25 +82,39 @@ const Home = () => {
         fetchFavoritesBasket();
     }, []);
 
+
+    const fetchProductData = async (categoryid) => {
+
+        try {
+            const productData = await apiGetCategoryOfProduct(categoryid);
+            if (productData.success) setCategoryOfProduct(productData.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+};
+
+    
     const handleLike = async (productId) => {
         try {
-            await apiPostFavourites({ product_id: productId });
+            session.add("like", productId);
+
             setFavorites(prevFavorites => [...prevFavorites, productId]);
-            toast.success('Product liked!');
+
+            await apiPostFavourites({ product_id: productId });
         } catch (error) {
             console.error('Error liking product:', error);
-            toast.error('Error liking product.');
         }
     };
 
     const handleUnlike = async (productId) => {
         try {
-            await apiDeleteFavourites(productId);
+            session.remove("like", productId);
+
             setFavorites(prevFavorites => prevFavorites.filter(id => id !== productId));
-            toast.success('Product unliked!');
+
+            await apiDeleteFavourites(productId);
         } catch (error) {
             console.error('Error unliking product:', error);
-            toast.error('Error unliking product.');
         }
     };
 
@@ -109,7 +134,7 @@ const Home = () => {
                 const newBasketItem = await apiPostBasket({ product_id: productIdBasket, quantity: 1 });
                 if (newBasketItem.success) {
                     setBasket(prevBasket => [...prevBasket, { product_id: productIdBasket, quantity: 1 }]);
-                    toast.success('Product added to basket!');
+                    // toast.success('Product added to basket!');
                 } else {
                     console.error('Error adding to basket:', newBasketItem);
                     toast.error('Error adding to basket.');
@@ -121,11 +146,14 @@ const Home = () => {
         }
     };
 
-    const isFavorite = useMemo(
-        () => (productId) => favorites.includes(productId),
-        [favorites]
-    );
+    // const isFavorite = useMemo(
+    //     () => (productId) => favorites.includes(productId),
+    //     [favorites]
+    // );
 
+    const isFavorite = (productId) => favorites.includes(productId);
+
+    
   return (
     <Fragment>
       <main style={{ height: "auto", marginBottom: "50px" }}>
@@ -337,7 +365,17 @@ const Home = () => {
                                         </div>
                                         <p className="fsz-12 mt-3"> Sold: 24 / 80 </p>
                                     </div>
-                                    <a href="#0" className="cart-btn addCart" onClick={() => handleAddToBasket(product.id)}>
+                                    <a href="#0" className="cart-btn addCart" onClick={() => {
+
+                                        isToken ?
+                                        handleAddToBasket(product.id) 
+                                        :
+                                         session.add("products" , product.id);
+                                         toast.success('Product added to basket!');
+
+                                        
+                                        }}
+                                         >
                                         <MdOutlineAddShoppingCart className="me-1" />Add To Cart
                                     </a>
                                 </div>
@@ -373,17 +411,18 @@ const Home = () => {
                     </ul> */}
                     <ul className="nav nav-pills mb-40" id="pills-tabs" role="tablist">
                         {categories.map(category => (
+
                                 <li className="nav-item" role="presentation" key={category.id}>
-                                    <button className={`nav-link ${activeCategory === category.id ? 'active' : ''}`} id="pills-tab1-tab" data-bs-toggle="pill" data-bs-target="#pills-tab1" type="button" role="tab" aria-selected="true">{category.name_uz}</button>
+                                    <button onClick={()=>{fetchProductData(category.id)}} className={`nav-link ${activeCategory === category.id ? 'active' : ''}`} id="pills-tab1-tab" data-bs-toggle="pill" data-bs-target="#pills-tab1" type="button" role="tab" aria-selected="true">{category.name_uz}</button>
                                 </li> 
                         ))}
                     </ul>
                   <div className="tab-content" id="pills-tabContent1">
                     <div className="tab-pane fade show active" id="pills-tab1" role="tabpanel" aria-labelledby="pills-tab1-tab">
                         <div className="products-slider">
-                            <div className="swiper-wrapper">
+                            <div className="swiper-wrapper d-flex gap-3">
 
-                                {products.map((product) => (
+                                {categoryOfProduct.length > 0 && categoryOfProduct.map((product) => (
                                     <div className="swiper-slide" key={product.id}>
                                         <div className="column-sm" >
                                             <div className="product-card">
@@ -421,7 +460,16 @@ const Home = () => {
                                                     </div>
                                                     <p className="fsz-12 mt-3"> Sold: 24 / 80 </p>
                                                 </div>
-                                                <a href="#0" className="cart-btn addCart" onClick={() => handleAddToBasket(product)}><MdOutlineAddShoppingCart className="me-1" />Add To Cart</a>
+                                                <a href="#0" className="cart-btn addCart" onClick={() => 
+                                                {
+                                                    isToken ?
+                                                    handleAddToBasket(product.id) 
+                                                    :
+                                                     session.add("products" , product.id);
+                                                     toast.success('Product added to basket!');
+                                                }
+                                                    
+                                                    }><MdOutlineAddShoppingCart className="me-1" />Add To Cart</a>
                                             </div>
                                         </div>
                                     </div>

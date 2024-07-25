@@ -82,6 +82,12 @@ export async function apiDeleteBasket(id) {
     method: "delete",
   });
 }
+export async function apiGetCategoryOfProduct(id) {
+  return ApiService.fetchData({
+    url: `/category/${id}`,
+    method: "get",
+  });
+}
 
 export async function apiGetBrands(params = {}) {
   return ApiService.fetchData({

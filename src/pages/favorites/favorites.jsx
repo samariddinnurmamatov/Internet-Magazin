@@ -1,25 +1,49 @@
 import { Fragment, useEffect, useState } from "react";
 import Container from "../../components/shared/Container";
 import { FaRegStar, FaCheckCircle, FaHeart } from "react-icons/fa";
-import { apiDeleteFavourites, apiGetFavourites } from "../../services/HomeService";
+import { apiDeleteFavourites, apiGetFavourites, apiGetSingleProduct } from "../../services/HomeService";
+import { session } from "../../services/session";
 
 
 const Favorites = () => {
+
+    const [isToken, setIsToken] = useState(false);
+
     const [favorites, setFavorites] = useState([]);
+    let products =[];
 
     useEffect(() => {
+
         const fetchLiked = async () => {
+            const token = session.get("token");
+            setIsToken(!!token)
+      
             try {
                 const response = await apiGetFavourites();
                 if (response) {
-                    // Ensure that the data structure is handled correctly
-                    setFavorites(response.data); // Adjust based on actual response structure
+                    setFavorites(response.data); 
+                    console.log(response.data)
                   } else {
                     console.error('Invalid favorites data structure:', response);
                   }
             } catch (error) {
-                console.error('Error fetching favorites:', error);
-            }
+
+                console.error('Error fetching basket:', error);
+        
+                const basketProd = session.get("like") || [];
+                console.log(basketProd);
+        
+                for (const product of basketProd) {
+                  try {
+                    const singleProduct = await apiGetSingleProduct(product);
+                    products.push(singleProduct);
+                  } catch (singleProductError) {
+                    console.error('Error fetching single product in favorite:', singleProductError);
+                  }
+                }
+                setFavorites(products);
+                console.log("like =>", products);
+              }
         };
 
         fetchLiked();
@@ -61,7 +85,7 @@ const Favorites = () => {
                                 <div className="products">
                                     { favorites.length ? favorites.map(favorite => (
 
-                                        <div className="product-card" key={favorite.id}>
+                                        <div className="product-card" key={isToken ? favorite.id :favorite.data.id}>
                                            <div className="top-inf" style={{display: "flex", justifyContent: "space-between"}}>
                                                 <small className="fsz-11 py-1 px-3 rounded-pill color-red1 border-red1 border"> 0% Installment </small>
                                                 <div className="icons">
@@ -70,9 +94,9 @@ const Favorites = () => {
                                                         className="icon fav"
                                                         onClick={(e) => {
                                                             e.preventDefault();
-                                                            handleUnfavorite(favorite.id);
+                                                            handleUnfavorite( isToken ? favorite.id :favorite.data.id);
                                                         }}
-                                                        style={getIconStyles(true)} // Assuming the product is always liked in the favorites list
+                                                        style={getIconStyles(true)} 
                                                     >
                                                         <FaHeart className="icon-heart" />
                                                     </a>
@@ -80,7 +104,7 @@ const Favorites = () => {
                                             </div>
                                             <br />
                                             <a href="#0" className="img">
-                                                <img src={`https://www.work.dora.uz/public/storage/${favorite.image}`} alt={favorite.name_uz} className="img-contain main-image" />
+                                                <img src={isToken ? "https://www.work.dora.uz/public/storage/"+favorite.image : favorite.data.image} alt={isToken ? favorite.name_uz :favorite.data.name_uz} className="img-contain main-image" />
                                             </a>
                                             <div className="info">
                                                 <div className="rating">
@@ -89,14 +113,14 @@ const Favorites = () => {
                                                     </div>
                                                     <span className="num"> (152) </span>
                                                 </div>
-                                                <h6><a href="#0" className="prod-title fsz-14 fw-bold mt-2 hover-green2">{favorite.name_uz}</a></h6>
+                                                <h6><a href="#0" className="prod-title fsz-14 fw-bold mt-2 hover-green2">{isToken? favorite.name_uz: favorite.data.name_uz}</a></h6>
                                                 <div className="price mt-15">
-                                                    <h5 className="fsz-18 color-red1 fw-600">${favorite.price}</h5>
+                                                    <h5 className="fsz-18 color-red1 fw-600">${isToken ? favorite.price : favorite.data.price}</h5>
                                                 </div>
                                                 <div className="meta">
                                                     <a href="#0" className="meta-item color-green2"> free shipping <span className="bg bg-green2"></span> </a>
                                                 </div>
-                                                <p className="fsz-12 mt-2"><FaCheckCircle className="color-green2 me-1" /> {favorite.status} </p>
+                                                <p className="fsz-12 mt-2"><FaCheckCircle className="color-green2 me-1" /> {isToken ? favorite.status :     favorite.data.status} </p>
                                             </div>
                                         </div>
                                     )) : 
