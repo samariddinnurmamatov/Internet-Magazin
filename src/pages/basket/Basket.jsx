@@ -109,11 +109,10 @@ const Basket = () => {
                               >
                                 <FaRegHeart />
                               </a>
-                              <a href="#0" className="remove-btn"
-                              // onClick={() => handleRemove(item.id)}
-                              onClick={() => handleRemove(isToken ? item.id : item.data.id)}
+                              <div  className="remove-btn d-grid place-items-center"
+z                              onClick={() => handleRemove(isToken ? item.id : item.data.id)}
 
-                              > <FaTrashAlt /></a>
+                              > <FaTrashAlt /></div>
                             </div>
                             <a href="#0" className="img">
                               <img src={isToken ? item.image : item.data.image} alt="" className="img-contain main-image" />

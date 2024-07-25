@@ -5,6 +5,7 @@ import Pay2 from '../../../../assets/common/img/pay/pay2-1.png';
 import Pay3 from '../../../../assets/common/img/pay/pay3-1.png';
 import Pay4 from '../../../../assets/common/img/pay/pay4-1.png';
 import Pay5 from '../../../../assets/common/img/pay/pay5-1.png';
+import Payme from '../../../../assets/common/img/pay/payme-logo.png';
 
 import Eng from '../../../../assets/common/img/eng-1.png';
 import { FaShippingFast } from "react-icons/fa";
@@ -52,7 +53,7 @@ const MainFooter = () => {
                 <div className="row">
                     <div className="col-lg-4">
                         <div className="foot-info">
-                            <h6 className="fw-bold mb-30 text-capitalize"> Swoo - Online Electronic Market </h6>
+                            <h6 className="fw-bold mb-30 text-capitalize"> Dora - Online Electronic Market </h6>
                             <small className="fsz-12 text-uppercase"> hotline 24/7 </small>
                             <h5 className="fw-bold color-blue1 mb-20"> (025) 3686 25 16 </h5>
                             <a href="#"> 257 Thatcher Road St, Brooklyn, Manhattan, <br /> NY 10092 </a>
@@ -87,7 +88,7 @@ const MainFooter = () => {
                         <div className="links-item mt-5 mt-lg-0">
                             <h6 className="fsz-18 mb-30"> Company </h6>
                             <ul className="links">
-                                <li> <a href="#"> About Swoo </a> </li>
+                                <li> <a href="#"> About Dora </a> </li>
                                 <li> <a href="#"> Contact </a> </li>
                                 <li> <a href="#"> Career </a> </li>
                                 <li> <a href="#"> Blog </a> </li>
@@ -127,18 +128,14 @@ const MainFooter = () => {
 
         <div className="foot">
             <div className="container">
-                <div className="row">
+                <div className="d-flex items-center justify-between">
                     <div className="col-lg-4 text-center text-lg-start">
-                        <p className="color-666"> © 2024 <a href="#" className="fw-bold color-000"> SWOO </a>. All Rights Reserved </p>
+                        <p className="color-666"> © 2024 <a href="#" className="fw-bold color-000"> Dora </a>. All Rights Reserved </p>
                     </div>
-                    <div className="d-flex col-lg-3 text-center my-4 my-lg-0">
-                            <img src={Pay1} alt="" className="mx-2" />
-                            <img src={Pay2} alt="" className="mx-2" />
-                            <img src={Pay3} alt="" className="mx-2" />
-                            <img src={Pay4} alt="" className="mx-2" />
-                            <img src={Pay5} alt="" className="mx-2" />
+                    <div className="d-flex col-lg-3 w-32 text-center my-4 my-lg-0">
+                            <img src={Payme} alt="" className="mx-2" />
                     </div>
-                    <div className="col-lg-4">
+                    {/* <div className="col-lg-4">
                         <div className="links lang-links ">
                             <ul className="links-ul justify-content-lg-end justify-content-center">
                                 <li className="dropdown">
@@ -160,7 +157,7 @@ const MainFooter = () => {
                                 </li>
                             </ul>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>
