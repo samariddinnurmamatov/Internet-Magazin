@@ -11,6 +11,7 @@ import Register from "../pages/auth/Register"
 import { Contact } from "../pages/contact/Contact"
 import {Checkout} from "../pages/checkout/Checkout"
 import Category from "../pages/category/Category"
+import ProtectedRoute from "./protectedRoute"
  
 
 function AppRoutes() {
@@ -21,7 +22,9 @@ function AppRoutes() {
             <Route index element={<Home />} />
             <Route path="about" element={<About />} />
             <Route path="contact" element={<Contact />} />
-            <Route path="profile" element={<Profile />} />
+            <Route path="profile" element={<ProtectedRoute />}>
+              <Route index element={<Profile />} />
+            </Route>
             <Route path="favorites" element={<Favorites />} />
             <Route path="category/:id" element={<Category />} />
             <Route path="single_product/:id" element={<SingleProduct />} />

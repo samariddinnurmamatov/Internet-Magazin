@@ -747,7 +747,7 @@ const SingleProduct = () => {
 
 
 
-        <section className="tc-recently-viewed-style6 p-30 radius-4 bg-white mt-3 wow fadeInUp mb-3" style={{visibility: "hidden", animationName: "none"}}>
+        {/* <section className="tc-recently-viewed-style6 p-30 radius-4 bg-white mt-3 wow fadeInUp mb-3" style={{visibility: "hidden", animationName: "none"}}>
             <div className="title mb-30">
                 <div className="row align-items-center">
                     <div className="col-lg-8">
@@ -892,7 +892,7 @@ const SingleProduct = () => {
                     </div>
                 </div>
             <span className="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
-        </section>
+        </section> */}
       </Container>
 
 

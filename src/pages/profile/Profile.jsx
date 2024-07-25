@@ -3,6 +3,9 @@ import Container from '../../components/shared/Container';
 import { apiUserInfo, apiUserInfoEdit } from '../../services/AuthService';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import Person from "../../assets/person-remov.png"
+import { FcNext } from 'react-icons/fc';
+import { GrNext } from 'react-icons/gr';
 
 
 export const Profile = () => {
@@ -67,33 +70,36 @@ export const Profile = () => {
                 <div className="tabs-side me-lg-5 mb-4 mb-lg-0">
                   <div className="main-info">
                     <div className="img">
-                      <img src="assets/img/avatar.jpg" alt="" className="main-img img-cover" />
+                      <img src={Person} alt="" className="main-img img-cover" />
                     </div>
-                    <h5 className="fw-bold"> Mark Cole </h5>
+                    <h5 className="fw-bold"> 
+                            {users.map(user => (
+                                <span key={user.id}>{user.first_name} {user.last_name}</span>
+                            ))}
+                    </h5>
                     <ul className="mt-2 color-666 lh-lg">
-                      <li><a href="#"> swoo@gmail.com </a></li>
                       {/* <li><a href="#"> Los Angeles, CA </a></li> */}
                     </ul>
                   </div>
                   <ul className="nav nav-pills" id="pills-tab" role="tablist">
                     <li className="nav-item" role="presentation">
                       <button className="nav-link active" id="pills-prof1-tab" data-bs-toggle="pill" data-bs-target="#pills-prof1">
-                        <span> Account info </span> <i className="fal fa-arrow-right"></i>
+                        <span> Account info </span> <GrNext />
                       </button>
                     </li>
                     <li className="nav-item" role="presentation">
                       <button className="nav-link" id="pills-prof2-tab" data-bs-toggle="pill" data-bs-target="#pills-prof2">
-                        <span> My order </span> <i className="fal fa-arrow-right"></i>
+                        <span> My order </span> <GrNext />
                       </button>
                     </li>
-                    <li className="nav-item" role="presentation">
+                    {/* <li className="nav-item" role="presentation">
                       <button className="nav-link" id="pills-prof3-tab" data-bs-toggle="pill" data-bs-target="#pills-prof3">
-                        <span> My address </span> <i className="fal fa-arrow-right"></i>
+                        <span> My address </span> <GrNext />
                       </button>
-                    </li>
+                    </li> */}
                     <li className="nav-item" role="presentation">
                       <button className="nav-link" id="pills-prof4-tab" data-bs-toggle="pill" data-bs-target="#pills-prof4">
-                        <span> Change password </span> <i className="fal fa-arrow-right"></i>
+                        <span> Change password </span> <GrNext />
                       </button>
                     </li>
                   </ul>
@@ -245,7 +251,7 @@ export const Profile = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="tab-pane fade" id="pills-prof3">
+                  {/* <div className="tab-pane fade" id="pills-prof3">
                     <div className="myaddress-tab">
                       <h4 className="fw-bold text-capitalize mb-30"> Shipping address </h4>
                       <div className="content">
@@ -317,7 +323,7 @@ export const Profile = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="tab-pane fade" id="pills-prof4">
                     <div className="changepass-tab">
                       <h4 className="fw-bold text-capitalize mb-30"> Change Password </h4>

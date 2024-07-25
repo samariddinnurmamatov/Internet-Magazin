@@ -84,7 +84,7 @@ const Mainheader = () => {
                             <Link to="about" className="dropdown-item" style={{width: "100%"}}>About</Link>
                             <Link to="contact" className="dropdown-item" style={{width: "100%"}}>Contact</Link>
                             <Link to="login" className="dropdown-item" style={{width: "100%"}}>Login</Link>
-                            <Link to="profile" className="dropdown-item" style={{width: "100%"}}>Profile</Link>
+                            {/* <Link to="profile" className="dropdown-item" style={{width: "100%"}}>Profile</Link> */}
                             <Link to="register" className="dropdown-item" style={{width: "100%"}}>Register</Link>
                             <Link to="contact" className="dropdown-item" style={{width: "100%"}}>Contact</Link>
                       </div>
@@ -169,14 +169,14 @@ const Mainheader = () => {
                     </div>
           </nav>
 
-          <div className="tc-links-nav-style1 d-none d-lg-block ">
+          {/* <div className="tc-links-nav-style1 d-none d-lg-block ">
                   <div className="d-flex items-center justify-around">
                       <div className="">
                           <div className="links">
                               <ul className="links-ul">
-                                  {/* <li>
+                                  <li>
                                       <a href="#"> <FaGripLines /> </a>
-                                  </li> */}
+                                  </li>
                                 <li className="nav-item dropdown">
                                       <a className="dropdown-toggle" href="#" id="navbarDropdown22" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                           Pages <IoIosArrowDown /> 
@@ -231,7 +231,7 @@ const Mainheader = () => {
                           </div>
                       </div>
                   </div>
-          </div>
+          </div> */}
       </header>
     </Fragment>
   );
