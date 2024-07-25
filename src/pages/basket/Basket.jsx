@@ -8,12 +8,14 @@ import {
   FaHeart,
 } from "react-icons/fa";
 import Container from "../../components/shared/Container";
-import { useEffect, useState } from "react";
-import { apiDeleteBasket, apiGetBasket, apiGetSingleProduct, apiPostBasket } from "../../services/HomeService";
+import { useEffect, useMemo, useState } from "react";
+import { apiDeleteBasket, apiDeleteFavourites, apiGetBasket, apiGetSingleProduct, apiPostBasket, apiPostFavourites } from "../../services/HomeService";
 import { session } from "../../services/session";
 
 const Basket = () => {
   const [basket, setBasket] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+
   const [isToken, setIsToken] = useState(false);
   let products = [];
 
@@ -72,6 +74,34 @@ const Basket = () => {
     }
   };
 
+  const handleLike = async (productId) => {
+    try {
+        session.add("like", productId);
+
+        setFavorites(prevFavorites => [...prevFavorites, productId]);
+
+        await apiPostFavourites({ product_id: productId });
+    } catch (error) {
+        console.error('Error liking product:', error);
+    }
+};
+const handleUnlike = async (productId) => {
+  try {
+      session.remove("like", productId);
+
+      setFavorites(prevFavorites => prevFavorites.filter(id => id !== productId));
+
+      await apiDeleteFavourites(productId);
+  } catch (error) {
+      console.error('Error unliking product:', error);
+  }
+};
+
+const isFavorite = useMemo(
+  () => (productId) => favorites.includes(productId),
+  [favorites]
+);
+
   return (
     <div className="home-style3 cart-pg-1 py-3">
       <Container>
@@ -109,8 +139,7 @@ const Basket = () => {
                               >
                                 <FaRegHeart />
                               </a>
-                              <a href="#0" className="remove-btn"
-                              // onClick={() => handleRemove(item.id)}
+                              <a href="#0" className="remove-btn d-grid place-items-center"
                               onClick={() => handleRemove(isToken ? item.id : item.data.id)}
 
                               > <FaTrashAlt /></a>

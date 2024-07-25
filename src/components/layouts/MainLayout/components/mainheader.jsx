@@ -3,7 +3,7 @@ import HeaderLogo from "../../../../assets/common/img/logo-1.png";
 import HeaderEn from "../../../../assets/common/img/eng-1.png";
 import { CiSearch } from "react-icons/ci";
 import { IoIosCall } from "react-icons/io";
-import { LuRefreshCcw } from "react-icons/lu";
+import { LuPhoneCall, LuRefreshCcw } from "react-icons/lu";
 import { FaRegHeart } from "react-icons/fa";
 import { LuUser2 } from "react-icons/lu";
 import { MdOutlineShoppingBag } from "react-icons/md";
@@ -74,10 +74,9 @@ const Mainheader = () => {
 
                       
                       <div className="d-flex gap-2">
-                          <span className="icon"><IoIosCall className="icon-call"/></span>
-                          <div className="">
-                              <h6 className="fsz-20 inf color-blue1 fw-bold"> <a href="tel:(025)36862516"> (025) 3686 25 16 </a> </h6>
-                          </div>
+
+
+
                           <div className="d-flex">
                             <Link to="about" className="dropdown-item" style={{width: "100%"}}>About</Link>
                             <Link to="contact" className="dropdown-item" style={{width: "100%"}}>Contact</Link>
@@ -86,6 +85,8 @@ const Mainheader = () => {
 
                       <div className="d-flex gap-4 lg:none ">
                           <a href=""> <LuRefreshCcw className="icon-r"/></a>
+                          <a href="tel:(025)36862516"> <LuPhoneCall className="icon-r"/></a> 
+
                           <div className="relative">
                                 <Link to="/profile"> <LuUser2 className="icon-r" />  </Link>
 
