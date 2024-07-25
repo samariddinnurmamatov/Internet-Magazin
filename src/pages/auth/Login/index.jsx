@@ -4,6 +4,8 @@ import LoginLeft from "../../../assets/common/img/login.png"
 import { apiLogin } from "../../../services/AuthService";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { session } from "../../../services/session";
+import { apiPostBasket } from "../../../services/HomeService";
 
 const InputField = ({ id, name, type = "text", placeholder, value, onChange, label }) => (
     <div className="form-group mb-4">
@@ -25,7 +27,7 @@ const Login = () => {
     const initialFormData = {
         phone_number: "",
         password: "",
-    };
+    }; 
     const [formData, setFormData] = useState(initialFormData);
 
     const handleInputChange = (e) => {
@@ -40,15 +42,22 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await apiLogin(formData);
-            console.log("A", response);
             if (response.success) {
-                toast.success("Login successful!")
+                toast.success("Login successful!");
                 localStorage.setItem('token', response.token);
-                localStorage.setItem('user', JSON.stringify(response.user)); 
-                setFormData(initialFormData);
-                navigate("/profile");
+                localStorage.setItem('user', JSON.stringify(response.user));
+
+                const basketProd = session.get("products") || [];
+                const newBasketItems = await Promise.all(
+                    basketProd.map(product => apiPostBasket({ product_id: product, quantity: 1 }))
+                );
+
+                console.log("A", response);
+
+                setFormData(initialFormData); 
+                navigate("/profile"); 
             } else {
-                toast.error(response.success || "Login failed. Please check your information.");
+                toast.error(response.message || "Login failed. Please check your information.");
             }
         } catch (err) {
             toast.error("Login failed. Please check your information.");

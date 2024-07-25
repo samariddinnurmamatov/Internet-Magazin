@@ -20,6 +20,7 @@ import { CiSearch } from "react-icons/ci";
 import { MdOutlineAddShoppingCart } from "react-icons/md";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { session } from "../services/session";
 
 
 
@@ -71,25 +72,28 @@ const Home = () => {
         fetchFavoritesBasket();
     }, []);
 
+    
     const handleLike = async (productId) => {
         try {
-            await apiPostFavourites({ product_id: productId });
+            session.add("like", productId);
+
             setFavorites(prevFavorites => [...prevFavorites, productId]);
-            toast.success('Product liked!');
+
+            await apiPostFavourites({ product_id: productId });
         } catch (error) {
             console.error('Error liking product:', error);
-            toast.error('Error liking product.');
         }
     };
 
     const handleUnlike = async (productId) => {
         try {
-            await apiDeleteFavourites(productId);
+            session.remove("like", productId);
+
             setFavorites(prevFavorites => prevFavorites.filter(id => id !== productId));
-            toast.success('Product unliked!');
+
+            await apiDeleteFavourites(productId);
         } catch (error) {
             console.error('Error unliking product:', error);
-            toast.error('Error unliking product.');
         }
     };
 
@@ -121,11 +125,14 @@ const Home = () => {
         }
     };
 
-    const isFavorite = useMemo(
-        () => (productId) => favorites.includes(productId),
-        [favorites]
-    );
+    // const isFavorite = useMemo(
+    //     () => (productId) => favorites.includes(productId),
+    //     [favorites]
+    // );
 
+    const isFavorite = (productId) => favorites.includes(productId);
+
+    
   return (
     <Fragment>
       <main style={{ height: "auto", marginBottom: "50px" }}>
@@ -348,7 +355,14 @@ const Home = () => {
                                         </div>
                                         <p className="fsz-12 mt-3"> Sold: 24 / 80 </p>
                                     </div>
-                                    <a href="#0" className="cart-btn addCart" onClick={() => handleAddToBasket(product.id)}>
+                                    <a href="#0" className="cart-btn addCart" onClick={() => {
+                                        // handleAddToBasket(product.id) ;
+                                         session.add("products" , product.id);
+                                         toast.success('Product added to basket!');
+
+                                        
+                                        }}
+                                         >
                                         <MdOutlineAddShoppingCart className="me-1" />Add To Cart
                                     </a>
                                 </div>
@@ -432,7 +446,15 @@ const Home = () => {
                                                     </div>
                                                     <p className="fsz-12 mt-3"> Sold: 24 / 80 </p>
                                                 </div>
-                                                <a href="#0" className="cart-btn addCart" onClick={() => handleAddToBasket(product)}><MdOutlineAddShoppingCart className="me-1" />Add To Cart</a>
+                                                <a href="#0" className="cart-btn addCart" onClick={() => 
+                                                {
+                                                    // handleAddToBasket(product);
+                                                    session.add("products" , product.id);
+                                                    toast.success('Product added to basket!');
+
+                                                }
+                                                    
+                                                    }><MdOutlineAddShoppingCart className="me-1" />Add To Cart</a>
                                             </div>
                                         </div>
                                     </div>
