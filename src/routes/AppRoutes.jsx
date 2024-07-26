@@ -31,7 +31,9 @@ function AppRoutes() {
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
             <Route path="basket" element={<Basket />} /> 
-            <Route path="checkout" element={<Checkout />} />
+            <Route path="checkout" element={<ProtectedRoute />}>
+              <Route index element={<Checkout />} />
+            </Route>
           </Route>
         </Routes>
     </BrowserRouter>
