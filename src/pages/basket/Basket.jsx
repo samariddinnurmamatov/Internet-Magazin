@@ -232,7 +232,7 @@ const Basket = () => {
                         <div className="row justify-content-center">
                           <div className="col-lg-6">
                             <Link
-                              to={isToken ? "/checkout" : "/login"}
+                              to={"/checkout"}
                               className="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-3 mt-lg-0 py-3 px-3 w-100"
                             >
                               <span> checkout </span>

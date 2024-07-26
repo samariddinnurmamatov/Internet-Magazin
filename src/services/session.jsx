@@ -9,7 +9,7 @@ export const session = {
   
   remove: (key, id) => {
     const storedData = store.get(key) || [];
-    const updatedData = storedData.filter((item) => item.id !== id);
+    const updatedData = storedData.filter((item) => item !== id);
     store.set(key, updatedData);
   }, 
    get: (key) => store.get(key)
