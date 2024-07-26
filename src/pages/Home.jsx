@@ -39,22 +39,22 @@ const Home = () => {
     useEffect(() => {
         const token = session.get("token");
         setIsToken(!!token)
-  
+
         const fetchData = async () => {
             try {
-                const [categoryData, productData, brandData , categoryProduct] = await Promise.all([
+                const [categoryData, productData, brandData, categoryProduct] = await Promise.all([
                     apiGetCategory(),
                     apiGetProducts(),
-                    apiGetBrands(), 
+                    apiGetBrands(),
                     apiGetCategoryOfProduct(1),
                 ]);
-                
+
                 if (categoryData.success) setCategories(categoryData.data);
                 if (productData.success) setProducts(productData.data);
                 if (brandData.success) setBrands(brandData.data);
                 if (categoryProduct.success) setCategoryOfProduct(categoryProduct.data);
-                
-                console.log(categoryProduct.data )
+
+                console.log(categoryProduct.data)
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -62,7 +62,7 @@ const Home = () => {
 
         fetchData();
     }, []);
-    
+
     useEffect(() => {
         const fetchFavoritesBasket = async () => {
             try {
@@ -91,9 +91,9 @@ const Home = () => {
         } catch (error) {
             console.error('Error fetching data:', error);
         }
-};
+    };
 
-    
+
     const handleLike = async (productId) => {
         try {
             session.add("like", productId);
@@ -146,104 +146,102 @@ const Home = () => {
         }
     };
 
-    // const isFavorite = useMemo(
-    //     () => (productId) => favorites.includes(productId),
-    //     [favorites]
-    // );
+    const isFavorite = useMemo(
+        () => (productId) => favorites.includes(productId),
+        [favorites]
+    );
 
-    const isFavorite = (productId) => favorites.includes(productId);
 
-    
-  return (
-    <Fragment>
-      <main style={{ height: "auto", marginBottom: "50px" }}>
+    return (
+        <Fragment>
+            <main style={{ height: "auto", marginBottom: "50px" }}>
 
-        <section className="tc-header-style1 mt-4">
-                <div className="container">
-                    <div className="content">
-                        <div className="row">
-                            <div className="col-lg-8">
-                                <div className="main-slider">
-                                    <div className="swiper-wrapper">
-                                        <div className="swiper-slide">
-                                            <div className="slide-card">
-                                                <div className="img th-450">
-                                                    <img src={Head1} alt="" className="img-cover" />
+                <section className="tc-header-style1 mt-4">
+                    <div className="container">
+                        <div className="content">
+                            <div className="row">
+                                <div className="col-lg-8">
+                                    <div className="main-slider">
+                                        <div className="swiper-wrapper">
+                                            <div className="swiper-slide">
+                                                <div className="slide-card">
+                                                    <div className="img th-450">
+                                                        <img src={Head1} alt="" className="img-cover" />
+                                                    </div>
+                                                    <div className="info text-white">
+                                                        <div className="cont">
+                                                            <h2 className="fsz-35 fw-200"> EKO 40 <br /> Android TV </h2>
+                                                            <p className="fsz-12 mt-15 text-uppercase"> Smart Full HD Android TV  with Google Assistant  </p>
+                                                            <a href="../inner_pages/single_product.html" className="butn px-5 py-3 bg-blue1 text-white rounded-pill mt-60 fw-600"> <span> Shop Now </span> </a>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div className="info text-white">
-                                                    <div className="cont">
-                                                        <h2 className="fsz-35 fw-200"> EKO 40 <br /> Android TV </h2>
-                                                        <p className="fsz-12 mt-15 text-uppercase"> Smart Full HD Android TV  with Google Assistant  </p>
-                                                        <a href="../inner_pages/single_product.html" className="butn px-5 py-3 bg-blue1 text-white rounded-pill mt-60 fw-600"> <span> Shop Now </span> </a>
+                                            </div>
+                                            <div className="swiper-slide">
+                                                <div className="slide-card">
+                                                    <div className="img th-450">
+                                                        <img src={Head11} alt="" className="img-cover" />
+                                                    </div>
+                                                    <div className="info text-white">
+                                                        <div className="cont">
+                                                            <h2 className="fsz-35 fw-200"> EKO 40 <br /> Android TV </h2>
+                                                            <p className="fsz-12 mt-15 text-uppercase"> Smart Full HD Android TV  with Google Assistant  </p>
+                                                            <a href="../inner_pages/single_product.html" className="butn px-5 py-3 bg-blue1 text-white rounded-pill mt-60 fw-600"> <span> Shop Now </span> </a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="swiper-slide">
-                                            <div className="slide-card">
-                                                <div className="img th-450">
-                                                    <img src={Head11} alt="" className="img-cover" />
-                                                </div>
-                                                <div className="info text-white">
-                                                    <div className="cont">
-                                                        <h2 className="fsz-35 fw-200"> EKO 40 <br /> Android TV </h2>
-                                                        <p className="fsz-12 mt-15 text-uppercase"> Smart Full HD Android TV  with Google Assistant  </p>
-                                                        <a href="../inner_pages/single_product.html" className="butn px-5 py-3 bg-blue1 text-white rounded-pill mt-60 fw-600"> <span> Shop Now </span> </a>
-                                                    </div>
-                                                </div>
+                                        <div className="slider-controls">
+                                            <div className="swiper-button-prev"></div>
+                                            <div className="swiper-pagination"></div>
+                                            <div className="swiper-button-next"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-lg-4">
+                                    <div className="card-overlay card-center">
+                                        <div className="img th-450">
+                                            <img src={Head2} alt="" className="img-cover" />
+                                        </div>
+                                        <div className="info text-white p-50">
+                                            <div className="cont">
+                                                <h3 className="fsz-30"> Humidifying Fan </h3>
+                                                <p className="fsz-13 mt-1"> From $299  </p>
+                                            </div>
+                                            <a href="../inner_pages/single_product.html" className="butn px-5 py-3 bg-white color-000 rounded-pill fw-600"> <span> Discover Now </span> </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-lg-6">
+                                    <div className="card-overlay wow fadeInUp slow" data-wow-delay="0.2s">
+                                        <div className="img th-230">
+                                            <img src={Head3} alt="" className="img-cover" />
+                                        </div>
+                                        <div className="info color-000 p-30">
+                                            <div className="cont">
+                                                <h3 className="fsz-30"> iPad mini <br /> 2022 </h3>
+                                                <p className="fsz-13 mt-1 color-666"> Mega Power in mini size  </p>
+                                            </div>
+                                            <a href="../inner_pages/single_product.html" className="butn px-4 py-2 bg-dark text-white rounded-pill fw-600 fsz-12 mt-30"> <span> Shop Now </span> </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-lg-6">
+                                    <div className="card-overlay wow fadeInUp slow" data-wow-delay="0.4s">
+                                        <div className="img th-230">
+                                            <img src={Head4} alt="" className="img-cover" />
+                                        </div>
+                                        <div className="info text-white p-30">
+                                            <div className="cont">
+                                                <h6 className="fsz-20"> Air <br /> Purifier </h6>
+                                                <small className="fsz-10 color-999 d-block text-uppercase mt-2"> from </small>
+                                                <p className="fsz-20 color-lightGreen"> $169  </p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="slider-controls">
-                                        <div className="swiper-button-prev"></div>
-                                        <div className="swiper-pagination"></div>
-                                        <div className="swiper-button-next"></div>
-                                    </div>
                                 </div>
-                            </div>
-                            <div className="col-lg-4">
-                                <div className="card-overlay card-center">
-                                    <div className="img th-450">
-                                        <img src={Head2} alt="" className="img-cover" />
-                                    </div>
-                                    <div className="info text-white p-50">
-                                        <div className="cont">
-                                            <h3 className="fsz-30"> Humidifying Fan </h3>
-                                            <p className="fsz-13 mt-1"> From $299  </p>
-                                        </div>
-                                        <a href="../inner_pages/single_product.html" className="butn px-5 py-3 bg-white color-000 rounded-pill fw-600"> <span> Discover Now </span> </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-6">
-                                <div className="card-overlay wow fadeInUp slow" data-wow-delay="0.2s">
-                                    <div className="img th-230">
-                                        <img src={Head3} alt="" className="img-cover" />
-                                    </div>
-                                    <div className="info color-000 p-30">
-                                        <div className="cont">
-                                            <h3 className="fsz-30"> iPad mini <br /> 2022 </h3>
-                                            <p className="fsz-13 mt-1 color-666"> Mega Power in mini size  </p>
-                                        </div>
-                                        <a href="../inner_pages/single_product.html" className="butn px-4 py-2 bg-dark text-white rounded-pill fw-600 fsz-12 mt-30"> <span> Shop Now </span> </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-6">
-                                <div className="card-overlay wow fadeInUp slow" data-wow-delay="0.4s">
-                                    <div className="img th-230">
-                                        <img src={Head4} alt="" className="img-cover" />
-                                    </div>
-                                    <div className="info text-white p-30">
-                                        <div className="cont">
-                                            <h6 className="fsz-20"> Air <br/> Purifier </h6>
-                                            <small className="fsz-10 color-999 d-block text-uppercase mt-2"> from </small>
-                                            <p className="fsz-20 color-lightGreen"> $169  </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* <div className="col-lg-6">
+                                {/* <div className="col-lg-6">
                                 <div className="card-overlay wow fadeInUp slow" data-wow-delay="0.6s">
                                     <div className="img th-230">
                                         <img src={Head5} alt="" className="img-cover" />
@@ -257,12 +255,12 @@ const Home = () => {
                                     </div>
                                 </div>
                             </div> */}
+                            </div>
                         </div>
                     </div>
-                </div>
-        </section>
+                </section>
 
-        <section className="tc-popular-cat-style1 pt-30 pb-50">
+                <section className="tc-popular-cat-style1 pt-30 pb-50">
                     <div className="container">
                         <div className="sec-title">
                             <div className="row align-items-center">
@@ -278,22 +276,22 @@ const Home = () => {
                             {categories.map(category => (
                                 <Link key={category.id} to={`/category/${category.id}`} className="cat-card">
                                     <div className="img">
-                                    <img src={category.image} alt={category.name_uz} />
+                                        <img src={category.image} alt={category.name_uz} />
                                     </div>
                                     <p className="fsz-13 fw-bold mt-15">{category.name_uz}</p>
                                 </Link>
                             ))}
                         </div>
                     </div>
-            </section>
+                </section>
 
-        <section className="tc-weekly-deals-style1 wow fadeInUp slow" data-wow-delay="0.2s">
-            <div className="container">
-                <div className="content">
-                    <div className="title mb-40">
-                        <h3 className="fsz-30 me-lg-5"> Best Weekly Deals </h3>
+                <section className="tc-weekly-deals-style1 wow fadeInUp slow" data-wow-delay="0.2s">
+                    <div className="container">
+                        <div className="content">
+                            <div className="title mb-40">
+                                <h3 className="fsz-30 me-lg-5"> Best Weekly Deals </h3>
 
-                        {/* <div className="countdown bg-red1 text-white">
+                                {/* <div className="countdown bg-red1 text-white">
                             <span className="icon me-2"> <FaRegHourglassHalf /> </span> 
                             <p className="me-2"> Expires in: </p>
 
@@ -318,267 +316,249 @@ const Home = () => {
                             </div>
                         </div> */}
 
-                        {/* <Timer time="april 30, 2024 00:00:00" /> */}
+                                {/* <Timer time="april 30, 2024 00:00:00" /> */}
 
 
 
-                        {/* <div className="arrows ms-auto"> 
+                                {/* <div className="arrows ms-auto"> 
                             <a href="#0" className="swiper-prev icon"> <FaChevronLeft /></a>    
                             <a href="#0" className="swiper-next ms-lg-1 icon"><FaChevronRight /></a>    
                         </div> */}
-                    </div>
-                    <div className="deals-cards">
-                        { products.length && products.map((product) => (
-                            <div className="column-sm" key={product.id}>
-                                <div className="deal-card">
-                                    <div className="top">
-                                        <small className="fsz-11 py-1 px-3 rounded-pill color-red1 border-red1 border"> 0% Installment </small>
-                                        <div className="icons">
-                                            <a
-                                                href="#0"
-                                                className={`icon fav ${isFavorite(product.id) ? 'liked' : ''}`} 
-                                                onClick={() => isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id)}
-                                            >
-                                                {isFavorite(product.id) ? <FaHeart /> : <FaRegHeart />}
-                                            </a>
-                                            <a href="#0" className="icon"><IoSync /></a>
-                                            <a href={product.image} className="icon" data-fancybox="deal"><FaEye /></a>
-                                        </div>
-                                    </div>
-                                    <a href="../inner_pages/single_product.html" className="img th-140 mb-20 d-block">
-                                        <img src={product.image} alt="" className="img-contain" />
-                                    </a>
-                                    <div className="info">
-                                        <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase"> 15% OFF </span>
-                                        <a href={`/single_product/${product.id}`} className="title fsz-14 mt-15 fw-600 hover-blue1"> Air Purifier with <br /> True HEPA H14 Filter </a>
-                                        <div className="stars fsz-13 mt-2">
-                                            <FaRegStar className="active" />
-                                            <FaRegStar className="active" />
-                                            <FaRegStar className="active" />
-                                            <FaRegStar className="active" />
-                                            <FaRegStar />
-                                            <span> (5) </span>
-                                        </div>
-                                        <p className="price color-red1 mt-2 fsz-20"> ${product.price} <span className="old-price color-999 text-decoration-line-through ms-2 fsz-16"> $619.00 </span> </p>
-                                        <div className="progress mt-20">
-                                            <div className="progress-bar bg-blue1" role="progressbar" style={{ width: "25%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <p className="fsz-12 mt-3"> Sold: 24 / 80 </p>
-                                    </div>
-                                    <a href="#0" className="cart-btn addCart" onClick={() => {
-
-                                        isToken ?
-                                        handleAddToBasket(product.id) 
-                                        :
-                                         session.add("products" , product.id);
-                                         toast.success('Product added to basket!');
-
-                                        
-                                        }}
-                                         >
-                                        <MdOutlineAddShoppingCart className="me-1" />Add To Cart
-                                    </a>
-                                </div>
                             </div>
-                        ))}
-                    </div>
-                    {/* <div className="text-center mt-30">
+                            <div className="deals-cards">
+                                {products.length && products.map((product) => (
+                                    <div className="column-sm" key={product.id}>
+                                        <div className="deal-card">
+                                            <div className="top">
+                                                <small className="fsz-11 py-1 px-3 rounded-pill color-red1 border-red1 border"> 0% Installment </small>
+                                                <div className="icons">
+                                                    <a
+                                                        href="#0"
+                                                        className={`icon fav ${isFavorite(product.id) ? 'liked' : ''}`}
+                                                        onClick={() => isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id)}
+                                                    >
+                                                        {isFavorite(product.id) ? <FaHeart /> : <FaRegHeart />}
+                                                    </a>
+                                                    <a href="#0" className="icon"><IoSync /></a>
+                                                    <a href={product.image} className="icon" data-fancybox="deal"><FaEye /></a>
+                                                </div>
+                                            </div>
+                                            <a href="../inner_pages/single_product.html" className="img th-140 mb-20 d-block">
+                                                <img src={product.image} alt="" className="img-contain" />
+                                            </a>
+                                            <div className="info">
+                                                <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase"> 15% OFF </span>
+                                                <a href={`/single_product/${product.id}`} className="title fsz-14 mt-15 fw-600 hover-blue1"> Air Purifier with <br /> True HEPA H14 Filter </a>
+                                                <div className="stars fsz-13 mt-2">
+                                                    <FaRegStar className="active" />
+                                                    <FaRegStar className="active" />
+                                                    <FaRegStar className="active" />
+                                                    <FaRegStar className="active" />
+                                                    <FaRegStar />
+                                                    <span> (5) </span>
+                                                </div>
+                                                <p className="price color-red1 mt-2 fsz-20"> ${product.price} <span className="old-price color-999 text-decoration-line-through ms-2 fsz-16"> $619.00 </span> </p>
+                                                <div className="progress mt-20">
+                                                    <div className="progress-bar bg-blue1" role="progressbar" style={{ width: "25%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <p className="fsz-12 mt-3"> Sold: 24 / 80 </p>
+                                            </div>
+                                            <a href="#0" className="cart-btn addCart" onClick={() => {
+
+                                                isToken ?
+                                                    handleAddToBasket(product.id)
+                                                    :
+                                                    session.add("products", product.id);
+                                                toast.success('Product added to basket!');
+
+
+                                            }}
+                                            >
+                                                <MdOutlineAddShoppingCart className="me-1" />Add To Cart
+                                            </a>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            {/* <div className="text-center mt-30">
                         <a href="../inner_pages/products.html" className="butn py-3 bg-white color-000 rounded-pill fw-600"> <span> See All Products (63) </span> </a>
                     </div> */}
-                </div>
-            </div>
-        </section>
-
-        <section className="tc-best-seller-style1 wow fadeInUp slow" data-wow-delay="0.2s">
-            <div className="container">
-                <div className="title mb-40">
-                    <div className="row align-items-center">
-                        <div className="col-lg-8">
-                            <h3 className="fsz-30"> Best Seller </h3>
-                        </div>
-                        <div className="col-lg-4 text-lg-end mt-4 mt-lg-0">
-                            <a href="../inner_pages/products.html" className="more-btn fsz-14 text-uppercase fw-500 view_all"> View All <RiGalleryView2 /> </a>
                         </div>
                     </div>
-                </div> 
-                    {/* <ul className="nav nav-pills mb-40" id="pills-tabs" role="tablist">
-                        <li className="nav-item" role="presentation">
-                        <button className="nav-link active" id="pills-tab1-tab" data-bs-toggle="pill" data-bs-target="#pills-tab1" type="button" role="tab" aria-selected="true">Top 30</button>
-                        </li> 
-                        <li className="nav-item" role="presentation">
-                        <button className="nav-link" id="pills-tab2-tab" data-bs-toggle="pill" data-bs-target="#pills-tab2" type="button" role="tab" aria-selected="false">Televisions</button>
-                        </li> 
-                    </ul> */}
-                    <ul className="nav nav-pills mb-40" id="pills-tabs" role="tablist">
-                        {categories.map(category => (
+                </section>
+
+                <section className="tc-best-seller-style1 wow fadeInUp slow" data-wow-delay="0.2s">
+                    <div className="container">
+                        <div className="title mb-40">
+                            <div className="row align-items-center">
+                                <div className="col-lg-8">
+                                    <h3 className="fsz-30"> Best Seller </h3>
+                                </div>
+                                <div className="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                                    <a href="../inner_pages/products.html" className="more-btn fsz-14 text-uppercase fw-500 view_all"> View All <RiGalleryView2 /> </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <ul className="nav nav-pills mb-40" id="pills-tabs" role="tablist">
+                            {categories.map(category => (
 
                                 <li className="nav-item" role="presentation" key={category.id}>
-                                    <button onClick={()=>{fetchProductData(category.id)}} className={`nav-link ${activeCategory === category.id ? 'active' : ''}`} id="pills-tab1-tab" data-bs-toggle="pill" data-bs-target="#pills-tab1" type="button" role="tab" aria-selected="true">{category.name_uz}</button>
-                                </li> 
-                        ))}
-                    </ul>
-                  <div className="tab-content" id="pills-tabContent1">
-                    <div className="tab-pane fade show active" id="pills-tab1" role="tabpanel" aria-labelledby="pills-tab1-tab">
-                        <div className="products-slider">
-                            <div className="swiper-wrapper d-flex gap-3">
+                                    <button onClick={() => { fetchProductData(category.id) }} className={`nav-link ${activeCategory === category.id ? 'active' : ''}`} id="pills-tab1-tab" data-bs-toggle="pill" data-bs-target="#pills-tab1" type="button" role="tab" aria-selected="true">{category.name_uz}</button>
+                                </li>
+                            ))}
+                        </ul>
+                        <div className="tab-content" id="pills-tabContent1">
+                            <div className="tab-pane fade show active" id="pills-tab1" role="tabpanel" aria-labelledby="pills-tab1-tab">
+                                <div className="products-slider">
+                                    <div className="swiper-wrapper d-flex gap-3">
 
-                                {categoryOfProduct.length > 0 && categoryOfProduct.map((product) => (
-                                    <div className="swiper-slide" key={product.id}>
-                                        <div className="column-sm" >
-                                            <div className="product-card">
-                                                <div className="top">
-                                                    <small className="fsz-11 py-1 px-3 rounded-pill color-red1 border-red1 border"> 0% Installment </small>
-                                                    <div className="icons">
-                                                        <a
-                                                            href="#0"
-                                                            className={`icon fav ${isFavorite(product.id) ? 'liked' : ''}`} 
-                                                            onClick={() => isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id)}
-                                                        >
-                                                            {isFavorite(product.id) ? <FaHeart /> : <FaRegHeart />}
+                                        {categoryOfProduct.length > 0 && categoryOfProduct.map((product) => (
+                                            <div className="swiper-slide" key={product.id}>
+                                                <div className="column-sm" >
+                                                    <div className="product-card">
+                                                        <div className="top">
+                                                            <small className="fsz-11 py-1 px-3 rounded-pill color-red1 border-red1 border"> 0% Installment </small>
+                                                            <div className="icons">
+                                                                <a
+                                                                    href="#0"
+                                                                    className={`icon fav ${isFavorite(product.id) ? 'liked' : ''}`}
+                                                                    onClick={() => isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id)}
+                                                                >
+                                                                    {isFavorite(product.id) ? <FaHeart /> : <FaRegHeart />}
+                                                                </a>
+                                                                <a href="#0" className="icon"><IoSync /></a>
+                                                                <a href={product.image} className="icon" data-fancybox="deal"><FaEye /></a>
+                                                            </div>
+                                                        </div>
+                                                        <a href="#" className="img th-140 mb-20 d-block">
+                                                            <img src={product.image} alt="" className="img-contain" />
                                                         </a>
-                                                        <a href="#0" className="icon"><IoSync /></a>
-                                                        <a href={product.image} className="icon" data-fancybox="deal"><FaEye /></a>
+                                                        <div className="info">
+                                                            <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase"> 15% OFF </span>
+                                                            <a href={`/single_product/${product.id}`} className="title fsz-14 mt-15 fw-600 hover-blue1"> Air Purifier with <br /> True HEPA H14 Filter </a>
+                                                            <div className="stars fsz-13 mt-2">
+                                                                <FaRegStar className="active" />
+                                                                <FaRegStar className="active" />
+                                                                <FaRegStar className="active" />
+                                                                <FaRegStar className="active" />
+                                                                <FaRegStar />
+                                                                <span> (5) </span>
+                                                            </div>
+                                                            <p className="price color-red1 mt-2 fsz-20"> ${product.price} <span className="old-price color-999 text-decoration-line-through ms-2 fsz-16"> $619.00 </span> </p>
+                                                            <div className="progress mt-20">
+                                                                <div className="progress-bar bg-blue1" role="progressbar" style={{ width: "25%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                            <p className="fsz-12 mt-3"> Sold: 24 / 80 </p>
+                                                        </div>
+                                                        <a href="#0" className="cart-btn addCart" onClick={() => {
+                                                            isToken ?
+                                                                handleAddToBasket(product.id)
+                                                                :
+                                                                session.add("products", product.id);
+                                                            toast.success('Product added to basket!');
+                                                        }
+
+                                                        }><MdOutlineAddShoppingCart className="me-1" />Add To Cart</a>
                                                     </div>
                                                 </div>
-                                                <a href="#" className="img th-140 mb-20 d-block">
-                                                    <img src={product.image} alt="" className="img-contain" />
-                                                </a>
-                                                <div className="info">
-                                                    <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase"> 15% OFF </span>
-                                                    <a href={`/single_product/${product.id}`} className="title fsz-14 mt-15 fw-600 hover-blue1"> Air Purifier with <br /> True HEPA H14 Filter </a>
-                                                    <div className="stars fsz-13 mt-2">
-                                                        <FaRegStar className="active" />
-                                                        <FaRegStar className="active" />
-                                                        <FaRegStar className="active" />
-                                                        <FaRegStar className="active" />
-                                                        <FaRegStar />
-                                                        <span> (5) </span>
-                                                    </div>
-                                                    <p className="price color-red1 mt-2 fsz-20"> ${product.price} <span className="old-price color-999 text-decoration-line-through ms-2 fsz-16"> $619.00 </span> </p>
-                                                    <div className="progress mt-20">
-                                                        <div className="progress-bar bg-blue1" role="progressbar" style={{ width: "25%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                    <p className="fsz-12 mt-3"> Sold: 24 / 80 </p>
-                                                </div>
-                                                <a href="#0" className="cart-btn addCart" onClick={() => 
-                                                {
-                                                    isToken ?
-                                                    handleAddToBasket(product.id) 
-                                                    :
-                                                     session.add("products" , product.id);
-                                                     toast.success('Product added to basket!');
-                                                }
-                                                    
-                                                    }><MdOutlineAddShoppingCart className="me-1" />Add To Cart</a>
                                             </div>
-                                        </div>
+                                        ))}
                                     </div>
-                               ))}
-                            </div>
 
-                            <div className="slider-controls">
-                                <div className="swiper-button-prev"></div>
-                                <div className="swiper-pagination"></div>
-                                <div className="swiper-button-next"></div>
-                            </div>
-                        </div>
-                    </div>
-                  </div>
-            </div>
-        </section>
-
-        <section className="tc-pupolar-brands-style1 wow fadeInUp slow" data-wow-delay="0.2s">
-            <div className="container overflow-hidden custom-container">
-                <div className="content">
-                    <div className="title mb-40">
-                        <div className="row align-items-center">
-                            <div className="col-lg-8">
-                                <h3 className="fsz-30"> Popular Brands </h3>
-                            </div>
-                            <div className="col-lg-4 text-lg-end mt-4 mt-lg-0">
-                                <a href="../inner_pages/products.html" className="more-btn fsz-14 text-uppercase fw-500 view_all"> View All <RiGalleryView2 /> </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="pupolar-slider">
-                        <div className="swiper-wrapper">
-                            {brands.map(brand => (
-                                <div className="swiper-slide" key={brand.id}>
-                                    <div className="card-overlay" >
-                                        <div className="img th-250">
-                                            <img src={brand.image} alt="a" className="img-cover" />
-                                        </div>
-                                        <div className="info text-white p-30">
-                                            <div className="cont d-flex align-content-between flex-wrap h-100">
-                                                <div className="top">
-                                                    <h6 className="fsz-18 fw-500 w-100 text-uppercase"> {brand.title_uz} </h6>
-                                                    <small className="fsz-12 mt-10"> {brand.description_uz} </small>
-                                                </div>
-                                                <a href="../inner_pages/single_product.html" className="butn px-4 py-2 bg-white color-000 rounded-pill fw-600 fsz-12 mt-30"> <span> Shop Now </span> </a>
-                                            </div>
-                                        </div>
+                                    <div className="slider-controls">
+                                        <div className="swiper-button-prev"></div>
+                                        <div className="swiper-pagination"></div>
+                                        <div className="swiper-button-next"></div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section className="tc-pupolar-brands-style1 wow fadeInUp slow" data-wow-delay="0.2s">
+                    <div className="container overflow-hidden custom-container">
+                        <div className="content">
+                            <div className="title mb-40">
+                                <div className="row align-items-center">
+                                    <div className="col-lg-8">
+                                        <h3 className="fsz-30"> Popular Brands </h3>
+                                    </div>
+                                    <div className="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                                        <a href="../inner_pages/products.html" className="more-btn fsz-14 text-uppercase fw-500 view_all"> View All <RiGalleryView2 /> </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="pupolar-slider">
+                                <div className="swiper-wrapper">
+                                    {brands.map(brand => (
+                                        <div className="swiper-slide" key={brand.id}>
+                                            <div className="card-overlay" >
+                                                <div className="img th-250">
+                                                    <img src={brand.image} alt="a" className="img-cover" />
+                                                </div>
+                                                <div className="info text-white p-30">
+                                                    <div className="cont d-flex align-content-between flex-wrap h-100">
+                                                        <div className="top">
+                                                            <h6 className="fsz-18 fw-500 w-100 text-uppercase"> {brand.title_uz} </h6>
+                                                            <small className="fsz-12 mt-10"> {brand.description_uz} </small>
+                                                        </div>
+                                                        <a href="../inner_pages/single_product.html" className="butn px-4 py-2 bg-white color-000 rounded-pill fw-600 fsz-12 mt-30"> <span> Shop Now </span> </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="swiper-button-next"></div>
+                                <div className="swiper-button-prev"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section className="tc-trend-search-style1 wow fadeInUp slow" data-wow-delay="0.2s">
+                    <div className="container">
+                        <h3 className="fsz-30 mb-30"> Trending Search </h3>
+                        <div className="links">
+                            {categories.map(category => (
+
+                                <Link to={`/category/${category.id}`} className="link"> {category.name_uz} </Link>
                             ))}
+
                         </div>
-                        <div className="swiper-button-next"></div>
-                        <div className="swiper-button-prev"></div>
                     </div>
-                </div>
-            </div>
-        </section>
+                </section>
 
-        <section className="tc-trend-search-style1 wow fadeInUp slow" data-wow-delay="0.2s">
-            <div className="container">
-                <h3 className="fsz-30 mb-30"> Trending Search </h3>
-                <div className="links">
-                    <a href="../inner_pages/products.html" className="link"> Vacuum Robot </a>
-                    <a href="../inner_pages/products.html" className="link"> Bluetooth Speaker </a>
-                    <a href="../inner_pages/products.html" className="link"> Oled TV </a>
-                    <a href="../inner_pages/products.html" className="link"> Security Camera </a>
-                    <a href="../inner_pages/products.html" className="link"> Macbook M1 </a>
-                    <a href="../inner_pages/products.html" className="link"> Smart Washing Machine </a>
-                    <a href="../inner_pages/products.html" className="link"> iPad Mini 2023 </a>
-                    <a href="../inner_pages/products.html" className="link"> PS5 </a>
-                    <a href="../inner_pages/products.html" className="link"> Earbuds </a>
-                    <a href="../inner_pages/products.html" className="link"> Air Condition Inverter </a>
-                    <a href="../inner_pages/products.html" className="link"> Flycam </a>
-                    <a href="../inner_pages/products.html" className="link"> Electric Bike </a>
-                    <a href="../inner_pages/products.html" className="link"> Gaming Computer </a>
-                    <a href="../inner_pages/products.html" className="link"> Smart Air Purifier </a>
-                    <a href="../inner_pages/products.html" className="link"> Apple Watch </a>
-                </div>
-            </div>
-        </section>
-
-        <section className="tc-main-banner-style1 wow fadeInUp slow mb-5" data-wow-delay="0.2s">
-            <div className="container">
-                <div className="banner">
-                    <div className="row align-items-center">
-                        <div className="col-lg-2">
-                            <h6 className="fsz-24 text-uppercase color-cyan1 lh-1"> Pre Order </h6>
-                            <small className="fsz-10 color-999 text-uppercase"> be the first to own </small>
-                            <p className="fsz-14 mt-2 text-white"> From $399 </p>
-                        </div>
-                        <div className="col-lg-4 order-last order-lg-0">
-                            <div className="img">
-                                <img src={Banner} alt="" />
-                            </div>
-                        </div>
-                        <div className="col-lg-4 mt-3 mt-lg-0">
-                            <small className="fsz-12 color-cyan1"> Opplo Watch Sport <br /> Series 8 </small>
-                            <h3 className="fsz-30 mt-10 fw-300 text-white"> A healthy leap ahead </h3>
-                        </div>
-                        <div className="col-lg-2 mt-4 mt-lg-0">
-                            <div className="text-lg-end">
-                                <a href="../inner_pages/single_product.html" className="butn px-4 pt-10 pb-10 bg-white color-000 rounded-pill fw-600"> <span> Discover Now </span> </a>
+                <section className="tc-main-banner-style1 wow fadeInUp slow mb-5" data-wow-delay="0.2s">
+                    <div className="container">
+                        <div className="banner">
+                            <div className="row align-items-center">
+                                <div className="col-lg-2">
+                                    <h6 className="fsz-24 text-uppercase color-cyan1 lh-1"> Pre Order </h6>
+                                    <small className="fsz-10 color-999 text-uppercase"> be the first to own </small>
+                                    <p className="fsz-14 mt-2 text-white"> From $399 </p>
+                                </div>
+                                <div className="col-lg-4 order-last order-lg-0">
+                                    <div className="img">
+                                        <img src={Banner} alt="" />
+                                    </div>
+                                </div>
+                                <div className="col-lg-4 mt-3 mt-lg-0">
+                                    <small className="fsz-12 color-cyan1"> Opplo Watch Sport <br /> Series 8 </small>
+                                    <h3 className="fsz-30 mt-10 fw-300 text-white"> A healthy leap ahead </h3>
+                                </div>
+                                <div className="col-lg-2 mt-4 mt-lg-0">
+                                    <div className="text-lg-end">
+                                        <a href="../inner_pages/single_product.html" className="butn px-4 pt-10 pb-10 bg-white color-000 rounded-pill fw-600"> <span> Discover Now </span> </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
-        {/* <section className="tc-suggest-today-style1">
+                </section>
+                {/* <section className="tc-suggest-today-style1">
             <div className="container">
                 <div className="title mb-40 wow fadeInUp slow" data-wow-delay="0.2s">
                     <div className="row align-items-center">
@@ -1063,7 +1043,7 @@ const Home = () => {
             </div>
         </section> */}
 
-        {/* <section className="tc-best-single-style1">
+                {/* <section className="tc-best-single-style1">
             <div className="container">
                 <div className="row">
                     <div className="col-lg-5">
@@ -1182,7 +1162,7 @@ const Home = () => {
             </div>
         </section> */}
 
-        {/* <section className="tc-best-seller-style1 wow fadeInUp slow" data-wow-delay="0.2s">
+                {/* <section className="tc-best-seller-style1 wow fadeInUp slow" data-wow-delay="0.2s">
             <div className="container">
                 <div className="title mb-40">
                     <div className="row align-items-center">
@@ -1584,7 +1564,7 @@ const Home = () => {
             </div>
         </section> */}
 
-        {/* <section className="tc-testimonials-style1 pb-60">
+                {/* <section className="tc-testimonials-style1 pb-60">
               <div className="container">
                   <div className="row">
                       <div className="col-lg-6">
@@ -1676,7 +1656,7 @@ const Home = () => {
               </div>
         </section> */}
 
-        <section className="tc-subscribe-style1">
+                {/* <section className="tc-subscribe-style1">
               <div className="container">
                   <div className="row align-items-center justify-content-between">
                       <div className="col-lg-6">
@@ -1692,10 +1672,10 @@ const Home = () => {
                   </div>
               </div>
               <img src="assets/img/plane-1.png" alt="" className="plane" />
-          </section>
-      </main>
-    </Fragment>
-  );
+          </section> */}
+            </main>
+        </Fragment>
+    );
 };
 
 export default Home;

@@ -8,23 +8,28 @@ import {
   FaHeart,
 } from "react-icons/fa";
 import Container from "../../components/shared/Container";
-import { useEffect, useState } from "react";
-import { apiDeleteBasket, apiGetBasket, apiGetSingleProduct, apiPostBasket } from "../../services/HomeService";
+import { useEffect, useMemo, useState } from "react";
+import { apiDeleteBasket, apiDeleteFavourites, apiGetBasket, apiGetFavourites, apiGetSingleProduct, apiPostFavourites, apiUpdateBasket } from "../../services/HomeService";
 import { session } from "../../services/session";
+import store from "store2";
+import { Link } from "react-router-dom";
 
 const Basket = () => {
   const [basket, setBasket] = useState([]);
+  const [favorites, setFavorites] = useState([]);
   const [isToken, setIsToken] = useState(false);
-  let products = [];
 
   useEffect(() => {
     const fetchLiked = async () => {
       const token = session.get("token");
-      setIsToken(!!token)
-      console.log(!!token)
+      setIsToken(!!token);
       try {
+        const [favoritesData] = await Promise.all([apiGetFavourites()]);
+
+        if (favoritesData) setFavorites(favoritesData.data.map(fav => fav.id));
+
         const response = await apiGetBasket();
-        
+
         if (response && response.data) {
           setBasket(response.data);
         } else {
@@ -34,7 +39,7 @@ const Basket = () => {
         console.error('Error fetching basket:', error);
 
         const basketProd = session.get("products") || [];
-        console.log(basketProd);
+        const products = [];
 
         for (const product of basketProd) {
           try {
@@ -44,32 +49,99 @@ const Basket = () => {
             console.error('Error fetching single product:', singleProductError);
           }
         }
-        console.log("products",products)
 
-          setBasket(products);
-        
+        setBasket(products);
       }
     };
 
     fetchLiked();
   }, []);
 
-  const handleQuantityChange = (productId, change) => {
+  const handleQuantityChange = async (productId, change) => {
     setBasket((prevBasket) =>
       prevBasket.map((item) =>
         item.id === productId
-          ? { ...item, data: { ...item.data, quantity: (item.quantity || 1) + change } }
+          ? { ...item, data: { ...item.data, quantity: Math.max((item.data.quantity || 1) + change, 1) } }
           : item
       )
     );
+
+    try {
+      await apiUpdateBasket({
+        product_id: productId,
+        quantity: change,
+      });
+    } catch (error) {
+      console.error('Error updating quantity:', error);
+    }
   };
+
   const handleRemove = async (id) => {
     try {
       await apiDeleteBasket(id);
       setBasket((prevBasket) => prevBasket.filter(item => item.id !== id));
     } catch (error) {
       console.error('Error removing item from basket:', error);
+
+       const bas =session.get("products" , id) ;
+       const updatedData = bas.filter((bass) => bass !== id);
+       console.log("bas" , bas , id , updatedData)
+      store.set("products", updatedData)
+        const products = [];
+
+        for (const product of updatedData) {
+          try {
+            const singleProduct = await apiGetSingleProduct(product);
+            products.push(singleProduct);
+          } catch (singleProductError) {
+            console.error('Error fetching single product:', singleProductError);
+          }
+        }
+
+        setBasket(products);
+
+
     }
+  };
+
+  const handleLike = async (productId) => {
+    try {
+      if(isToken){
+
+        await apiPostFavourites({ product_id: productId });
+      }
+      else{
+
+        session.add("like", productId);
+        setFavorites(prevFavorites => [...prevFavorites, productId]);
+      }
+
+    } catch (error) {
+      console.error('Error liking product:', error);
+    }
+  };
+
+  const handleUnlike = async (productId) => {
+    try {
+      session.remove("like", productId);
+      setFavorites(prevFavorites => prevFavorites.filter(id => id !== productId));
+      await apiDeleteFavourites(productId);
+    } catch (error) {
+      console.error('Error unliking product:', error);
+    }
+  };
+
+  const isFavorite = useMemo(
+    () => (productId) => favorites.includes(productId),
+    [favorites]
+  );
+
+  const calculateTotalPrice = () => {
+    return basket.reduce((total, item) => {
+      const price = isToken ? item.price : item.data.price;
+      const quantity = isToken ? item.quantity : item.data.quantity;
+      return total + (price * quantity);
+    }, 0);
   };
 
   return (
@@ -77,14 +149,11 @@ const Basket = () => {
       <Container>
         <section className="tc-cart p-5 radius-4 bg-white mt-3 mb-3">
           <div className="row">
-
             {
-              basket.length>0 ?
+              basket.length > 0 ?
                 <div className="">
-
                   <div className="">
                     <div className="products">
-                      {/* foreach data */}
                       {
                         basket.map(item => (
                           <div className="product-card d-flex gap-16" key={item.id}>
@@ -96,7 +165,7 @@ const Basket = () => {
                               <a
                                 href="#0"
                                 className={`fav-btn`}
-                                // onClick={() => handleLikeToggle(item.id)}
+                                onClick={() => isFavorite(isToken ? item.id : item.data.id) ? handleUnlike(isToken ? item.id : item.data.id) : handleLike(isToken ? item.id : item.data.id)}
                                 style={{
                                   display: 'flex',
                                   alignItems: 'center',
@@ -107,11 +176,10 @@ const Basket = () => {
                                   transition: 'background-color 0.3s, border-color 0.3s, color 0.3s',
                                 }}
                               >
-                                <FaRegHeart />
+                                {isFavorite(isToken ? item.id : item.data.id) ? <FaHeart /> : <FaRegHeart />}
                               </a>
-                              <a href="#0" className="remove-btn"
-                              // onClick={() => handleRemove(item.id)}
-                              onClick={() => handleRemove(isToken ? item.id : item.data.id)}
+                              <a href="#0" className="remove-btn d-grid place-items-center"
+                                onClick={() => handleRemove(isToken ? item.id : item.data.id)}
 
                               > <FaTrashAlt /></a>
                             </div>
@@ -123,7 +191,7 @@ const Basket = () => {
                                 <div className="stars">
                                   {[...Array(5)].map((_, index) => (
                                     <FaRegStar key={index} className={index < item.rating ? "" : "color-999"} />
-                                  ))} 
+                                  ))}
                                 </div>
                                 <span className="num"> ({isToken ? item.ratingCount : item.data.ratingCount}) </span>
                               </div>
@@ -133,7 +201,7 @@ const Basket = () => {
                               </div>
                               <div className="add-more mt-3">
                                 <span className="qt-minus" onClick={() => handleQuantityChange(item.id, -1)}><FaMinus /></span>
-                                <input type="text" className="qt border-0" value="1" readOnly />
+                                <input type="text" className="qt border-0" value={isToken ? item.quantity : item.data.quantity} readOnly />
                                 <span className="qt-plus" onClick={() => handleQuantityChange(item.id, 1)}><FaPlus /></span>
                               </div>
                               <div className="meta">
@@ -150,50 +218,38 @@ const Basket = () => {
                   <div className="col-lg-4">
                     <div className="cart-card">
                       <strong className="fsz-16 d-block mb-20">
-
                         Order Summary
                       </strong>
-                      {/* <div className="card-item"> <span> Sub Total: </span> <strong className="color-000"> $1,000.00 </strong> </div>
-                <div className="card-item"> <span> Shipping estimate: </span> <strong className="color-000"> $600.00 </strong> </div>
-                <div className="card-item"> <span> Tax estimate: </span> <strong className="color-000"> $137.00 </strong> </div> */}
                       <div className="card-item border-0">
-
                         <strong className="color-000 text-uppercase">
-
                           Order total:
                         </strong>
                         <strong className="color-000">
-
-                          $122
+                          ${calculateTotalPrice().toFixed(2)}
                         </strong>
                       </div>
                       <div className="btns pt-3">
                         <div className="row justify-content-center">
                           <div className="col-lg-6">
-                            <a
-                              href="/checkout"
+                            <Link
+                              to={isToken ? "/checkout" : "/login"}
                               className="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-3 mt-lg-0 py-3 px-3 w-100"
-                              
                             >
-
                               <span> checkout </span>
-                            </a>
+                            </Link>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                 :
+                :
                 <div className="flex flex-col items-center">
                   <img className="w-48" src="https://static.vecteezy.com/system/resources/thumbnails/017/745/092/small_2x/empty-parcel-box-was-opened-png.png" alt="" />
                   <div className="font-bold text-lg">You do not have any items in your shopping cart yet
                   </div>
                 </div>
-
             }
-
-
           </div>
         </section>
       </Container>
@@ -202,3 +258,5 @@ const Basket = () => {
 };
 
 export default Basket;
+
+
