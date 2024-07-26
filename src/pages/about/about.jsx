@@ -4,17 +4,10 @@ import { FaPlay } from "react-icons/fa";
 import { CiCircleCheck } from "react-icons/ci";
 import { FaShippingFast } from "react-icons/fa";
 import { FaHandHoldingUsd } from "react-icons/fa";
-import { FaAngleRight } from "react-icons/fa6";
-import { BsTwitterX } from "react-icons/bs";
-import { FaInstagram } from "react-icons/fa";
-import { FaLinkedin } from "react-icons/fa";
-import { FaRegStar } from "react-icons/fa";
 import AboutBan2 from "../../assets/about-ban2.png";
 import AboutBan3 from "../../assets/about-ban3.png";
+import { Link } from 'react-router-dom';
 
-import Mem1 from "../../assets/mem1.png";
-
-import Logo9 from "../../assets/lonex.png";
 
 const About = () => {
   return (
@@ -24,8 +17,7 @@ const About = () => {
           <section className="tc-breadcrumb-style6 p-30 radius-4 bg-white mt-3 wow fadeInUp" style={{ visibility: "visible", animationName: "fadeInUp" }}>
             <nav aria-label="breadcrumb">
               <ol className="breadcrumb fw-bold mb-0">
-                <li className="breadcrumb-item color-999"><a href="#">Home</a></li>
-                <li className="breadcrumb-item color-999"><a href="#">pages</a></li>
+                <li className="breadcrumb-item color-999"><Link to="/">Home</Link></li>
                 <li className="breadcrumb-item active color-000" aria-current="page">about</li>
               </ol>
             </nav>
@@ -82,7 +74,7 @@ const About = () => {
                     <div className="cont">
                       <h6 className="fsz-18 fw-bold"> We connect millions of buyers and sellers around the world, empowering people &amp; creating economic opportunity for all. </h6>
                       <p className="fsz-14 color-666 mt-30"> Within our markets, millions of people around the world connect, both online and offline, to make, sell and buy unique goods. We also offer a wide range of Seller Services and tools that help creative entrepreneurs start, manage &amp; scale their businesses. </p>
-                      <a href="https://www.youtube.com/watch?v=qYgdnM3BC3g" className="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-40 py-3" data-fancybox=""> <span><FaPlay className="me-1"/>our showreel </span> </a>
+                      <a href="https://www.youtube.com/watch?v=qYgdnM3BC3g" className="butn gap-2 bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase d-flex items-center justify-center mt-40 py-3" data-fancybox=""> <FaPlay className="me-1"/>our showreel  </a>
                     </div>
                   </div>
                 </div>
@@ -230,327 +222,10 @@ const About = () => {
                 </div>
               </div>
             </div>
-            <div className="leaderships pt-30">
-              <div className="title mb-30">
-                <div className="row">
-                  <div className="col-lg-9">
-                    <h6 className="fsz-18 fw-bold text-uppercase"> leaderships </h6>
-                  </div>
-                  <div className="col-lg-3 text-lg-end mt-4 mt-lg-0">
-                    <a href="#" className="fsz-13 color-666"> View All<FaAngleRight className=" ms-1"/></a>
-                  </div>
-                </div>
-              </div>
-              <div className="leaderships-content">
-                <div className="leader-card">
-                  <div className="img">
-                    <a href="#" className="d-block">
-                      <img src={Mem1} alt="" className="main-img img-cover" />
-                    </a>
-                    <div className="social-icons">
-                      <a href="#"><BsTwitterX /> </a>
-                      <a href="#"><FaLinkedin /></a>
-                      <a href="#"> <FaInstagram /> </a>
-                    </div>
-                  </div>
-                  <div className="info pt-15">
-                    <h6 className="fsz-16 fw-bold"> <a href="#"> Henry Avery </a> </h6>
-                    <small className="fsz-12 color-666 text-uppercase"> Chairman </small>
-                  </div>
-                </div>
-                <div className="leader-card">
-                  <div className="img">
-                    <a href="#" className="d-block">
-                      <img src={Mem1} alt="" className="main-img img-cover" />
-                    </a>
-                    <div className="social-icons">
-                      <a href="#"><BsTwitterX /> </a>
-                      <a href="#"><FaLinkedin /></a>
-                      <a href="#"> <FaInstagram /> </a>
-                    </div>
-                  </div>
-                  <div className="info pt-15">
-                    <h6 className="fsz-16 fw-bold"> <a href="#"> Michael Edward </a> </h6>
-                    <small className="fsz-12 color-666 text-uppercase"> Vice President </small>
-                  </div>
-                </div>
-                <div className="leader-card">
-                  <div className="img">
-                    <a href="#" className="d-block">
-                      <img src={Mem1} alt="" className="main-img img-cover" />
-                    </a>
-                    <div className="social-icons">
-                    <a href="#"><BsTwitterX /> </a>
-                      <a href="#"><FaLinkedin /></a>
-                      <a href="#"> <FaInstagram /> </a>
-                    </div>
-                  </div>
-                  <div className="info pt-15">
-                    <h6 className="fsz-16 fw-bold"> <a href="#"> Eden Hazard </a> </h6>
-                    <small className="fsz-12 color-666 text-uppercase"> CEO </small>
-                  </div>
-                </div>
-                <div className="leader-card">
-                  <div className="img">
-                    <a href="#" className="d-block">
-                      <img src={Mem1} alt="" className="main-img img-cover" />
-                    </a>
-                    <div className="social-icons">
-                    <a href="#"><BsTwitterX /> </a>
-                      <a href="#"><FaLinkedin /></a>
-                      <a href="#"> <FaInstagram /> </a>
-                    </div>
-                  </div>
-                  <div className="info pt-15">
-                    <h6 className="fsz-16 fw-bold"> <a href="#"> Robert Downey Jr </a> </h6>
-                    <small className="fsz-12 color-666 text-uppercase"> CEO </small>
-                  </div>
-                </div>
-                <div className="leader-card">
-                  <div className="img">
-                    <a href="#" className="d-block">
-                      <img src={Mem1} alt="" className="main-img img-cover" />
-                    </a>
-                    <div className="social-icons">
-                    <a href="#"><BsTwitterX /> </a>
-                      <a href="#"><FaLinkedin /></a>
-                      <a href="#"> <FaInstagram /> </a>
-                    </div>
-                  </div>
-                  <div className="info pt-15">
-                    <h6 className="fsz-16 fw-bold"> <a href="#"> Nathan Drake </a> </h6>
-                    <small className="fsz-12 color-666 text-uppercase"> strategist director </small>
-                  </div>
-                </div>
-              </div>
-            </div>
+            
           </section>
 
-          <section className="partners-clients">
-            <div className="row gx-2">
-              <div className="col-lg-6">
-                <div className="partners p-30 radius-4 bg-white mt-3 wow fadeInUp" style={{ visibility: "visible", animationName: "fadeInUp" }}>
-                  <h6 className="fsz-18 fw-bold text-uppercase mb-10"> our partners </h6>
-                  <div className="logos">
-                    <a href="#" className="logo">
-                      <img src={Logo9} alt="" />
-                    </a>
-                    <a href="#" className="logo">
-                      <img src={Logo9} alt="" />
-                    </a>
-                    <a href="#" className="logo">
-                      <img src={Logo9} alt="" />
-                    </a>
-                    <a href="#" className="logo">
-                      <img src={Logo9} alt="" />
-                    </a>
-                    <a href="#" className="logo">
-                      <img src={Logo9} alt="" />
-                    </a>
-                    <a href="#" className="logo">
-                      <img src={Logo9} alt="" />
-                    </a>
-                    <a href="#" className="logo">
-                      <img src={Logo9} alt="" />
-                    </a>
-                    <a href="#" className="logo">
-                      <img src={Logo9} alt="" />
-                    </a>
-                    <a href="#" className="logo">
-                      <img src={Logo9} alt="" />
-                    </a>
-                    <a href="#" className="logo">
-                      <img src={Logo9} alt="" />
-                    </a>
-                    <a href="#" className="logo">
-                      <img src={Logo9} alt="" />
-                    </a>
-                    <a href="#" className="logo">
-                      <img src={Logo9} alt="" />
-                    </a>
-                    <a href="#" className="logo">
-                      <img src={Logo9} alt="" />
-                    </a>
-                    <a href="#" className="logo">
-                      <img src={Logo9} alt="" />
-                    </a>
-                    <a href="#" className="logo">
-                      <img src={Logo9} alt="" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-6">
-                <div className="clients p-30 radius-4 bg-white mt-3 wow fadeInUp gap-10" style={{  visibility: "visible", animationName: "fadeInUp" }}>
-                  <div className="title mb-30">
-                    <div className="row">
-                      <div className="col-lg-9">
-                        <h6 className="fsz-18 fw-bold text-uppercase"> from our lovely buyers </h6>
-                      </div>
-                      <div className="col-lg-3 mt-4 mt-lg-0 text-lg-end">
-                        <div className="arrows">
-                          <div className="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-4d2d56ef168af10710"></div>
-                          <div className="swiper-button-prev" tabindex="0" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-4d2d56ef168af10710"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="clients-slider swiper-initialized swiper-horizontal swiper-pointer-events swiper-backface-hidden">
-                    <div className="swiper-wrapper" id="swiper-wrapper-4d2d56ef168af10710" aria-live="off" style={{ transitionduration: "0ms", transform: "translate3d(-1938px, 0px, 0px)" }}><div className="swiper-slide swiper-slide-duplicate swiper-slide-duplicate-active" data-swiper-slide-index="2" role="group" aria-label="3 / 3" style={{ width: "616px", marginright: "30px" }}>
-                      <div className="testi-card">
-                        <div className="rate mb-20">
-                          <div className="stars">
-                                    <FaRegStar/>
-                                    <FaRegStar/>
-                                    <FaRegStar/>
-                                    <FaRegStar/>
-                                    <FaRegStar/>
-                          </div>
-                          <h6 className="fsz-18 fw-bold"> Fast shipping and flexiable price! </h6>
-                        </div>
-                        <div className="text fsz-14 mb-40">
-                          “I used to have experience shopping on much platform as Amozon, Eboy, Esto, etc. And see that Swoo Market really great. It’ll be my 1st choice for any shopping experience. Competitive price, fast shipping and support 24/7. Extremely recommended!.”
-                        </div>
-                        <div className="btm-items">
-                          <div className="user-info">
-                            <div className="img">
-                              <img src="assets/img/user.png " alt="" />
-                              <span className="icon"> <i className="fas fa-check"></i> </span>
-                            </div>
-                            <div className="inf">
-                              <h6 className="fsz-18 fw-bold"> Drake N. <small className="fsz-10 color-green1 ms-1 text-uppercase"> Verified Buyer </small> </h6>
-                              <p className="fsz-12 color-666"> Brooklyn, Los Angeles </p>
-                            </div>
-                          </div>
-                          <a href="#" className="text-capitalize color-blue1 text-decoration-underline fsz-11 fw-600"> Marshall Standmore Speaker / Black </a>
-                        </div>
-                      </div>
-                    </div>
-                      <div className="swiper-slide swiper-slide-duplicate-next" data-swiper-slide-index="0" role="group" aria-label="1 / 3" style={{ width: "616px", marginright: "30px" }}>
-                        <div className="testi-card">
-                          <div className="rate mb-20">
-                            <div className="stars">
-                            <FaRegStar/>
-                                    <FaRegStar/>
-                                    <FaRegStar/>
-                                    <FaRegStar/>
-                                    <FaRegStar/>
-                            </div>
-                            <h6 className="fsz-18 fw-bold"> Fast shipping and flexiable price! </h6>
-                          </div>
-                          <div className="text fsz-14 mb-40">
-                            “I used to have experience shopping on much platform as Amozon, Eboy, Esto, etc. And see that Swoo Market really great. It’ll be my 1st choice for any shopping experience. Competitive price, fast shipping and support 24/7. Extremely recommended!.”
-                          </div>
-                          <div className="btm-items">
-                            <div className="user-info">
-                              <div className="img">
-                                <img src="assets/img/user.png " alt="" />
-                                <span className="icon"> <i className="fas fa-check"></i> </span>
-                              </div>
-                              <div className="inf">
-                                <h6 className="fsz-18 fw-bold"> Drake N. <small className="fsz-10 color-green1 ms-1 text-uppercase"> Verified Buyer </small> </h6>
-                                <p className="fsz-12 color-666"> Brooklyn, Los Angeles </p>
-                              </div>
-                            </div>
-                            <a href="#" className="text-capitalize color-blue1 text-decoration-underline fsz-11 fw-600"> Marshall Standmore Speaker / Black </a>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="swiper-slide swiper-slide-prev" data-swiper-slide-index="1" role="group" aria-label="2 / 3" style={{ width: "616px", marginright: "30px" }}>
-                        <div className="testi-card">
-                          <div className="rate mb-20">
-                            <div className="stars">
-                            <FaRegStar/>
-                                    <FaRegStar/>
-                                    <FaRegStar/>
-                                    <FaRegStar/>
-                                    <FaRegStar/>
-                            </div>
-                            <h6 className="fsz-18 fw-bold"> Fast shipping and flexiable price! </h6>
-                          </div>
-                          <div className="text fsz-14 mb-40">
-                            “I used to have experience shopping on much platform as Amozon, Eboy, Esto, etc. And see that Swoo Market really great. It’ll be my 1st choice for any shopping experience. Competitive price, fast shipping and support 24/7. Extremely recommended!.”
-                          </div>
-                          <div className="btm-items">
-                            <div className="user-info">
-                              <div className="img">
-                                <img src="assets/img/user.png " alt="" />
-                                <span className="icon"> <i className="fas fa-check"></i> </span>
-                              </div>
-                              <div className="inf">
-                                <h6 className="fsz-18 fw-bold"> Drake N. <small className="fsz-10 color-green1 ms-1 text-uppercase"> Verified Buyer </small> </h6>
-                                <p className="fsz-12 color-666"> Brooklyn, Los Angeles </p>
-                              </div>
-                            </div>
-                            <a href="#" className="text-capitalize color-blue1 text-decoration-underline fsz-11 fw-600"> Marshall Standmore Speaker / Black </a>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="swiper-slide swiper-slide-active" data-swiper-slide-index="2" role="group" aria-label="3 / 3" style={{ width: "616px", marginright: "30px" }}>
-                        <div className="testi-card">
-                          <div className="rate mb-20">
-                            <div className="stars">
-                            <FaRegStar/>
-                                    <FaRegStar/>
-                                    <FaRegStar/>
-                                    <FaRegStar/>
-                                    <FaRegStar/>
-                            </div>
-                            <h6 className="fsz-18 fw-bold"> Fast shipping and flexiable price! </h6>
-                          </div>
-                          <div className="text fsz-14 mb-40">
-                            “I used to have experience shopping on much platform as Amozon, Eboy, Esto, etc. And see that Swoo Market really great. It’ll be my 1st choice for any shopping experience. Competitive price, fast shipping and support 24/7. Extremely recommended!.”
-                          </div>
-                          <div className="btm-items">
-                            <div className="user-info">
-                              <div className="img">
-                                <img src="assets/img/user.png " alt="" />
-                                <span className="icon"> <i className="fas fa-check"></i> </span>
-                              </div>
-                              <div className="inf">
-                                <h6 className="fsz-18 fw-bold"> Drake N. <small className="fsz-10 color-green1 ms-1 text-uppercase"> Verified Buyer </small> </h6>
-                                <p className="fsz-12 color-666"> Brooklyn, Los Angeles </p>
-                              </div>
-                            </div>
-                            <a href="#" className="text-capitalize color-blue1 text-decoration-underline fsz-11 fw-600"> Marshall Standmore Speaker / Black </a>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="swiper-slide swiper-slide-duplicate swiper-slide-next" data-swiper-slide-index="0" role="group" aria-label="1 / 3" style={{ width: "616px", marginright: "30px" }}>
-                        <div className="testi-card">
-                          <div className="rate mb-20">
-                            <div className="stars">
-                            <FaRegStar/>
-                                    <FaRegStar/>
-                                    <FaRegStar/>
-                                    <FaRegStar/>
-                                    <FaRegStar/>
-                            </div>
-                            <h6 className="fsz-18 fw-bold"> Fast shipping and flexiable price! </h6>
-                          </div>
-                          <div className="text fsz-14 mb-40">
-                            “I used to have experience shopping on much platform as Amozon, Eboy, Esto, etc. And see that Swoo Market really great. It’ll be my 1st choice for any shopping experience. Competitive price, fast shipping and support 24/7. Extremely recommended!.”
-                          </div>
-                          <div className="btm-items">
-                            <div className="user-info">
-                              <div className="img">
-                                <img src="assets/img/user.png " alt="" />
-                                <span className="icon"> <i className="fas fa-check"></i> </span>
-                              </div>
-                              <div className="inf">
-                                <h6 className="fsz-18 fw-bold"> Drake N. <small className="fsz-10 color-green1 ms-1 text-uppercase"> Verified Buyer </small> </h6>
-                                <p className="fsz-12 color-666"> Brooklyn, Los Angeles </p>
-                              </div>
-                            </div>
-                            <a href="#" className="text-capitalize color-blue1 text-decoration-underline fsz-11 fw-600"> Marshall Standmore Speaker / Black </a>
-                          </div>
-                        </div>
-                      </div></div>
-                    <span className="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
-                </div>
-              </div>
-            </div>
-          </section>
+          
 
           <section className="tc-banner-style3 mt-3 mb-3">
             <div className="banner-card text-center">

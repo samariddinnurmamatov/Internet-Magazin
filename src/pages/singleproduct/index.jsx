@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState , useMemo } from "react";
+import { Fragment, useEffect, useState, useMemo } from "react";
 import Container from "../../components/shared/Container";
 import Prod1 from "../../assets/common/img/products/prod1.png"
 import Prod2 from "../../assets/common/img/products/prod2.png"
@@ -34,7 +34,7 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { FaAngleRight } from "react-icons/fa";
 import { FaAngleDown } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
-import { apiGetSingleProduct, apiPostBasket, apiUpdateBasket, apiPostFavourites } from "../../services/HomeService";
+import { apiGetSingleProduct, apiPostBasket, apiUpdateBasket, apiPostFavourites, apiGetFavourites, apiGetProducts } from "../../services/HomeService";
 import { toast } from "react-toastify";
 import { session } from "../../services/session";
 
@@ -47,13 +47,15 @@ const SingleProduct = () => {
     const [favorites, setFavorites] = useState([]);
     const [count, setCount] = useState(1);
     const [isToken, setIsToken] = useState(false);
+    const [products, setProducts] = useState([]);
+
 
 
     useEffect(() => {
         const fetchData = async () => {
             const token = session.get("token");
             setIsToken(!!token);
-      
+
             try {
                 const singleProduct = await apiGetSingleProduct(id);
                 if (singleProduct) setProduct(singleProduct.data);
@@ -74,21 +76,38 @@ const SingleProduct = () => {
                 ]);
                 if (favoritesData) setFavorites(favoritesData.data.map(fav => fav.id));
                 if (basketData) setBasket(basketData.data);
-                
+
             } catch (error) {
                 console.error('Error fetching data:', error);
                 const likes = session.get("like");
                 if (likes) setFavorites(likes.map(fav => fav));
             }
-        }; 
+        };
 
         fetchFavoritesBasket();
     }, []);
 
+    useEffect(() => {
+
+        const fetchData = async () => {
+            try {
+                const productData = await apiGetProducts()
+
+
+                if (productData.success) setProducts(productData.data);
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
     const handleAddToBasket = async (productIdBasket) => {
         const existingProduct = basket.find(item => item.product_id === productIdBasket);
-        try { 
-            if (existingProduct) { 
+        try {
+            if (existingProduct) {
                 const updatedBasketItem = await apiUpdateBasket({ product_id: productIdBasket, quantity: existingProduct.quantity + 1 });
                 if (updatedBasketItem.success) {
                     setBasket(prevBasket => prevBasket.map(item => item.product_id === productIdBasket ? { ...item, quantity: item.quantity + 1 } : item));
@@ -143,23 +162,23 @@ const SingleProduct = () => {
 
     const handleIncrement = () => {
         setCount(count + 1);
-      };
-    
-      const handleDecrement = () => {
-        if (count > 0) { 
-          setCount(count - 1);
-        }
-      };
+    };
 
-      const handleQuantityChange = async (productId, change) => {
+    const handleDecrement = () => {
+        if (count > 0) {
+            setCount(count - 1);
+        }
+    };
+
+    const handleQuantityChange = async (productId, change) => {
         setBasket((prevBasket) =>
-          prevBasket.map((item) =>
-            item.id === productId
-              ? { ...item, data: { ...item.data, quantity: Math.max((item.data.quantity || 1) + change, 1) } }
-              : item
-          )
+            prevBasket.map((item) =>
+                item.id === productId
+                    ? { ...item, data: { ...item.data, quantity: Math.max((item.data.quantity || 1) + change, 1) } }
+                    : item
+            )
         );
-    
+
         // try {
         //   await apiUpdateBasket({
         //     product_id: productId,
@@ -168,8 +187,8 @@ const SingleProduct = () => {
         // } catch (error) {
         //   console.error('Error updating quantity:', error);
         // }
-      };
-    
+    };
+
 
     return (
         <Fragment>
@@ -180,19 +199,16 @@ const SingleProduct = () => {
                         <nav aria-label="breadcrumb">
                             <ol className="breadcrumb fw-bold mb-0">
                                 <Link to="/" className="breadcrumb-item color-999">Home</Link>
-                                <Link to="/" className="breadcrumb-item color-999">Shop</Link>
-                                <li className="breadcrumb-item color-999"><a href="#">Top Cell Phones &amp; Tablets</a></li>
-                                <li className="breadcrumb-item active color-000" aria-current="page">Somseng Galatero X6 Ultra LTE 4G/128 GB Black Smartphone</li>
+                                <li className="breadcrumb-item active color-000" aria-current="page">{product.name_uz}</li>
                             </ol>
                         </nav>
                     </section>
-
                     <section className="product-main-details p-30 radius-4 bg-white mt-3 wow fadeInUp" style={{ visibility: "visible", animationName: "fadeInUp" }}>
                         <div className="row">
                             <div className="col-lg-5">
                                 <div className="img-slider">
                                     <div className="top-title">
-                                        <small className="fsz-10 py-1 px-2 radius-2 bg-222 text-white text-uppercase"> new </small>
+                                        <small className="">  </small>
                                         <div className="icons">
                                             <span className="icon icon-plus"><FaPlus /></span>
                                             <div className="collapse-icons">
@@ -203,8 +219,8 @@ const SingleProduct = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="swiper-container gallery-top swiper-initialized swiper-horizontal swiper-pointer-events swiper-backface-hidden">
-                                        <div className="swiper-wrapper" id="swiper-wrapper-b9daa792d61038498" aria-live="polite" style={{ transform: "translate3d(0px, 0px, 0px);" }}>
+                                    <div className="swiper-container gallery-top  swiper-initialized swiper-horizontal swiper-pointer-events swiper-backface-hidden">
+                                        <div className="swiper-wrapper d-flex justify-between" id="swiper-wrapper-b9daa792d61038498" aria-live="polite" style={{ transform: "translate3d(0px, 0px, 0px);" }}>
                                             <div className="swiper-slide swiper-slide-active" role="group" aria-label="1 / 3" style={{ width: "524px", marginRight: "10px;" }}>
                                                 <div className="img">
                                                     <img src={product.image} alt="" />
@@ -223,7 +239,7 @@ const SingleProduct = () => {
                                         </div>
                                         <span className="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
                                     <div className="swiper-container gallery-thumbs swiper-initialized swiper-horizontal swiper-pointer-events swiper-free-mode swiper-backface-hidden swiper-thumbs">
-                                        <div className="swiper-wrapper" id="swiper-wrapper-3e1c254e0469723c" aria-live="polite" style={{ transform: "translate3d(0px, 0px, 0px)" }}>
+                                        <div className="swiper-wrapper d-flex justify-between items-center" id="swiper-wrapper-3e1c254e0469723c" aria-live="polite" style={{ transform: "translate3d(0px, 0px, 0px)" }}>
                                             <div className="swiper-slide swiper-slide-visible swiper-slide-active swiper-slide-thumb-active" role="group" aria-label="1 / 3" style={{ width: "88.8px", marginRight: "20px" }}>
                                                 <div className="img">
                                                     <img src={product.image} alt="" />
@@ -243,18 +259,9 @@ const SingleProduct = () => {
                                         <span className="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
                                 </div>
                             </div>
-                            <div className="col-lg-4">
+                            <div className="col-lg-3">
                                 <div className="info">
-                                    <div className="rating">
-                                        <div className="stars">
-                                            <FaRegStar />
-                                            <FaRegStar />
-                                            <FaRegStar />
-                                            <FaRegStar />
-                                            <FaRegStar className="color-999" />
-                                        </div>
-                                        <span className="num"> (5) </span>
-                                    </div>
+
                                     <h4 className="product_title">
                                         <a href="#"> {product.name_uz}  </a>
                                     </h4>
@@ -268,9 +275,8 @@ const SingleProduct = () => {
                                         <a href="#" className="meta-item color-green2"> {product.status} <span className="bg bg-green2"></span> </a>
                                     </div>
 
-                                    <p className="color-666"> <strong className="color-000 text-uppercase me-1"> SKU: </strong> <span> ABC025168 </span> </p>
                                     <p className="color-666"> <strong className="color-000 text-uppercase me-1"> Category: </strong> <span> Cell Phones &amp; Tablets </span> </p>
-                                    <p className="color-666"> <strong className="color-000 text-uppercase me-1"> Brand: </strong> <span className="color-green2"> sumsong </span> </p>
+                                    <p className="color-666"> <strong className="color-000 text-uppercase me-1"> Brand: </strong> <span className="color-green2"> {product.brand} </span> </p>
                                     <div className="social-icons mt-20">
                                         <a href="#"><FaFacebookF /> </a>
                                         <a href="#"><FaInstagram /></a>
@@ -287,43 +293,40 @@ const SingleProduct = () => {
                                         </div>
                                         <p className="fsz-12 mt-3"><FaCheckCircle className="color-green2 me-1" />In stock </p>
                                         <div className="add-more">
-                                            {/* <span className="qt-minus"><FaMinus /></span>
-                                            <input type="text" className="qt border-0" value="1" />
-                                            <span className="qt-plus"><FaPlus /></span> */}
                                             <button
-                                  className="qt-minus text-xl"
-                                  onClick={() => {
-                                    handleDecrement()
-                                    handleQuantityChange(item.id, -1)
-                                  }}
-                                >
-                                  -
-                                </button>
-                                <input
-                                  type="text"
-                                  className="qt border-0"
-                                  value={count}
-                                  readOnly
-                                />
-                                <button
-                                  className="qt-plus text-xl"
-                                  onClick={() => {
-                                    handleIncrement()
-                                    handleQuantityChange(item.id, 1)
-                                  }}
-                                >
-                                  +
-                                </button>
+                                                className="qt-minus text-xl"
+                                                onClick={() => {
+                                                    handleDecrement()
+                                                    handleQuantityChange(item.id, -1)
+                                                }}
+                                            >
+                                                -
+                                            </button>
+                                            <input
+                                                type="text"
+                                                className="qt border-0"
+                                                value={count}
+                                                readOnly
+                                            />
+                                            <button
+                                                className="qt-plus text-xl"
+                                                onClick={() => {
+                                                    handleIncrement()
+                                                    handleQuantityChange(item.id, 1)
+                                                }}
+                                            >
+                                                +
+                                            </button>
                                         </div>
-                                        <a href="#" className="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center justify-center mt-10 w-100 py-3" onClick={() =>{
+                                        <a href="#" className="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center justify-center mt-10 w-100 py-3" onClick={() => {
                                             isToken ?
-                                            handleAddToBasket(product.id)
-                                            :
-                                            session.add("products", product.id);
-                                        toast.success('Product added to basket!');
+                                                handleAddToBasket(product.id)
+                                                :
+                                                session.add("products", product.id);
+                                            toast.success('Product added to basket!');
 
                                         }}> <span> Add To Cart </span> </a>
-                                        
+
                                         <div className="d-flex color-666 fsz-13 py-3 border-bottom">
                                             <a href="#" className="me-4 pe-4 border-end d-flex items-center gap-2">{isFavorite(product.id) ? <FaHeart className="color-green2 me-1 display" /> : <FaRegHeart />} Wishlist added </a>
                                             <a href="" className="d-flex items-center gap-2"><FaRedoAlt className="me-1 display" />Compare </a>
@@ -333,86 +336,6 @@ const SingleProduct = () => {
                             </div>
                         </div>
                     </section>
-
-
-                    <section className="product-together">
-                        <div className="row gx-2">
-                            <div className="col-lg-9">
-                                <div className="buy-together p-30 radius-4 bg-white mt-3 wow fadeInUp" style={{ visibility: "hidden", animationName: "none" }}>
-                                    <h6 className="fsz-18 fw-bold text-uppercase"> frequently bought together </h6>
-                                    <div className="row">
-                                        <div className="col-lg-9">
-                                            <div className="products-imgs mt-20">
-                                                <div className="img">
-                                                    <img src={Prod1} alt="" />
-                                                </div>
-                                                <span className="plus"><FaPlus /></span>
-                                                <div className="img">
-                                                    <img src={Prod6} alt="" />
-                                                </div>
-                                                <span className="plus"><FaPlus /></span>
-                                                <div className="img op-3">
-                                                    <img src={Prod7} alt="" />
-                                                </div>
-                                            </div>
-                                            <ul className="mt-30">
-                                                <li>
-                                                    <div className="form-check form-check-inline">
-                                                        <input className="form-check-input" type="checkbox" id="together1" value="option1" />
-                                                        <label className="form-check-label color-333" >
-                                                            <strong> This item: </strong> Somseng Galatero X6 Ultra LTE 4G/128 Gb, Black Smartphone ( <strong className="text-danger"> $569.00 </strong> )
-                                                        </label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div className="form-check form-check-inline">
-                                                        <input className="form-check-input" type="checkbox" id="together2" value="option1" />
-                                                        <label className="form-check-label color-333" >
-                                                            BOSO 2 Wireless On Ear Headphone  ( <strong className="text-danger"> $369.00 </strong> )
-                                                        </label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div className="form-check form-check-inline">
-                                                        <input className="form-check-input" type="checkbox" id="together3" value="option1" />
-                                                        <label className="form-check-label color-333" >
-                                                            Opplo Watch Series 8 GPS + Cellular Stainless Stell Case with Milanese Loop ( <strong className="text-danger"> $129.00 </strong> )
-                                                        </label>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div className="col-lg-3">
-                                            <div className="total-price">
-                                                <small className="fsz-12 color-666 text-uppercase mb-2"> Total Price: </small>
-                                                <h5 className="fsz-30 fw-bold"> $609.00 </h5>
-                                                <a href="#" className="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-30 w-100 py-3"> <span> Add To Cart </span> </a>
-                                                <a href="#" className="color-666 mt-3"> <FaRegHeart className="me-2 color-999" /> Ad all to Wishlist </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-3">
-                                <div className="banners mt-3">
-                                    <a href="#" className="img th-200 mb-2 d-block">
-                                        <img src={Ban1} alt="" className="img-cover radius-5" />
-                                    </a>
-                                    <a href="#" className="banner th-200">
-                                        <img src={Ban2} alt="" className="img-cover radius-5" />
-                                        <div className="info">
-                                            <h6 className="fsz-22"> <strong> oPad Pro </strong> <br /> Mini 5 </h6>
-                                            <div className="price">
-                                                <small className="fsz-10 color-999 text-uppercase"> from </small>
-                                                <h5 className="fsz-24 fw-200 color-green2"> $169 </h5>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
 
                     <section className="product-text-details p-30 radius-4 bg-white mt-3 wow fadeInUp mb-3" style={{ visibility: "hidden", animationName: "none" }}>
                         <ul className="nav nav-pills mb-50" id="pills-tab" role="tablist">
@@ -617,359 +540,45 @@ const SingleProduct = () => {
                             </div>
                         </div>
                     </section>
-
-
-
                     <section className="related-products p-30 radius-4 bg-white mt-3 wow fadeInUp mb-3" style={{ visibility: "hidden", animationName: "none" }}>
                         <h6 className="fsz-18 fw-bold text-uppercase"> related products </h6>
                         <div className="products-content">
                             <div className="products-slider swiper-initialized swiper-horizontal swiper-pointer-events swiper-backface-hidden">
-                                <div className="swiper-wrapper" id="swiper-wrapper-a0530a2e6781cfb0" aria-live="off" style={{ transform: "translate3d(0px, 0px, 0px)", transitionDuration: "0ms" }}>
-                                    <div className="swiper-slide swiper-slide-active" role="group" aria-label="1 / 6" style={{ width: "236px" }}>
-                                        <div className="product-card">
-                                            <div className="top-inf">
-                                                <div className="dis-card">
-                                                    <small className="fsz-10 d-block text-uppercase"> save </small>
-                                                    <h6 className="fsz-14"> $199.00 </h6>
-                                                </div>
-                                                <a href="#0" className="fav-btn"><FaRegHeart /></a>
-                                            </div>
-                                            <a href="#0" className="img">
-                                                <img src="assets/img/products/prod26.png" alt="" className="img-contain main-image" />
-                                            </a>
-                                            <div className="info">
-                                                <div className="rating">
-                                                    <div className="stars">
-                                                        <FaRegStar />
-                                                        <FaRegStar />
-                                                        <FaRegStar />
-                                                        <FaRegStar />
-                                                        <FaRegStar />
+                                <div className="swiper-wrapper" id="swiper-wrapper-a0530a2e6781cfb0" aria-live="off" >
+                                    {products.length > 0 ? 
+                                        products.map((product) => (
+
+                                            <Link to={`/single_product/${product.id}`} className="swiper-slide swiper-slide-active" role="group" aria-label="1 / 6" style={{ width: "236px" }}>
+                                                <div className="product-card">
+                                                    <div className="top-inf">
+                                                        <div onClick={() => isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id)} className="fav-btn d-grid place-items-center">{isFavorite(product.id) ? <FaHeart /> : <FaRegHeart />}</div>
                                                     </div>
-                                                    <span className="num"> (152) </span>
-                                                </div>
-                                                <h6> <a href="#" className="prod-title fsz-14 fw-bold mt-2 hover-green2"> SROK Smart Phone 128GB, Oled Retina </a> </h6>
-                                                <div className="price mt-15">
-                                                    <h5 className="fsz-18 color-red1 fw-600"> $579.00 <span className="old fsz-14 color-666 text-decoration-line-through"> $859.00 </span> </h5>
-                                                </div>
-                                                <div className="meta">
-                                                    <a href="#" className="meta-item color-green2"> free shipping <span className="bg bg-green2"></span> </a>
-                                                </div>
-                                                <p className="fsz-12 mt-2"><FaCheckCircle className="color-green2 me-1" />In stock</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide swiper-slide-next" role="group" aria-label="2 / 6" style={{ width: "236px" }}>
-                                        <div className="product-card">
-                                            <div className="top-inf">
-                                                <small className="fsz-10 py-1 px-2 radius-2 bg-222 text-white text-uppercase"> new </small>
-                                                <a href="#0" className="fav-btn"><FaRegHeart /></a>
-                                            </div>
-                                            <a href="#0" className="img">
-                                                <img src="assets/img/products/prod27.png" alt="" className="img-contain main-image" />
-                                            </a>
-                                            <div className="info">
-                                                <h6> <a href="#" className="prod-title fsz-14 fw-bold mt-2 hover-green2"> aPod Pro Tablet 2023  LTE + Wifi, GPS Cellular 12.9 Inch, 512GB </a> </h6>
-                                                <div className="price mt-15">
-                                                    <h5 className="fsz-18 fw-600"> $979.00 - $1,259.00 </h5>
-                                                </div>
-                                                <div className="meta">
-                                                    <a href="#" className="meta-item color-222"> $2.98 Shipping <span className="bg bg-222"></span> </a>
-                                                </div>
-                                                <p className="fsz-12 mt-2"><FaCheckCircle className="color-green2 me-1" />In stock </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide" role="group" aria-label="3 / 6" style={{ width: "236px" }}>
-                                        <div className="product-card">
-                                            <div className="top-inf">
-                                                <a href="#0" className="fav-btn"><FaRegHeart /> </a>
-                                            </div>
-                                            <a href="#0" className="img">
-                                                <img src="assets/img/products/prod28.png" alt="" className="img-contain main-image" />
-                                            </a>
-                                            <div className="info">
-                                                <div className="rating">
-                                                    <div className="stars">
-                                                        <FaRegStar />
-                                                        <FaRegStar />
-                                                        <FaRegStar />
-                                                        <FaRegStar />
-                                                        <FaRegStar className="color-999" />
+                                                    <div className="img">
+                                                        <img src={product.image} alt="" className="img-contain main-image" />
                                                     </div>
-                                                    <span className="num"> (5) </span>
-                                                </div>
-                                                <h6> <a href="#" className="prod-title fsz-14 fw-bold mt-2 hover-green2"> OPod Pro 12.9 Inch M1 2023, 64GB + Wifi, GPS </a> </h6>
-                                                <div className="price mt-15">
-                                                    <h5 className="fsz-18 fw-600"> $659.00 </h5>
-                                                </div>
-                                                <div className="meta">
-                                                    <a href="#" className="meta-item color-green2"> free shipping <span className="bg bg-green2"></span> </a>
-                                                    <a href="#" className="meta-item color-red1"> free gift <span className="bg bg-red1"></span> </a>
-                                                </div>
-                                                <p className="fsz-12 mt-2"><FaCheckCircle className="color-green2 me-1" /> In stock </p>
-                                                <div className="thumbnail-imgs mt-10">
-                                                    <span className="color-img icon-40">
-                                                        <img src="assets/img/products/prod28.png" alt="" className="thumbnail" />
-                                                    </span>
-                                                    <span className="color-img icon-40">
-                                                        <img src="assets/img/products/prod26.png" alt="" className="thumbnail" />
-                                                    </span>
-                                                    <span className="color-img icon-40">
-                                                        <img src="assets/img/products/prod29.png" alt="" className="thumbnail" />
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide" role="group" aria-label="4 / 6" style={{ width: "236px" }}>
-                                        <div className="product-card">
-                                            <div className="top-inf">
-                                                <div className="dis-card">
-                                                    <small className="fsz-10 d-block text-uppercase"> save </small>
-                                                    <h6 className="fsz-14"> $59.00 </h6>
-                                                </div>
-                                                <a href="#0" className="fav-btn"><FaRegHeart /></a>
-                                            </div>
-                                            <a href="#0" className="img">
-                                                <img src="assets/img/products/prod29.png" alt="" className="img-contain main-image" />
-                                            </a>
-                                            <div className="info">
-                                                <div className="rating">
-                                                    <div className="stars">
-                                                        <FaRegStar />
-                                                        <FaRegStar />
-                                                        <FaRegStar />
-                                                        <FaRegStar />
-                                                        <FaRegStar />
+                                                    <div className="info">
+
+                                                        <h6> <a href={`/single_product/${product.id}`} className="prod-title fsz-14 fw-bold mt-2 hover-green2"> {product.name_uz} </a> </h6>
+                                                        <div className="price mt-15">
+                                                            <h5 className="fsz-18 color-red1 fw-600"> {product.price} </h5>
+                                                            <span className="old fsz-14 color-666 text-decoration-line-through"> $859.00 </span>
+                                                        </div>
+                                                        <p className="fsz-12 mt-2"><FaCheckCircle className="color-green2 me-1" />{product.stock}</p>
                                                     </div>
-                                                    <span className="num"> (9) </span>
                                                 </div>
-                                                <h6> <a href="#" className="prod-title fsz-14 fw-bold mt-2 hover-green2"> Xiamoi Redmi Note 5, 64GB </a> </h6>
-                                                <div className="price mt-15">
-                                                    <h5 className="fsz-18 color-red1 fw-600"> $1,239.00 <span className="old fsz-14 color-666 text-decoration-line-through"> $1,619.00 </span> </h5>
-                                                </div>
-                                                <div className="meta">
-                                                    <a href="#" className="meta-item color-green2"> free shipping <span className="bg bg-green2"></span> </a>
-                                                </div>
-                                                <p className="fsz-12 mt-2"> <FaPhoneAlt className="me-1" /><a href="#"> Contact </a> </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide" role="group" aria-label="5 / 6" style={{ width: "236px" }}>
-                                        <div className="product-card">
-                                            <div className="top-inf">
-                                                <a href="#0" className="fav-btn"><FaRegHeart /></a>
-                                            </div>
-                                            <a href="#0" className="img">
-                                                <img src="assets/img/products/prod30.png" alt="" className="img-contain main-image" />
-                                            </a>
-                                            <div className="info">
-                                                <div className="rating">
-                                                    <div className="stars">
-                                                        <FaRegStar />
-                                                        <FaRegStar />
-                                                        <FaRegStar />
-                                                        <FaRegStar />
-                                                        <FaRegStarHalf />
-                                                    </div>
-                                                    <span className="num"> (8) </span>
-                                                </div>
-                                                <h6> <a href="#" className="prod-title fsz-14 fw-bold mt-2 hover-green2"> Microsute Alpha Ultra S5 Surface 128GB 2022, Sliver </a> </h6>
-                                                <div className="price mt-15">
-                                                    <h5 className="fsz-18 fw-600"> $1,729.00 </h5>
-                                                </div>
-                                                <div className="meta">
-                                                    <a href="#" className="meta-item color-green2"> free shipping <span className="bg bg-green2"></span> </a>
-                                                </div>
-                                                <p className="fsz-12 mt-2"> <FaPhoneAlt className="me-1" /> <a href="#"> Contact </a> </p>
-                                                <div className="thumbnail-imgs mt-10">
-                                                    <span className="color-img icon-40">
-                                                        <img src="assets/img/products/prod30.png" alt="" className="thumbnail" />
-                                                    </span>
-                                                    <span className="color-img icon-40">
-                                                        <img src="assets/img/products/prod10.png" alt="" className="thumbnail" />
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="swiper-slide" role="group" aria-label="6 / 6" style={{ width: "236px" }}>
-                                        <div className="product-card">
-                                            <div className="top-inf">
-                                                <small className="fsz-10 py-1 px-2 radius-2 bg-222 text-white text-uppercase"> new </small>
-                                                <a href="#0" className="fav-btn"> <FaRegHeart /> </a>
-                                            </div>
-                                            <a href="#0" className="img">
-                                                <img src="assets/img/products/prod27.png" alt="" className="img-contain main-image" />
-                                            </a>
-                                            <div className="info">
-                                                <h6> <a href="#" className="prod-title fsz-14 fw-bold mt-2 hover-green2"> aPod Pro Tablet 2023  LTE + Wifi, GPS Cellular 12.9 Inch, 512GB </a> </h6>
-                                                <div className="price mt-15">
-                                                    <h5 className="fsz-18 fw-600"> $979.00 - $1,259.00 </h5>
-                                                </div>
-                                                <div className="meta">
-                                                    <a href="#" className="meta-item color-222"> $2.98 Shipping <span className="bg bg-222"></span> </a>
-                                                </div>
-                                                <p className="fsz-12 mt-2"><FaCheckCircle className="color-green2 me-1" /> In stock </p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                            </Link>
+                                        ))
+                                        :
+                                        <div className="">hello</div>
+
+                                    }
+
                                 </div>
                                 <span className="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
                             <div className="swiper-button-next" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-a0530a2e6781cfb0" aria-disabled="false"></div>
                             <div className="swiper-button-prev swiper-button-disabled" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-a0530a2e6781cfb0" aria-disabled="true"></div>
                         </div>
                     </section>
-
-
-
-                    {/* <section className="tc-recently-viewed-style6 p-30 radius-4 bg-white mt-3 wow fadeInUp mb-3" style={{visibility: "hidden", animationName: "none"}}>
-            <div className="title mb-30">
-                <div className="row align-items-center">
-                    <div className="col-lg-8">
-                        <h6 className="fsz-18 fw-bold text-uppercase d-inline-block"> your recently viewed </h6>
-                        <a href="#" className="more text-capitalize color-666 fsz-13 ms-lg-4 mt-4 mt-lg-0"> <FaAngleRight  className="ms-1"/></a>
-                    </div>
-                    <div className="col-lg-4 text-lg-end mt-3 mt-lg-0">
-                        <div className="arrows">
-                            <div className="swiper-button-next" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-ba6f14be109b820e7" aria-disabled="false"></div>
-                            <div className="swiper-button-prev swiper-button-disabled"  role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-ba6f14be109b820e7" aria-disabled="true"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="products-slider swiper-initialized swiper-horizontal swiper-pointer-events swiper-backface-hidden">
-                <div className="swiper-wrapper" id="swiper-wrapper-ba6f14be109b820e7" aria-live="off" style={{transform: "translate3d(0px, 0px, 0px)", transitionDuration: "0ms"}}>
-                    <div className="swiper-slide swiper-slide-active" role="group" aria-label="1 / 5" style={{width: "325px"}}>
-                        <div className="product-card">
-                            <div className="top-inf">
-                                <small className="fsz-10 py-1 px-2 radius-2 bg-222 text-white text-uppercase"> new </small>
-                                <a href="#0" className="fav-btn"><FaRegHeart /> </a>
-                            </div>
-                            <div className="row gx-0">
-                                <div className="col-5">
-                                    <a href="#" className="img">
-                                        <img src="assets/img/products/prod58.png" alt="" className="img-contain" />
-                                    </a>
-                                </div>
-                                <div className="col-7">
-                                    <div className="info">
-                                        <div className="rating">
-                                            <div className="stars">
-                                            <FaRegStar />
-                                <FaRegStar />
-                                <FaRegStar />
-                                <FaRegStar />
-                                <FaRegStar  className="color-999"/>
-                                            </div>
-                                            <span className="num"> (152) </span>
-                                        </div>
-                                        <a href="#" className="title fsz-13 fw-bold mb-15 hover-green2 pe-3"> Xomie Remid 8 Sport Water Resitance Watch </a>
-                                        <h6 className="fsz-16 fw-bold"> $579.00 </h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="swiper-slide swiper-slide-next" role="group" aria-label="2 / 5" style={{width: "325px"}}>
-                        <div className="product-card">
-                            <div className="top-inf">
-                                <small className="fsz-10 py-1 px-2 radius-2 bg-222 text-white text-uppercase"> new </small>
-                                <a href="#0" className="fav-btn"><FaRegHeart /></a>
-                            </div>
-                            <div className="row gx-0">
-                                <div className="col-5">
-                                    <a href="#" className="img">
-                                        <img src="assets/img/products/prod59.png" alt="" className="img-contain" />
-                                    </a>
-                                </div>
-                                <div className="col-7">
-                                    <div className="info">
-                                        <a href="#" className="title fsz-13 fw-bold mb-15 hover-green2 pe-3"> Microte Surface 2.0 Laptop </a>
-                                        <h6 className="fsz-16 fw-bold"> $979.00 </h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="swiper-slide" role="group" aria-label="3 / 5" style={{width: "325px"}}>
-                        <div className="product-card">
-                            <div className="top-inf">
-                                <a href="#0" className="fav-btn"><FaRegHeart /> </a>
-                            </div>
-                            <div className="row gx-0">
-                                <div className="col-5">
-                                    <a href="#" className="img">
-                                        <img src="assets/img/products/prod60.png" alt="" className="img-contain" />
-                                    </a>
-                                </div>
-                                <div className="col-7">
-                                    <div className="info">
-                                        <a href="#" className="title fsz-13 fw-bold mb-15 hover-green2 pe-3"> aPod Pro Tablet 2023 LTE + Wifi, GPS Cellular 12.9 Inch, 512GB </a>
-                                        <h6 className="fsz-16 fw-bold"> $979.00 - $1,259.00 </h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="swiper-slide" role="group" aria-label="4 / 5" style={{width: "325px"}}>
-                        <div className="product-card">
-                            <div className="top-inf">
-                                <div className="dis-card">
-                                    <small className="fsz-10 d-block text-uppercase"> save </small>
-                                    <h6 className="fsz-10"> $192.00 </h6>
-                                </div>
-                                <a href="#0" className="fav-btn"><FaRegHeart /></a>
-                            </div>
-                            <div className="row gx-0">
-                                <div className="col-5">
-                                    <a href="#" className="img">
-                                        <img src="assets/img/products/prod61.png" alt="" className="img-contain" />
-                                    </a>
-                                </div>
-                                <div className="col-7">
-                                    <div className="info">
-                                        <div className="rating">
-                                            <div className="stars">
-                                            <FaRegStar />
-                                <FaRegStar />
-                                <FaRegStar />
-                                <FaRegStar />
-                                <FaRegStar  className="color-999"/>
-                                            </div>
-                                            <span className="num"> (152) </span>
-                                        </div>
-                                        <a href="#" className="title fsz-13 fw-bold mb-15 hover-green2 pe-3"> SROK Smart Phone 128GB, Oled Retina </a>
-                                        <h6 className="fsz-16 fw-bold"> <span className="color-red1 fw-600"> $579.00  </span> <span className="old fsz-14 color-666 text-decoration-line-through ms-2"> $779.00 </span> </h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="swiper-slide" role="group" aria-label="5 / 5" style={{width: "325px"}}>
-                        <div className="product-card">
-                            <div className="top-inf">
-                                <a href="#0" className="fav-btn"><FaRegHeart /></a>
-                            </div>
-                            <div className="row gx-0">
-                                <div className="col-5">
-                                    <a href="#" className="img">
-                                        <img src="assets/img/products/prod60.png" alt="" className="img-contain" />
-                                    </a>
-                                </div>
-                                <div className="col-7">
-                                    <div className="info">
-                                        <a href="#" className="title fsz-13 fw-bold mb-15 hover-green2 pe-3"> aPod Pro Tablet 2023 LTE + Wifi, GPS Cellular 12.9 Inch, 512GB </a>
-                                        <h6 className="fsz-16 fw-bold"> $979.00 - $1,259.00 </h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <span className="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
-        </section> */}
                 </Container>
 
 

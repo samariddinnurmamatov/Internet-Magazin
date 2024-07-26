@@ -112,11 +112,10 @@ const Basket = () => {
   const handleLike = async (productId) => {
     try {
       if (isToken) {
-
         await apiPostFavourites({ product_id: productId });
+        setFavorites(prevFavorites => [...prevFavorites, productId]);
       }
       else {
-
         session.add("like", productId);
         setFavorites(prevFavorites => [...prevFavorites, productId]);
       }
@@ -202,14 +201,7 @@ const Basket = () => {
                             <img src={isToken ? item.image : item.data.image} alt="" className="img-contain main-image" />
                           </a>
                           <div className="info">
-                            <div className="rating">
-                              <div className="stars">
-                                {[...Array(5)].map((_, index) => (
-                                  <FaRegStar key={index} className={index < item.rating ? "" : "color-999"} />
-                                ))}
-                              </div>
-                              <span className="num"> ({isToken ? item.ratingCount : item.data.ratingCount}) </span>
-                            </div>
+                            
                             <h6> <a href="#" className="prod-title fsz-14 fw-bold mt-2 hover-green2">{isToken ? item.name_uz : item.data.name_uz}</a> </h6>
                             <div className="price mt-15">
                               <h5 className="fsz-18 color-red1 fw-600"> ${isToken ? item.price : item.data.price} </h5>
@@ -248,7 +240,7 @@ const Basket = () => {
                               {isToken ? item.freeShipping : item.data.freeShipping && <a href="#" className="meta-item color-green2"> free shipping <span className="bg bg-green2"></span> </a>}
                               {isToken ? item.freeGift : item.data.freeGift && <a href="#" className="meta-item color-red1"> free gift <span className="bg bg-red1"></span> </a>}
                             </div>
-                            <p className="fsz-12 mt-2"><FaCheckCircle className="color-green2 me-1" />In stock </p>
+                            <p className="fsz-12 mt-2"><FaCheckCircle className="color-green2 me-1" />{isToken ? item.stock : item.data.stock} </p>
                           </div>
                         </div>
                       ))
@@ -271,8 +263,8 @@ const Basket = () => {
                         <div className="row justify-content-center">
                           <div className="col-lg-6">
                             <Link
-                              to={"/checkout"}
-                              className="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-3 mt-lg-0 py-3 px-3 w-100"
+                              to={isToken ? "/checkout" : ".login"}
+                              className="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase d-flex justify-center mt-3 mt-lg-0 py-3 px-3 w-100"
                             >
                               <span> checkout </span>
                             </Link>

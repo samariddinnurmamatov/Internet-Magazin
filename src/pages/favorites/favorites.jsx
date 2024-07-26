@@ -63,7 +63,7 @@ const Favorites = () => {
             setFavorites(() => {
                 const likes = session.get("likes") || []; // Ensure likes is an array
                 const updatedLikes = likes.filter(favorite => favorite !== id);
-                store.set("likes", updatedLikes); // Update the session storage if necessary
+                store.set("like", updatedLikes); // Update the session storage if necessary
                 return updatedLikes;
             });        }
     };

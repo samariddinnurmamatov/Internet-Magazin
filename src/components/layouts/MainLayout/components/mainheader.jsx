@@ -9,7 +9,7 @@ import { LuUser2 } from "react-icons/lu";
 import { MdOutlineShoppingBag } from "react-icons/md";
 import { IoIosArrowDown } from "react-icons/io";
 import { Link } from "react-router-dom";
-import { apiGetCategory, apiGetFavourites } from "../../../../services/HomeService";
+import { apiGetBasket, apiGetCategory, apiGetFavourites } from "../../../../services/HomeService";
 import { session } from "../../../../services/session";
 
 
@@ -39,16 +39,15 @@ const Mainheader = () => {
                 }
                 if (isToken) {
                     const likeresponse = await apiGetFavourites();
+                    setLike(likeresponse.data.length);
 
-                    setLike(likeresponse.data.length)
                 } else {
                     const likeresponse = session.get("like");
                     setBasket(basketresponse.length);
 
                 }
-                const categoryData = await apiGetCategory();
-                if (categoryData.success) setCategories(categoryData.data);
-                else console.error('Invalid category data structure:', categoryData);
+                
+
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -61,14 +60,17 @@ const Mainheader = () => {
             try {
                 const response = await apiGetFavourites();
                 const basketResponse = await apiGetBasket();
-                console.log("basketResponse",basketResponse.data)
+                const categoryData = await apiGetCategory();
+
+                if (categoryData.success) setCategories(categoryData.data);
+                else { console.error('Invalid category data structure:', categoryData) }
 
                 if (response) { setFavorites(response.data); }
                 else { console.error('Invalid favorites data structure:', response) }
 
                 if (basketResponse) { setBasketNumberRes(basketResponse.data); }
                 else { console.error('Invalid favorites data structure:', basketResponse) }
-                
+
             } catch (error) {
                 console.error('Error fetching quantity favorites and baskets:', error);
             }
@@ -79,8 +81,8 @@ const Mainheader = () => {
 
     return (
         <Fragment>
-            <header className="bg-white sticky top-0 z-50 w-full px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32">
-                <nav className="navbar tc-navbar-style1 navbar-expand-lg navbar-light">
+            <header className="bg-white sticky d-none d-lg-block top-0 z-50 w-full px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32">
+                <nav className="navbar container tc-navbar-style1 navbar-expand-lg navbar-light">
                     <div className="d-flex items-center justify-between w-full ">
                         <a className="navbar-brand" href="/" >
                             <img src={HeaderLogo} alt="" className="logo" />
@@ -88,11 +90,16 @@ const Mainheader = () => {
                         <div className="d-flex gap-2">
 
                             <div className="d-flex">
-                                <Link to="about" className="dropdown-item" style={{ width: "100%" }}>About</Link>
-                                <Link to="contact" className="dropdown-item" style={{ width: "100%" }}>Contact</Link>
+                                <Link to="/" className="dropdown-item" style={{ width: "100%" }}>Home</Link>
+                                <Link to="/about" className="dropdown-item" style={{ width: "100%" }}>About</Link>
+                                <Link to="/contact" className="dropdown-item" style={{ width: "100%" }}>Contact</Link>
+                                {categories.length > 0 && categories.map(category => (
+                                <Link to={`/category/${category.id}`} className="dropdown-item" style={{ width: "100%" }}>{category.name_uz}</Link>
+
+                                ))}
                             </div>
                         </div>
-                        
+
                         <div className="d-flex gap-4 lg:none ">
                             <a href=""> <LuRefreshCcw className="icon-r" /></a>
                             <a href="tel:(025)36862516"> <LuPhoneCall className="icon-r" /></a>
@@ -103,17 +110,17 @@ const Mainheader = () => {
                             </div>
                             <div className="relative">
                                 <Link to="/favorites"> <FaRegHeart className="icon-r" />  </Link>
-                                <span className="absolute left-3 bottom-3  w-5 h-5 d-grid place-items-center  rounded-circle" style={{ background: '#4B3EC4', color: 'white', fontSize: "13px" }}> { like} </span>
+                                {/* <span className="absolute left-3 bottom-3  w-5 h-5 d-grid place-items-center  rounded-circle" style={{ background: '#4B3EC4', color: 'white', fontSize: "13px" }}> {like} </span> */}
 
                             </div>
                             <div className="relative">
                                 <Link to="/basket"> <MdOutlineShoppingBag className="icon-r" />  </Link>
-                                <span className="absolute left-3 bottom-3  w-5 h-5 d-grid place-items-center  rounded-circle" style={{ background: '#4B3EC4', color: 'white', fontSize: "13px" }}> { basket} </span>
+                                {/* <span className="absolute left-3 bottom-3  w-5 h-5 d-grid place-items-center  rounded-circle" style={{ background: '#4B3EC4', color: 'white', fontSize: "13px" }}> {basket} </span> */}
 
                             </div>
 
                         </div>
-                        
+
                     </div>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-auto mt-3">

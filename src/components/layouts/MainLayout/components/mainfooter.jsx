@@ -160,34 +160,34 @@ const MainFooter = () => {
                 <div className="mob-navigation d-flex d-lg-none">
                     <ul>
                         <li className="list">
-                            <a href="#0">
+                            <Link to="/">
                                 <span className="icon"><IoIosSync /></span>
-                                <span className="text">Compare</span>
-                            </a>
+                                <span  className="text">Compare</span>
+                            </Link>
                         </li>
                         <li className="list">
-                            <a href="#0">
+                            <Link to="/favorites">
                                 <span className="icon"><FaRegHeart /></span>
                                 <span className="text">Favorite</span>
-                            </a>
+                            </Link>
                         </li>
                         <li className="list active">
-                            <a href="#0">
+                            <Link to="">
                                 <span className="icon"><FaHome /></span>
                                 <span className="text">Home</span>
-                            </a>
+                            </Link>
                         </li>
                         <li className="list">
-                            <a href="#0">
+                            <Link to="/basket">
                                 <span className="icon"><MdOutlineShoppingBag /></span>
                                 <span className="text">Cart</span>
-                            </a>
+                            </Link>
                         </li>
                         <li className="list">
-                            <a href="#0">
+                            <Link to="/profile">
                                 <span className="icon"><FaRegUser /></span>
                                 <span className="text">Profile</span>
-                            </a>
+                            </Link>
                         </li>
                         <li className="indicator"></li>
                     </ul>
