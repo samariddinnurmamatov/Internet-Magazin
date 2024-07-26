@@ -172,10 +172,6 @@ const Basket = () => {
                       basket.map(item => (
                         <div className="product-card " key={item.id}>
                           <div className="top-inf">
-                            <div className="dis-card">
-                              <small className="fsz-10 d-block text-uppercase"> save </small>
-                              <h6 className="fsz-14">${isToken ? item.discountPrice : item.data.discountPrice}</h6>
-                            </div>
                             <a
                               href="#0"
                               className={`fav-btn`}

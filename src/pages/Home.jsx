@@ -358,7 +358,7 @@ const Home = () => {
                                 {products.length > 0 ?
 
                                     products.map((product) => (
-                                        <Link to={`/single_product/${product.id}`} className="column-sm" key={product.id}>
+                                        <a href={`/single_product/${product.id}`} className="column-sm" key={product.id}>
                                             <div className="deal-card">
                                                 <div className="top">
                                                     <div className="icons">
@@ -400,7 +400,7 @@ const Home = () => {
                                                     <MdOutlineAddShoppingCart className="me-1" />Add To Cart
                                                 </a>
                                             </div>
-                                        </Link>
+                                        </a>
                                     )) :
                                     <div
                                         ref={containerRef}
