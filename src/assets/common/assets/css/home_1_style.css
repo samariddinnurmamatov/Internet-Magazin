@@ -442,11 +442,9 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  gap: 10px;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
 }
 .tc-weekly-deals-style1 .content .deals-cards .column-sm {
   width: 19%;
@@ -1617,3 +1615,7 @@
     padding-bottom: 130px;
   }
 }
+
+
+
+

@@ -99,7 +99,6 @@ export const Profile = () => {
                             ))}
                     </h5>
                     <ul className="mt-2 color-666 lh-lg">
-                      {/* <li><a href="#"> Los Angeles, CA </a></li> */}
                     </ul>
                   </div>
                   <ul className="nav nav-pills" id="pills-tab" role="tablist">
@@ -113,11 +112,6 @@ export const Profile = () => {
                         <span> My order </span> <GrNext />
                       </button>
                     </li>
-                    {/* <li className="nav-item" role="presentation">
-                      <button className="nav-link" id="pills-prof3-tab" data-bs-toggle="pill" data-bs-target="#pills-prof3">
-                        <span> My address </span> <GrNext />
-                      </button>
-                    </li> */}
                     <li className="nav-item" role="presentation">
                       <button className="nav-link" id="pills-prof4-tab" data-bs-toggle="pill" data-bs-target="#pills-prof4">
                         <span> Change password </span> <GrNext />
@@ -272,79 +266,7 @@ export const Profile = () => {
                       </div>
                     </div>
                   </div>
-                  {/* <div className="tab-pane fade" id="pills-prof3">
-                    <div className="myaddress-tab">
-                      <h4 className="fw-bold text-capitalize mb-30"> Shipping address </h4>
-                      <div className="content">
-                        <div className="row gx-5">
-                          <div className="col-lg-6">
-                            <div className="form-group mb-4">
-                              <label> First Name <span className="color-red1"> * </span> </label>
-                              <input type="text" className="form-control" placeholder="" value="Mark" />
-                            </div>
-                          </div>
-                          <div className="col-lg-6">
-                            <div className="form-group mb-4">
-                              <label> Last Name <span className="color-red1"> * </span> </label>
-                              <input type="text" className="form-control" placeholder="" value="Cole" />
-                            </div>
-                          </div>
-                          <div className="col-lg-6">
-                            <div className="form-group mb-4">
-                              <label> Address Line 1 <span className="color-red1"> * </span> </label>
-                              <input type="text" className="form-control" placeholder="" value="Street: 10 Oakridge Lane" />
-                            </div>
-                          </div>
-                          <div className="col-lg-6">
-                            <div className="form-group mb-4">
-                              <label> Address Line 2 <span className="color-666"> (Optional) </span> </label>
-                              <input type="text" className="form-control" placeholder="" value="" />
-                            </div>
-                          </div>
-                          <div className="col-lg-6">
-                            <div className="form-group mb-4">
-                              <label> Country <span className="color-red1"> * </span> </label>
-                              <select className="form-select">
-                                <option value="0"> United States </option>
-                                <option value="1"> Brazil </option>
-                                <option value="2"> Germany </option>
-                                <option value="3"> Peru </option>
-                              </select>
-                            </div>
-                          </div>
-                          <div className="col-lg-6">
-                            <div className="form-group mb-4">
-                              <label> State / Province <span className="color-red1"> * </span> </label>
-                              <input type="text" className="form-control" placeholder="" value="Los Angeles" />
-                            </div>
-                          </div>
-                          <div className="col-lg-6">
-                            <div className="form-group mb-4">
-                              <label> City <span className="color-red1"> * </span> </label>
-                              <input type="text" className="form-control" placeholder="" value="Los Angeles" />
-                            </div>
-                          </div>
-                          <div className="col-lg-6">
-                            <div className="form-group mb-4">
-                              <label> Zip Code <span className="color-red1"> * </span> </label>
-                              <input type="text" className="form-control" placeholder="" value="90001" />
-                            </div>
-                          </div>
-                          <div className="col-lg-12">
-                            <div className="form-group mb-4">
-                              <label> Phone Number <span className="color-red1"> * </span> </label>
-                              <input type="text" className="form-control" placeholder="" value="+1 0231 4554 452" />
-                            </div>
-                          </div>
-                          <div className="col-lg-12">
-                            <button className="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-20 py-3 px-5"> 
-                              <span> save </span> 
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div> */}
+                 
                   <div className="tab-pane fade" id="pills-prof4">
                     <div className="changepass-tab">
                       <h4 className="fw-bold text-capitalize mb-30"> Change Password </h4>

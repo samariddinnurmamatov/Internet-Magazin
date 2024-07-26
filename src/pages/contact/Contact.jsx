@@ -1,12 +1,21 @@
 import { Fragment } from 'react';
 import Container from "../../components/shared/Container";
 import ContactImg from "../../assets/common/img/contact/contact.png"
+import { Link } from 'react-router-dom';
 
 export const Contact = () => {
   return (
     <Fragment>
         <div className="home-style3 contact-pg-1 py-10">
             <Container>
+            <section className="tc-breadcrumb-style6 p-30 radius-4 bg-white mt-3 wow fadeInUp" style={{ visibility: "visible", animationName: "fadeInUp" }}>
+            <nav aria-label="breadcrumb">
+              <ol className="breadcrumb fw-bold mb-0">
+                <li className="breadcrumb-item color-999"><Link to="/">Home</Link></li>
+                <li className="breadcrumb-item active color-000" aria-current="page">contact</li>
+              </ol>
+            </nav>
+          </section>
                 <section className="contact p-30 radius-4 bg-white mt-3 wow fadeInUp">
                     <h6 className="fsz-18 fw-bold text-uppercase mb-30"> ready to work with us </h6>
                     <div className="checkout-form mt-50">
@@ -70,7 +79,7 @@ export const Contact = () => {
                                                 </div>
                                             </div>
                                             <div className="col-lg-12">
-                                                <a href="#" className="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-50 py-3"> <span> send message </span> </a>
+                                                <a href="#" className="butn bg-green2 d-flex items-center justify-center text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-50 py-3"> <span> send message </span> </a>
                                             </div>
                                         </div>
                                     </div>
