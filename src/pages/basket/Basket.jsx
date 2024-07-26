@@ -18,6 +18,7 @@ const Basket = () => {
   const [basket, setBasket] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [isToken, setIsToken] = useState(false);
+  const [count, setCount] = useState(1);
 
   useEffect(() => {
     const fetchLiked = async () => {
@@ -38,12 +39,16 @@ const Basket = () => {
       } catch (error) {
         console.error('Error fetching basket:', error);
 
+        const likes = session.get("like");
+        if (likes) setFavorites(likes.map(fav => fav));
+
         const basketProd = session.get("products") || [];
         const products = [];
 
         for (const product of basketProd) {
           try {
             const singleProduct = await apiGetSingleProduct(product);
+            console.log("singleProduct", singleProduct)
             products.push(singleProduct);
           } catch (singleProductError) {
             console.error('Error fetching single product:', singleProductError);
@@ -66,14 +71,14 @@ const Basket = () => {
       )
     );
 
-    try {
-      await apiUpdateBasket({
-        product_id: productId,
-        quantity: change,
-      });
-    } catch (error) {
-      console.error('Error updating quantity:', error);
-    }
+    // try {
+    //   await apiUpdateBasket({
+    //     product_id: productId,
+    //     quantity: change,
+    //   });
+    // } catch (error) {
+    //   console.error('Error updating quantity:', error);
+    // }
   };
 
   const handleRemove = async (id) => {
@@ -83,22 +88,22 @@ const Basket = () => {
     } catch (error) {
       console.error('Error removing item from basket:', error);
 
-       const bas =session.get("products" , id) ;
-       const updatedData = bas.filter((bass) => bass !== id);
-       console.log("bas" , bas , id , updatedData)
+      const bas = session.get("products", id);
+      const updatedData = bas.filter((bass) => bass !== id);
+      console.log("bas", bas, id, updatedData)
       store.set("products", updatedData)
-        const products = [];
+      const products = [];
 
-        for (const product of updatedData) {
-          try {
-            const singleProduct = await apiGetSingleProduct(product);
-            products.push(singleProduct);
-          } catch (singleProductError) {
-            console.error('Error fetching single product:', singleProductError);
-          }
+      for (const product of updatedData) {
+        try {
+          const singleProduct = await apiGetSingleProduct(product);
+          products.push(singleProduct);
+        } catch (singleProductError) {
+          console.error('Error fetching single product:', singleProductError);
         }
+      }
 
-        setBasket(products);
+      setBasket(products);
 
 
     }
@@ -106,11 +111,11 @@ const Basket = () => {
 
   const handleLike = async (productId) => {
     try {
-      if(isToken){
+      if (isToken) {
 
         await apiPostFavourites({ product_id: productId });
       }
-      else{
+      else {
 
         session.add("like", productId);
         setFavorites(prevFavorites => [...prevFavorites, productId]);
@@ -144,6 +149,17 @@ const Basket = () => {
     }, 0);
   };
 
+  const handleIncrement = () => {
+    setCount(count + 1);
+  };
+
+  const handleDecrement = () => {
+    if (count > 0) { // negative count ni oldini olish
+      setCount(count - 1);
+    }
+  };
+
+
   return (
     <div className="home-style3 cart-pg-1 py-3">
       <Container>
@@ -151,69 +167,92 @@ const Basket = () => {
           <div className="row">
             {
               basket.length > 0 ?
-                <div className="">
-                  <div className="">
-                    <div className="products">
-                      {
-                        basket.map(item => (
-                          <div className="product-card d-flex gap-16" key={item.id}>
-                            <div className="top-inf">
-                              <div className="dis-card">
-                                <small className="fsz-10 d-block text-uppercase"> save </small>
-                                <h6 className="fsz-14">${isToken ? item.discountPrice : item.data.discountPrice}</h6>
+                <div className="row  justify-between lg:flex">
+                  <div className="products w-[100%] lg:w-[65%]">
+                    {
+                      basket.map(item => (
+                        <div className="product-card " key={item.id}>
+                          <div className="top-inf">
+                            <div className="dis-card">
+                              <small className="fsz-10 d-block text-uppercase"> save </small>
+                              <h6 className="fsz-14">${isToken ? item.discountPrice : item.data.discountPrice}</h6>
+                            </div>
+                            <a
+                              href="#0"
+                              className={`fav-btn`}
+                              onClick={() => isFavorite(isToken ? item.id : item.data.id) ? handleUnlike(isToken ? item.id : item.data.id) : handleLike(isToken ? item.id : item.data.id)}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                padding: '9px',
+                                borderRadius: '50%',
+                                border: '1px solid',
+                                transition: 'background-color 0.3s, border-color 0.3s, color 0.3s',
+                              }}
+                            >
+                              {isFavorite(isToken ? item.id : item.data.id) ? <FaHeart /> : <FaRegHeart />}
+                            </a>
+                            <a href="#0" className="remove-btn d-grid place-items-center"
+                              onClick={() => handleRemove(isToken ? item.id : item.data.id)}
+
+                            > <FaTrashAlt /></a>
+                          </div>
+                          <a href="#0" className="img">
+                            <img src={isToken ? item.image : item.data.image} alt="" className="img-contain main-image" />
+                          </a>
+                          <div className="info">
+                            <div className="rating">
+                              <div className="stars">
+                                {[...Array(5)].map((_, index) => (
+                                  <FaRegStar key={index} className={index < item.rating ? "" : "color-999"} />
+                                ))}
                               </div>
-                              <a
-                                href="#0"
-                                className={`fav-btn`}
-                                onClick={() => isFavorite(isToken ? item.id : item.data.id) ? handleUnlike(isToken ? item.id : item.data.id) : handleLike(isToken ? item.id : item.data.id)}
-                                style={{
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  padding: '9px',
-                                  borderRadius: '50%',
-                                  border: '1px solid',
-                                  transition: 'background-color 0.3s, border-color 0.3s, color 0.3s',
+                              <span className="num"> ({isToken ? item.ratingCount : item.data.ratingCount}) </span>
+                            </div>
+                            <h6> <a href="#" className="prod-title fsz-14 fw-bold mt-2 hover-green2">{isToken ? item.name_uz : item.data.name_uz}</a> </h6>
+                            <div className="price mt-15">
+                              <h5 className="fsz-18 color-red1 fw-600"> ${isToken ? item.price : item.data.price} </h5>
+                            </div>
+                            <div className="add-more mt-3">
+                              {/* <span className="qt-minus" onClick={() => handleQuantityChange(item.id, -1)}><FaMinus /></span>
+                                <input type="text" className="qt border-0" value={isToken ? (item.quantity ? item.quantity : "1") : "1"}
+                                  readOnly />
+                                <span className="qt-plus" onClick={() => handleQuantityChange(item.id, 1)}><FaPlus /></span> */}
+                              <button
+                                className="qt-minus text-xl"
+                                onClick={() => {
+                                  handleDecrement()
+                                  handleQuantityChange(item.id, -1)
                                 }}
                               >
-                                {isFavorite(isToken ? item.id : item.data.id) ? <FaHeart /> : <FaRegHeart />}
-                              </a>
-                              <a href="#0" className="remove-btn d-grid place-items-center"
-                                onClick={() => handleRemove(isToken ? item.id : item.data.id)}
-
-                              > <FaTrashAlt /></a>
+                                -
+                              </button>
+                              <input
+                                type="text"
+                                className="qt border-0"
+                                value={count}
+                                readOnly
+                              />
+                              <button
+                                className="qt-plus text-xl"
+                                onClick={() => {
+                                  handleIncrement()
+                                  handleQuantityChange(item.id, 1)
+                                }}
+                              >
+                                +
+                              </button>
                             </div>
-                            <a href="#0" className="img">
-                              <img src={isToken ? item.image : item.data.image} alt="" className="img-contain main-image" />
-                            </a>
-                            <div className="info">
-                              <div className="rating">
-                                <div className="stars">
-                                  {[...Array(5)].map((_, index) => (
-                                    <FaRegStar key={index} className={index < item.rating ? "" : "color-999"} />
-                                  ))}
-                                </div>
-                                <span className="num"> ({isToken ? item.ratingCount : item.data.ratingCount}) </span>
-                              </div>
-                              <h6> <a href="#" className="prod-title fsz-14 fw-bold mt-2 hover-green2">{isToken ? item.name_uz : item.data.name_uz}</a> </h6>
-                              <div className="price mt-15">
-                                <h5 className="fsz-18 color-red1 fw-600"> ${isToken ? item.price : item.data.price} </h5>
-                              </div>
-                              <div className="add-more mt-3">
-                                <span className="qt-minus" onClick={() => handleQuantityChange(item.id, -1)}><FaMinus /></span>
-                                <input type="text" className="qt border-0" value={isToken ? item.quantity : item.data.quantity} readOnly />
-                                <span className="qt-plus" onClick={() => handleQuantityChange(item.id, 1)}><FaPlus /></span>
-                              </div>
-                              <div className="meta">
-                                {isToken ? item.freeShipping : item.data.freeShipping && <a href="#" className="meta-item color-green2"> free shipping <span className="bg bg-green2"></span> </a>}
-                                {isToken ? item.freeGift : item.data.freeGift && <a href="#" className="meta-item color-red1"> free gift <span className="bg bg-red1"></span> </a>}
-                              </div>
-                              <p className="fsz-12 mt-2"><FaCheckCircle className="color-green2 me-1" />In stock </p>
+                            <div className="meta">
+                              {isToken ? item.freeShipping : item.data.freeShipping && <a href="#" className="meta-item color-green2"> free shipping <span className="bg bg-green2"></span> </a>}
+                              {isToken ? item.freeGift : item.data.freeGift && <a href="#" className="meta-item color-red1"> free gift <span className="bg bg-red1"></span> </a>}
                             </div>
+                            <p className="fsz-12 mt-2"><FaCheckCircle className="color-green2 me-1" />In stock </p>
                           </div>
-                        ))
-                      }
-                    </div>
+                        </div>
+                      ))
+                    }
                   </div>
                   <div className="col-lg-4">
                     <div className="cart-card">
