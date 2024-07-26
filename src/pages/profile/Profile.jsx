@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from 'react';
 import Container from '../../components/shared/Container';
-import { apiUserInfo, apiUserInfoEdit } from '../../services/AuthService';
+import { apiUserInfo, apiUserInfoEdit, apiUserPasswordUpd } from '../../services/AuthService';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import Person from "../../assets/person-remov.png"
@@ -14,6 +14,8 @@ export const Profile = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
 
   useEffect(() => {
     fetchUserData();
@@ -57,6 +59,25 @@ export const Profile = () => {
       }
     } catch (error) {
       toast.error('Failed to update user data.');
+    }
+  };
+
+  const handlePasswordChange = async () => {
+    const passwordData = {
+      old_password: oldPassword,
+      password: newPassword,
+    };
+
+    try {
+      const response = await apiUserPasswordUpd(passwordData);
+      console.log('Password change response:', response);
+      if (response.message) {
+        toast.success('Password changed successfully.');
+      } else {
+        toast.error('Failed to change password.');
+      }
+    } catch (error) {
+      toast.error('Failed to change password.');
     }
   };
 
@@ -332,13 +353,13 @@ export const Profile = () => {
                           <div className="col-lg-12">
                             <div className="form-group mb-4">
                               <label> Current Password <span className="color-red1"> * </span> </label>
-                              <input type="password" className="form-control" placeholder="" />
+                              <input type="password" className="form-control" placeholder="" value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} />
                             </div>
                           </div>
                           <div className="col-lg-12">
                             <div className="form-group mb-4">
                               <label> New Password <span className="color-red1"> * </span> </label>
-                              <input type="password" className="form-control" placeholder="" value="New Password" />
+                              <input type="password" className="form-control" placeholder="" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
                             </div>
                           </div>
                           <div className="col-lg-12">
@@ -383,7 +404,7 @@ export const Profile = () => {
                         <p className="color-666 mb-50">
                           It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.
                         </p>
-                        <button className="butn bg-red1 color-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-20 py-3 px-5"> 
+                        <button className="butn bg-red1 color-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-20 py-3 px-5"  onClick={handlePasswordChange}>  
                           <span> Delete Account </span> 
                         </button>
                       </div>
