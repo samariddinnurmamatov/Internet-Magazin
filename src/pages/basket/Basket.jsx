@@ -172,10 +172,6 @@ const Basket = () => {
                       basket.map(item => (
                         <div className="product-card " key={item.id}>
                           <div className="top-inf">
-                            <div className="dis-card">
-                              <small className="fsz-10 d-block text-uppercase"> save </small>
-                              <h6 className="fsz-14">${isToken ? item.discountPrice : item.data.discountPrice}</h6>
-                            </div>
                             <a
                               href="#0"
                               className={`fav-btn`}
@@ -263,7 +259,7 @@ const Basket = () => {
                         <div className="row justify-content-center">
                           <div className="col-lg-6">
                             <Link
-                              to={isToken ? "/checkout" : ".login"}
+                              to={isToken ? "/checkout" : "/login"}
                               className="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase d-flex justify-center mt-3 mt-lg-0 py-3 px-3 w-100"
                             >
                               <span> checkout </span>

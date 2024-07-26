@@ -9,6 +9,7 @@ import { createOrder } from "../../services/OrderService";
 import { apiGetBasket } from "../../services/HomeService";
 import { apiUserInfo } from "../../services/AuthService";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 export const Checkout = () => {
   // const basketItems = useSelector((state) => state.basket);
@@ -158,13 +159,13 @@ export const Checkout = () => {
             <nav aria-label="breadcrumb">
               <ol className="breadcrumb fw-bold mb-0">
                 <li className="breadcrumb-item color-999">
-                  <a href="/">Home</a>
+                  <Link to="/">Home</Link>
                 </li>
                 <li
                   className="breadcrumb-item active color-000"
                   aria-current="page"
                 >
-                  Checkout  {position}
+                  Checkout  
                 </li>
               </ol>
             </nav>
@@ -333,26 +334,7 @@ export const Checkout = () => {
                             </label>
                           </div>
                         </div>
-                        {/* <div className="col-lg-12">
-                          <h6 className="fsz-16 fw-bold mb-30 mt-50">
-                            Additional Information
-                          </h6>
-                        </div>
-                        <div className="col-lg-12">
-                          <div className="form-group">
-                            <label htmlFor="">
-                              Order Notes{" "}
-                              <span className="color-999">(Optional)</span>
-                            </label>
-                            <textarea
-                              name=""
-                              rows={5}
-                              className="form-control"
-                              placeholder="Note about your order, e.g. special note for delivery "
-                              defaultValue={""}
-                            />
-                          </div>
-                        </div> */}
+                       
                       </div>
                     </div>
                   </form>
@@ -443,7 +425,7 @@ export const Checkout = () => {
                       </div>
                       <a
                         onClick={fetchData}
-                        className="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-30 py-3 px-3 w-100"
+                        className="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase d-flex justify-center mt-30 py-3 px-3 w-100"
                       >
                         <span  > place order </span>
                       </a>
