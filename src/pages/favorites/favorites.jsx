@@ -3,6 +3,7 @@ import Container from "../../components/shared/Container";
 import { FaRegStar, FaCheckCircle, FaHeart } from "react-icons/fa";
 import { apiDeleteFavourites, apiGetFavourites, apiGetSingleProduct } from "../../services/HomeService";
 import { session } from "../../services/session";
+import store from 'store2';
 
 
 const Favorites = () => {
@@ -58,7 +59,13 @@ const Favorites = () => {
             });
         } catch (error) {
             console.error('Error removing from favorites:', error);
-        }
+            session.remove("like",id)
+            setFavorites(() => {
+                const likes = session.get("likes") || []; // Ensure likes is an array
+                const updatedLikes = likes.filter(favorite => favorite !== id);
+                store.set("likes", updatedLikes); // Update the session storage if necessary
+                return updatedLikes;
+            });        }
     };
 
 
