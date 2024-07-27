@@ -204,9 +204,8 @@ const Home = () => {
                             <div className="row">
                                 <div className="col-lg-12">
                                     <div className="main-slider rounded-3xl">
-                                        <div className="swiper-wrapper">
-
-                                            <div className="swiper-slide">
+                                        <div className="swiper-wrapper"> 
+                                            <div className="swiper-slide w-full">
                                                 <div className="slide-card">
                                                     <div className="img th-450">
                                                         <img src={Head11} alt="" className="w-full" />
@@ -220,7 +219,7 @@ const Home = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="swiper-slide">
+                                            <div className="swiper-slide w-full ">
                                                 <div className="slide-card">
                                                     <div className="img th-450">
                                                         <img src={Head11} alt="" className="w-full" />
@@ -234,7 +233,6 @@ const Home = () => {
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                         <div className="slider-controls">
                                             <div className="swiper-button-prev"></div>
