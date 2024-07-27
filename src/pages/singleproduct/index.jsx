@@ -79,6 +79,7 @@ const SingleProduct = () => {
 
             } catch (error) {
                 console.error('Error fetching data:', error);
+                
                 const likes = session.get("like");
                 if (likes) setFavorites(likes.map(fav => fav));
             }

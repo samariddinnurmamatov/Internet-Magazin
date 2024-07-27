@@ -2,10 +2,11 @@ import { Fragment, useEffect, useState } from 'react';
 import Container from '../../components/shared/Container';
 import { apiUserInfo, apiUserInfoEdit, apiUserPasswordUpd } from '../../services/AuthService';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Person from "../../assets/person-remov.png"
 import { FcNext } from 'react-icons/fc';
 import { GrNext } from 'react-icons/gr';
+import { apiGetUserOrderInfo } from '../../services/HomeService';
 
 
 export const Profile = () => {
@@ -16,6 +17,7 @@ export const Profile = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [userOrderInfoData, setUserOrderInfoData] = useState('');
 
   useEffect(() => {
     fetchUserData();
@@ -24,7 +26,9 @@ export const Profile = () => {
   const fetchUserData = async () => {
     try {
       const response = await apiUserInfo();
+      const userOrderInfo = await apiGetUserOrderInfo();
       console.log('User data:', response);
+      if (userOrderInfo) setUserOrderInfoData(userOrderInfo.data)
       if (response) {
         const { first_name, last_name, phone_number } = response.user;
         setUsers([response.user]);
@@ -36,7 +40,7 @@ export const Profile = () => {
         toast.error('Failed to fetch user data.');
       }
     } catch (error) {
-      toast.error('Failed to fetch user data.');
+      // toast.error('Failed to fetch user data.');
     }
   };
 
@@ -88,15 +92,15 @@ export const Profile = () => {
           <section className="tc-profile p-30 radius-4 bg-white mt-3 wow fadeInUp mb-3">
             <div className="row">
               <div className="col-md-3">
-                <div className="tabs-side me-lg-5 mb-4 mb-lg-0">
+                <div className="tabs-side me-lg-5 mb-4 mb-lg-0 lg:d-flex">
                   <div className="main-info">
                     <div className="img">
                       <img src={Person} alt="" className="main-img img-cover" />
                     </div>
-                    <h5 className="fw-bold"> 
-                            {users.map(user => (
-                                <span key={user.id}>{user.first_name} {user.last_name}</span>
-                            ))}
+                    <h5 className="fw-bold">
+                      {users.map(user => (
+                        <span key={user.id}>{user.first_name} {user.last_name}</span>
+                      ))}
                     </h5>
                     <ul className="mt-2 color-666 lh-lg">
                     </ul>
@@ -170,9 +174,9 @@ export const Profile = () => {
                             </div>
                           </div>
                           <div className="col-lg-12">
-                            <button className="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-20 py-3 px-5"       onClick={handleUpdateUser}
-                            > 
-                              <span> save </span> 
+                            <button className="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-20 py-3 px-5" onClick={handleUpdateUser}
+                            >
+                              <span> save </span>
                             </button>
                           </div>
                         </div>
@@ -184,30 +188,18 @@ export const Profile = () => {
                       <h4 className="fw-bold text-capitalize mb-30"> Orders History </h4>
                       <div className="orders">
                         <div className="order-card">
-                          <div className="order-head">
-                            <div className="row align-items-center">
-                              <div className="col-lg-6">
-                                <p className="my-2"> <span> NUM: </span> <strong> #45512132 </strong> </p>
-                                <p className="my-2"> <span> DATE: </span> <span> 3/12/2022 </span> </p>
-                              </div>
-                              <div className="col-lg-6 text-lg-end mt-4 mt-lg-0">
-                                <span className="alert alert-success mb-0 py-2" role="alert"> Delivered </span>
-                              </div>
-                            </div>
-                          </div>
+
                           <div className="products">
                             <div className="row gx-3">
+                              
                               <div className="col-lg-6">
                                 <div className="product-card">
-                                  <div className="top-inf">
-                                    <small className="fsz-10 py-1 px-2 radius-2 bg-222 text-white text-uppercase"> new </small>
-                                  </div>
                                   <a href="#0" className="img">
                                     <img src="assets/img/products/prod27.png" alt="" className="img-contain main-image" />
                                   </a>
                                   <div className="info">
                                     <h6>
-                                      <a href="#" className="prod-title fsz-14 fw-bold mt-2 hover-green2"> aPod Pro Tablet 2023 LTE + Wifi, GPS Cellular 12.9 Inch, 512GB </a>
+                                      <a href="#" className="prod-title fsz-14 fw-bold mt-2 hover-blue1"> aPod Pro Tablet 2023 LTE + Wifi, GPS Cellular 12.9 Inch, 512GB </a>
                                     </h6>
                                     <div className="price mt-15">
                                       <h5 className="fsz-18 fw-600"> $979.00 </h5>
@@ -216,7 +208,7 @@ export const Profile = () => {
                                       <a href="#" className="meta-item color-222"> $2.98 Shipping <span className="bg bg-222"></span> </a>
                                     </div>
                                     <p className="fsz-12 mt-2">
-                                      <i className="fas fa-check-circle color-green2 me-1"></i> In stock
+                                      <i className="fas fa-check-circle color-green2 me-1"></i> 45
                                     </p>
                                   </div>
                                 </div>
@@ -258,15 +250,15 @@ export const Profile = () => {
                             </div>
                           </div>
                           <div className="order-foot">
-                            <a href="#0" className="btns btns-border-green2 fsz-12 fw-500 px-4 py-2 radius-25"> 
-                              <span> Order Details </span> 
+                            <a href="#0" className="btns btns-border-green2 fsz-12 fw-500 px-4 py-2 radius-25">
+                              <span> Order Details </span>
                             </a>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                 
+
                   <div className="tab-pane fade" id="pills-prof4">
                     <div className="changepass-tab">
                       <h4 className="fw-bold text-capitalize mb-30"> Change Password </h4>
@@ -285,8 +277,8 @@ export const Profile = () => {
                             </div>
                           </div>
                           <div className="col-lg-12">
-                            <button className="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-20 py-3 px-5"> 
-                              <span> save </span> 
+                            <button className="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-20 py-3 px-5">
+                              <span> save </span>
                             </button>
                           </div>
                         </div>
@@ -311,8 +303,8 @@ export const Profile = () => {
                             </div>
                           </div>
                           <div className="col-lg-12">
-                            <button className="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-20 py-3 px-5"> 
-                              <span> save </span> 
+                            <button className="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-20 py-3 px-5">
+                              <span> save </span>
                             </button>
                           </div>
                         </div>
@@ -326,8 +318,8 @@ export const Profile = () => {
                         <p className="color-666 mb-50">
                           It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.
                         </p>
-                        <button className="butn bg-red1 color-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-20 py-3 px-5"  onClick={handlePasswordChange}>  
-                          <span> Delete Account </span> 
+                        <button className="butn bg-red1 color-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-20 py-3 px-5" onClick={handlePasswordChange}>
+                          <span> Delete Account </span>
                         </button>
                       </div>
                     </div>

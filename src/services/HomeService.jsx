@@ -22,6 +22,7 @@ export async function apiGetProducts(params = {}) {
     params,
   });
 }
+
 export async function apiGetSingleProduct(id) {
   return ApiService.fetchData({
     url: `/${id}/product`,
@@ -82,9 +83,17 @@ export async function apiDeleteBasket(id) {
     method: "delete",
   });
 }
+
 export async function apiGetCategoryOfProduct(id) {
   return ApiService.fetchData({
     url: `/category/${id}`,
+    method: "get",
+  });
+}
+
+export async function apiGetBanner() {
+  return ApiService.fetchData({
+    url: `/banner`,
     method: "get",
   });
 }
@@ -94,5 +103,12 @@ export async function apiGetBrands(params = {}) {
     url: "/brand",
     method: "get",
     params,
+  });
+}
+
+export async function apiGetUserOrderInfo() {
+  return ApiService.fetchData({
+    url: "/user/orders",
+    method: "get",
   });
 }

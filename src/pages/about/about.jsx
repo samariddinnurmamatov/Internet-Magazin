@@ -74,15 +74,15 @@ const About = () => {
                     <div className="cont">
                       <h6 className="fsz-18 fw-bold"> We connect millions of buyers and sellers around the world, empowering people &amp; creating economic opportunity for all. </h6>
                       <p className="fsz-14 color-666 mt-30"> Within our markets, millions of people around the world connect, both online and offline, to make, sell and buy unique goods. We also offer a wide range of Seller Services and tools that help creative entrepreneurs start, manage &amp; scale their businesses. </p>
-                      <a href="https://www.youtube.com/watch?v=qYgdnM3BC3g" className="butn gap-2 bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase d-flex items-center justify-center mt-40 py-3" data-fancybox=""> <FaPlay className="me-1"/>our showreel  </a>
+                      <a href="https://www.youtube.com/watch?v=qYgdnM3BC3g" className="butn gap-2 bg-blue1 text-white radius-4 fw-500 fsz-12 text-uppercase d-flex items-center justify-center mt-40 py-3" data-fancybox=""> <FaPlay className="me-1"/>our showreel  </a>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </section>
-          <section className="tc-about-cards">
-            <div className="row container">
+          <section className="tc-about-cards"> 
+            <div className="row container ">
               <div className="col-lg-4 mt-3 radius-4 bg-white" >
                 <div className="about-card  wow fadeInUp" style={{
                   position: "relative",
