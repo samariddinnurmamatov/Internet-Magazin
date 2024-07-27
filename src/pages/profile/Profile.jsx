@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from 'react';
 import Container from '../../components/shared/Container';
 import { apiUserInfo, apiUserInfoEdit, apiUserPasswordUpd } from '../../services/AuthService';
 import { toast } from 'react-toastify';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Person from "../../assets/person-remov.png"
 import { FcNext } from 'react-icons/fc';
 import { GrNext } from 'react-icons/gr';
