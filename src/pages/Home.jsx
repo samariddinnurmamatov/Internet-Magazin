@@ -268,8 +268,8 @@ const Home = () => {
                                                     width="100%"
                                                     height={220}
                                                     // viewBox="0 0 100 220"
-                                                    backgroundColor="#c2c2c2"
-                                                    foregroundColor="#d9d9d9"
+                                                    backgroundColor="#e4e4e7"
+                                                    foregroundColor="#f3f4f6"
                                                     className="w-full"
                                                 >
 
@@ -282,8 +282,8 @@ const Home = () => {
                                                     width="100%"
                                                     height={220}
                                                     // viewBox="0 0 100 220"
-                                                    backgroundColor="#c2c2c2"
-                                                    foregroundColor="#d9d9d9"
+                                                    backgroundColor="#e4e4e7"
+                                                    foregroundColor="#f3f4f6"
                                                     className="w-full"
                                                 >
 
@@ -369,9 +369,9 @@ const Home = () => {
                                                 width={110}
                                                 height={130}
                                                 // viewBox="0 0 40 160"
-                                                backgroundColor="#c2c2c2"
-                                                foregroundColor="#d9d9d9"
-                                            >
+                                                backgroundColor="#e4e4e7"
+                                                foregroundColor="#f3f4f6"
+                                        >
                                                 <circle cx="50" cy="50" r="50" />
                                                 <rect x="0" y="110" rx="3" ry="3" width="100" height="10" />
 
@@ -455,8 +455,8 @@ const Home = () => {
                                                     width={230}
                                                     height={320}
                                                     // viewBox="0 0 280 160"
-                                                    backgroundColor="#c2c2c2"
-                                                    foregroundColor="#d9d9d9"
+                                                    backgroundColor="#e4e4e7"
+                                                    foregroundColor="#f3f4f6"
                                                 >
                                                     <rect x="0" y="0" rx="0" ry="0" width="230" height="320" />
 
@@ -562,9 +562,9 @@ const Home = () => {
                                                             width={230}
                                                             height={320}
                                                             // viewBox="0 0 280 160"
-                                                            backgroundColor="#c2c2c2"
-                                                            foregroundColor="#d9d9d9"
-                                                        >
+                                                            backgroundColor="#e4e4e7"
+                                                            foregroundColor="#f3f4f6"
+                                                                >
                                                             <rect x="0" y="0" rx="0" ry="0" width="230" height="320" />
 
                                                         </ContentLoader>
@@ -628,8 +628,8 @@ const Home = () => {
                                                     width={224}
                                                     height={192}
                                                     // viewBox="0 0 280 160"
-                                                    backgroundColor="#c2c2c2"
-                                                    foregroundColor="#d9d9d9"
+                                                    backgroundColor="#e4e4e7"
+                                                    foregroundColor="#f3f4f6"
                                                 >
                                                     <rect x="0" y="0" rx="0" ry="0" width="224" height="192" />
 
@@ -666,9 +666,8 @@ const Home = () => {
                                                     speed={2}
                                                     width={100}
                                                     height={30}
-                                                    // viewBox="0 0 280 160"
-                                                    backgroundColor="#c2c2c2"
-                                                    foregroundColor="#d9d9d9"
+                                                    backgroundColor="#e4e4e7"
+                                                    foregroundColor="#f3f4f6"
                                                 >
                                                     <rect x="0" y="0" rx="0" ry="0" width="100" height="30" />
 
