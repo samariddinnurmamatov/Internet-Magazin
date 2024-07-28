@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import ContentLoader from "react-content-loader"
 
 import Head1 from "../assets/common/img/head/head_1-1.png";
 import Head11 from "../assets/common/img/head/head_1-1.png";
@@ -204,7 +205,7 @@ const Home = () => {
                             <div className="row">
                                 <div className="col-lg-12">
                                     <div className="main-slider rounded-3xl">
-                                        <div className="swiper-wrapper"> 
+                                        <div className="swiper-wrapper">
                                             <div className="swiper-slide w-full">
                                                 <div className="slide-card">
                                                     <div className="img th-450">
@@ -260,20 +261,36 @@ const Home = () => {
                                                 </div>
                                             </div>
                                         )) :
-                                        <div className="row  d-flex justify-around mb-2"> 
-                                            <div className="col-lg-6">
-                                                <div className="card-overlay wow fadeInUp slow bg-gray-200" data-wow-delay="0.2s">
-                                                    <div className="img th-230">
-                                                    </div>
-                                                </div>
+                                        <div className="row  d-flex justify-around mb-2">
+                                            <div className="col-lg-6 mb-3">
+                                                <ContentLoader
+                                                    speed={2}
+                                                    width="100%"
+                                                    height={220}
+                                                    // viewBox="0 0 100 220"
+                                                    backgroundColor="#c2c2c2"
+                                                    foregroundColor="#d9d9d9"
+                                                    className="w-full"
+                                                >
+
+                                                    <rect x="48" y="8" rx="3" ry="3" width="100%" height="220" />
+                                                </ContentLoader>
+                                            </div>
+                                            <div className="col-lg-6 mb-3">
+                                                <ContentLoader
+                                                    speed={2}
+                                                    width="100%"
+                                                    height={220}
+                                                    // viewBox="0 0 100 220"
+                                                    backgroundColor="#c2c2c2"
+                                                    foregroundColor="#d9d9d9"
+                                                    className="w-full"
+                                                >
+
+                                                    <rect x="48" y="8" rx="3" ry="3" width="100%" height="220" />
+                                                </ContentLoader>
                                             </div>
 
-                                            <div className="col-lg-6">
-                                                <div className="card-overlay wow fadeInUp slow bg-gray-200" data-wow-delay="0.2s">
-                                                    <div className="img th-230">
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
 
                                 }
@@ -347,8 +364,18 @@ const Home = () => {
                                             className={`cat-card d-flex flex-col items-center w-24 ${isOverflowing ? 'hidden' : ''}`}
                                             style={{ display: isOverflowing ? 'none' : 'flex' }}
                                         >
-                                            <div className="img h-24 w-full bg-gray-200"></div>
-                                            <p style={{ background: "#efefef" }} className="fsz-13 fw-bold mt-2 w-full h-4"></p>
+                                            <ContentLoader
+                                                speed={2}
+                                                width={110}
+                                                height={130}
+                                                // viewBox="0 0 40 160"
+                                                backgroundColor="#c2c2c2"
+                                                foregroundColor="#d9d9d9"
+                                            >
+                                                <circle cx="50" cy="50" r="50" />
+                                                <rect x="0" y="110" rx="3" ry="3" width="100" height="10" />
+
+                                            </ContentLoader>
                                         </Link>
                                     ))}
                                 </div>
@@ -422,7 +449,19 @@ const Home = () => {
                                         {Array.from({ length: 5 }).map((_, index) => (
                                             <div key={index}
                                                 style={{ display: isOverflowing ? 'none' : 'flex' }}
-                                                className={`h-72 border border-black rounded-lg w-56 bg-gray-200 ${isOverflowing ? 'hidden' : ''}`} ></div>
+                                                className={` ${isOverflowing ? 'hidden' : ''}`} >
+                                                <ContentLoader
+                                                    speed={2}
+                                                    width={230}
+                                                    height={320}
+                                                    // viewBox="0 0 280 160"
+                                                    backgroundColor="#c2c2c2"
+                                                    foregroundColor="#d9d9d9"
+                                                >
+                                                    <rect x="0" y="0" rx="0" ry="0" width="230" height="320" />
+
+                                                </ContentLoader>
+                                            </div>
                                         ))}
                                     </div>
                                 }
@@ -517,7 +556,19 @@ const Home = () => {
                                                 {Array.from({ length: 5 }).map((_, index) => (
                                                     <div key={index}
                                                         style={{ display: isOverflowing ? 'none' : 'flex' }}
-                                                        className={`h-72 border border-black rounded-lg w-56 bg-gray-200 ${isOverflowing ? 'hidden' : ''}`} ></div>
+                                                        className={` ${isOverflowing ? 'hidden' : ''}`} >
+                                                        <ContentLoader
+                                                            speed={2}
+                                                            width={230}
+                                                            height={320}
+                                                            // viewBox="0 0 280 160"
+                                                            backgroundColor="#c2c2c2"
+                                                            foregroundColor="#d9d9d9"
+                                                        >
+                                                            <rect x="0" y="0" rx="0" ry="0" width="230" height="320" />
+
+                                                        </ContentLoader>
+                                                    </div>
                                                 ))}
                                             </div>}
                                     </div>
@@ -571,7 +622,19 @@ const Home = () => {
                                             {Array.from({ length: 5 }).map((_, index) => (
                                                 <div key={index}
                                                     style={{ display: isOverflowing ? 'none' : 'flex' }}
-                                                    className={`h-48 border border-black rounded-xl w-56 bg-gray-200 ${isOverflowing ? 'hidden' : ''}`} ></div>
+                                                    className={` ${isOverflowing ? 'hidden' : ''}`} >
+                                                        <ContentLoader
+                                                    speed={2}
+                                                    width={224}
+                                                    height={192}
+                                                    // viewBox="0 0 280 160"
+                                                    backgroundColor="#c2c2c2"
+                                                    foregroundColor="#d9d9d9"
+                                                >
+                                                    <rect x="0" y="0" rx="0" ry="0" width="224" height="192" />
+
+                                                </ContentLoader>
+                                                    </div>
                                             ))}
                                         </div>}
                                 </div>
@@ -595,10 +658,22 @@ const Home = () => {
                                     className="flex overflow-hidden gap-2 ps-5"
                                     style={{ whiteSpace: 'nowrap' }}
                                 >
-                                    {Array.from({ length: 5 }).map((_, index) => (
+                                    {Array.from({ length: 10 }).map((_, index) => (
                                         <div key={index}
                                             style={{ display: isOverflowing ? 'none' : 'flex' }}
-                                            className={`h-8 border border-black rounded-xl w-24 bg-gray-200 ${isOverflowing ? 'hidden' : ''}`} ></div>
+                                            className={` ${isOverflowing ? 'hidden' : ''}`} >
+                                                <ContentLoader
+                                                    speed={2}
+                                                    width={100}
+                                                    height={30}
+                                                    // viewBox="0 0 280 160"
+                                                    backgroundColor="#c2c2c2"
+                                                    foregroundColor="#d9d9d9"
+                                                >
+                                                    <rect x="0" y="0" rx="0" ry="0" width="100" height="30" />
+
+                                                </ContentLoader>
+                                            </div>
                                     ))}
                                 </div>
                             }
