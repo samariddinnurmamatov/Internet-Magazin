@@ -41,29 +41,28 @@ const Home = () => {
     const containerRef = useRef(null);
 
 
-
     useEffect(() => {
         const token = session.get("token");
         setIsToken(!!token)
-
+        
         const fetchData = async () => {
             try {
-                const [categoryData, productData, brandData, categoryProduct, banner] = await Promise.all([
+                const [categoryData, productData, brandData, categoryProduct, bannerData] = await Promise.all([
                     apiGetCategory(),
                     apiGetProducts(),
                     apiGetBrands(),
                     apiGetCategoryOfProduct(1),
                     apiGetBanner()
                 ]);
-
+                
                 if (categoryData.success) setCategories(categoryData.data);
                 if (productData.success) setProducts(productData.data);
                 if (brandData.success) setBrands(brandData.data);
                 if (categoryProduct.success) setCategoryOfProduct(categoryProduct.data);
-                if (banner.success) setBanner(banner.data);
-
-                console.log(categoryProduct.data)
-            } catch (error) {
+                if (bannerData.success) setBanner(banner);
+                console.log(banner)
+                
+            } catch (error) { 
                 console.error('Error fetching data:', error);
             }
         };
@@ -199,6 +198,7 @@ const Home = () => {
     return (
         <Fragment>
             <main style={{ height: "auto", marginBottom: "50px" }}>
+                
                 <section className="tc-header-style1 mt-4">
                     <div className="container">
                         <div className="content">
@@ -395,56 +395,56 @@ const Home = () => {
                                 {products.length > 0 ?
 
                                     products.map((product) => (
+                                        
+                                        // <ProductCard product={product} />
+                                        <a href={`/single_product/${product.id}`} className="column-sm" key={product.id}>
+                                            <div className="deal-card">
+                                                <div className="top">
+                                                    <div className="icons">
+                                                        <div
+                                                            className={`icon fav ${isFavorite(product.id) ? 'liked' : ''}`}
+                                                            onClick={() => isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id)}
+                                                        >
+                                                            {isFavorite(product.id) ? <FaHeart /> : <FaRegHeart />}
+                                                        </div>
+                                                        <Link href="/" className="icon"><IoSync /></Link>
+                                                        <a href={product.image} className="icon" data-fancybox="deal"><FaEye /></a>
+                                                    </div>
+                                                </div>
+                                                <div className="img th-140 mb-20 d-block">
+                                                    <img src={product.image} alt="" className="img-contain" />
+                                                </div>
+                                                <div className="info">
+                                                    <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase"> 15% OFF </span>
+                                                    <a href={`/single_product/${product.id}`} className="title fsz-14 mt-15 fw-600 hover-blue1"> {product.name_uz} </a>
 
-                                        <ProductCard product={product} />
-                                        // <a href={`/single_product/${product.id}`} className="column-sm" key={product.id}>
-                                        //     <div className="deal-card">
-                                        //         <div className="top">
-                                        //             <div className="icons">
-                                        //                 <div
-                                        //                     className={`icon fav ${isFavorite(product.id) ? 'liked' : ''}`}
-                                        //                     onClick={() => isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id)}
-                                        //                 >
-                                        //                     {isFavorite(product.id) ? <FaHeart /> : <FaRegHeart />}
-                                        //                 </div>
-                                        //                 <Link href="/" className="icon"><IoSync /></Link>
-                                        //                 <a href={product.image} className="icon" data-fancybox="deal"><FaEye /></a>
-                                        //             </div>
-                                        //         </div>
-                                        //         <div className="img th-140 mb-20 d-block">
-                                        //             <img src={product.image} alt="" className="img-contain" />
-                                        //         </div>
-                                        //         <div className="info">
-                                        //             <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase"> 15% OFF </span>
-                                        //             <a href={`/single_product/${product.id}`} className="title fsz-14 mt-15 fw-600 hover-blue1"> {product.name_uz} </a>
+                                                    <p className="price color-red1 mt-2 fsz-20"> ${product.price}  </p>
+                                                    <span className="old-price color-999 text-decoration-line-through ms-2 fsz-16"> $619.00 </span>
+                                                    <div className="progress mt-20">
+                                                        <div className="progress-bar bg-blue1" role="progressbar" style={{ width: "25%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                    <p className="fsz-12 mt-3"> Sold: 24 / 80 </p>
+                                                </div>
+                                                <a href="#0" className="cart-btn addCart" onClick={() => {
 
-                                        //             <p className="price color-red1 mt-2 fsz-20"> ${product.price}  </p>
-                                        //             <span className="old-price color-999 text-decoration-line-through ms-2 fsz-16"> $619.00 </span>
-                                        //             <div className="progress mt-20">
-                                        //                 <div className="progress-bar bg-blue1" role="progressbar" style={{ width: "25%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                        //             </div>
-                                        //             <p className="fsz-12 mt-3"> Sold: 24 / 80 </p>
-                                        //         </div>
-                                        //         <a href="#0" className="cart-btn addCart" onClick={() => {
-
-                                        //             isToken ?
-                                        //                 handleAddToBasket(product.id)
-                                        //                 :
-                                        //                 session.add("products", product.id);
-                                        //             toast.success('Product added to basket!');
+                                                    isToken ?
+                                                        handleAddToBasket(product.id)
+                                                        :
+                                                        session.add("products", product.id);
+                                                    toast.success('Product added to basket!');
 
 
-                                        //         }}
-                                        //         >
-                                        //             <MdOutlineAddShoppingCart className="me-1" />Add To Cart
-                                        //         </a>
-                                        //     </div>
-                                        // </a>
-                                    )) :
-                                    <div
+                                                }}
+                                                >
+                                                    <MdOutlineAddShoppingCart className="me-1" />Add To Cart
+                                                </a>
+                                            </div>
+                                        </a>
+                                    )) : 
+                                    <div  
                                         ref={containerRef}
                                         className="flex overflow-hidden gap-2 ps-5"
-                                        style={{ whiteSpace: 'nowrap' }}
+                                        style={{ whiteSpace: 'nowrap' }} 
                                     >
                                         {Array.from({ length: 5 }).map((_, index) => (
                                             <div key={index}
@@ -583,7 +583,7 @@ const Home = () => {
                         </div>
                     </div>
                 </section>
-
+                
                 <section className="tc-pupolar-brands-style1 wow fadeInUp slow" data-wow-delay="0.2s">
                     <div className="container overflow-hidden custom-container">
                         <div className="content">
