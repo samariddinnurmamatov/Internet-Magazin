@@ -44,7 +44,7 @@ const Home = () => {
     useEffect(() => {
         const token = session.get("token");
         setIsToken(!!token)
-        
+
         const fetchData = async () => {
             try {
                 const [categoryData, productData, brandData, categoryProduct, bannerData] = await Promise.all([
@@ -54,15 +54,16 @@ const Home = () => {
                     apiGetCategoryOfProduct(1),
                     apiGetBanner()
                 ]);
-                
+
                 if (categoryData.success) setCategories(categoryData.data);
                 if (productData.success) setProducts(productData.data);
                 if (brandData.success) setBrands(brandData.data);
                 if (categoryProduct.success) setCategoryOfProduct(categoryProduct.data);
-                if (bannerData.success) setBanner(banner);
-                console.log(banner)
+                if (bannerData.success) {
+                    setBanner(bannerData.data)
+                };
                 
-            } catch (error) { 
+            } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
@@ -127,6 +128,8 @@ const Home = () => {
                 // Check if productId is already in favorites to avoid duplicates
                 setFavorites(prevFavorites => {
                     if (prevFavorites.includes(productId)) return prevFavorites;
+                    toast.success('Product liked');
+
                     return [...prevFavorites, productId];
                 });
             } else {
@@ -198,7 +201,7 @@ const Home = () => {
     return (
         <Fragment>
             <main style={{ height: "auto", marginBottom: "50px" }}>
-                
+
                 <section className="tc-header-style1 mt-4">
                     <div className="container">
                         <div className="content">
@@ -245,18 +248,17 @@ const Home = () => {
 
                                 {
                                     banner.length > 0 ?
-                                        banner.length((prod) => (
-
+                                        banner.map((ban) => (
                                             <div className="col-lg-6">
                                                 <div className="card-overlay wow fadeInUp slow" data-wow-delay="0.2s">
                                                     <div className="img th-230">
-                                                        <img src={prod.image} alt="" className="img-cover" />
+                                                        <img src={ban.image} alt="" className="img-cover" />
                                                     </div>
                                                     <div className="info color-000 p-30">
                                                         <div className="cont">
-                                                            <h3 className="fsz-30"> {prod.category.name_uz} </h3>
+                                                            <h3 className="fsz-30"> {ban.category.name_uz} </h3>
                                                         </div>
-                                                        <Link to={`/category/${prod.category.id}`} className="butn px-4 py-2 bg-dark text-white rounded-pill fw-600 fsz-12 mt-30"> <span> Show category </span> </Link>
+                                                        <Link to={`/category/${ban.category.id}`} className="butn px-4 py-2 bg-dark text-white rounded-pill fw-600 fsz-12 mt-30"> <span> Show category </span> </Link>
                                                     </div>
                                                 </div>
                                             </div>
@@ -371,7 +373,7 @@ const Home = () => {
                                                 // viewBox="0 0 40 160"
                                                 backgroundColor="#e4e4e7"
                                                 foregroundColor="#f3f4f6"
-                                        >
+                                            >
                                                 <circle cx="50" cy="50" r="50" />
                                                 <rect x="0" y="110" rx="3" ry="3" width="100" height="10" />
 
@@ -395,18 +397,21 @@ const Home = () => {
                                 {products.length > 0 ?
 
                                     products.map((product) => (
-                                        
+
                                         // <ProductCard product={product} />
-                                        <a href={`/single_product/${product.id}`} className="column-sm" key={product.id}>
+                                        <Link to={`/single_product/${product.id}`} className="column-sm" key={product.id}>
                                             <div className="deal-card">
                                                 <div className="top">
                                                     <div className="icons">
-                                                        <div
+                                                        <Link
                                                             className={`icon fav ${isFavorite(product.id) ? 'liked' : ''}`}
-                                                            onClick={() => isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id)}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id)
+                                                            }}
                                                         >
                                                             {isFavorite(product.id) ? <FaHeart /> : <FaRegHeart />}
-                                                        </div>
+                                                        </Link>
                                                         <Link href="/" className="icon"><IoSync /></Link>
                                                         <a href={product.image} className="icon" data-fancybox="deal"><FaEye /></a>
                                                     </div>
@@ -439,12 +444,12 @@ const Home = () => {
                                                     <MdOutlineAddShoppingCart className="me-1" />Add To Cart
                                                 </a>
                                             </div>
-                                        </a>
-                                    )) : 
-                                    <div  
+                                        </Link>
+                                    )) :
+                                    <div
                                         ref={containerRef}
                                         className="flex overflow-hidden gap-2 ps-5"
-                                        style={{ whiteSpace: 'nowrap' }} 
+                                        style={{ whiteSpace: 'nowrap' }}
                                     >
                                         {Array.from({ length: 5 }).map((_, index) => (
                                             <div key={index}
@@ -496,7 +501,9 @@ const Home = () => {
 
                                         {categoryOfProduct.length > 0 ?
                                             categoryOfProduct.length > 0 && categoryOfProduct.map((product) => (
+
                                                 <div className="swiper-slide" key={product.id}>
+
                                                     <div className="column-sm" >
                                                         <div className="product-card">
                                                             <div className="top">
@@ -515,20 +522,12 @@ const Home = () => {
                                                             <div className="img th-140 mb-20 d-block">
                                                                 <img src={product.image} alt="" className="img-contain" />
                                                             </div>
-                                                            <div className="info ">
-                                                                {
-                                                                    product.discount && <div className="">
-                                                                        <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase">
-                                                                            {product.percentege.sum ? `-${product.percentege.sum}` : `${product.discount.percentage}% OFF`}
-                                                                        </span>
-                                                                    </div>
-                                                                }
+                                                            <div className="info">
+                                                                <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase"> 15% OFF </span>
                                                                 <a href={`/single_product/${product.id}`} className="title fsz-14 mt-15 fw-600 hover-blue1"> {product.name_uz} </a>
-                                                                {
-                                                                    product.discount &&
-                                                                    <div className="title fsz-14 mt-15 fw-600"> {product.discount.name} </div>
-                                                                }
-                                                                <p className="price color-red1 mt-2 fsz-20"> ${product.discounted_price && product.price} <span className="old-price color-999 text-decoration-line-through ms-2 fsz-16"> {!product.discounted_price} </span> </p>
+
+                                                                <p className="price color-red1 mt-2 fsz-20"> ${product.price}  </p>
+                                                                <span className="old-price color-999 text-decoration-line-through ms-2 fsz-16"> $619.00 </span>
                                                                 <div className="progress mt-20">
                                                                     <div className="progress-bar bg-blue1" role="progressbar" style={{ width: "25%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                                                 </div>
@@ -545,6 +544,7 @@ const Home = () => {
                                                             }><MdOutlineAddShoppingCart className="me-1" />Add To Cart</a>
                                                         </div>
                                                     </div>
+
                                                 </div>
                                             ))
                                             :
@@ -564,7 +564,7 @@ const Home = () => {
                                                             // viewBox="0 0 280 160"
                                                             backgroundColor="#e4e4e7"
                                                             foregroundColor="#f3f4f6"
-                                                                >
+                                                        >
                                                             <rect x="0" y="0" rx="0" ry="0" width="230" height="320" />
 
                                                         </ContentLoader>
@@ -583,7 +583,7 @@ const Home = () => {
                         </div>
                     </div>
                 </section>
-                
+
                 <section className="tc-pupolar-brands-style1 wow fadeInUp slow" data-wow-delay="0.2s">
                     <div className="container overflow-hidden custom-container">
                         <div className="content">
@@ -623,18 +623,18 @@ const Home = () => {
                                                 <div key={index}
                                                     style={{ display: isOverflowing ? 'none' : 'flex' }}
                                                     className={` ${isOverflowing ? 'hidden' : ''}`} >
-                                                        <ContentLoader
-                                                    speed={2}
-                                                    width={224}
-                                                    height={192}
-                                                    // viewBox="0 0 280 160"
-                                                    backgroundColor="#e4e4e7"
-                                                    foregroundColor="#f3f4f6"
-                                                >
-                                                    <rect x="0" y="0" rx="0" ry="0" width="224" height="192" />
+                                                    <ContentLoader
+                                                        speed={2}
+                                                        width={224}
+                                                        height={192}
+                                                        // viewBox="0 0 280 160"
+                                                        backgroundColor="#e4e4e7"
+                                                        foregroundColor="#f3f4f6"
+                                                    >
+                                                        <rect x="0" y="0" rx="0" ry="0" width="224" height="192" />
 
-                                                </ContentLoader>
-                                                    </div>
+                                                    </ContentLoader>
+                                                </div>
                                             ))}
                                         </div>}
                                 </div>
@@ -662,17 +662,17 @@ const Home = () => {
                                         <div key={index}
                                             style={{ display: isOverflowing ? 'none' : 'flex' }}
                                             className={` ${isOverflowing ? 'hidden' : ''}`} >
-                                                <ContentLoader
-                                                    speed={2}
-                                                    width={100}
-                                                    height={30}
-                                                    backgroundColor="#e4e4e7"
-                                                    foregroundColor="#f3f4f6"
-                                                >
-                                                    <rect x="0" y="0" rx="0" ry="0" width="100" height="30" />
+                                            <ContentLoader
+                                                speed={2}
+                                                width={100}
+                                                height={30}
+                                                backgroundColor="#e4e4e7"
+                                                foregroundColor="#f3f4f6"
+                                            >
+                                                <rect x="0" y="0" rx="0" ry="0" width="100" height="30" />
 
-                                                </ContentLoader>
-                                            </div>
+                                            </ContentLoader>
+                                        </div>
                                     ))}
                                 </div>
                             }

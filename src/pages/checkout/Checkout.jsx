@@ -9,12 +9,14 @@ import { createOrder } from "../../services/OrderService";
 import { apiGetBasket } from "../../services/HomeService";
 import { apiUserInfo } from "../../services/AuthService";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Checkout = () => {
   // const basketItems = useSelector((state) => state.basket);
 
   const [position, setPosition] = useState([51.505, -0.09]); // Default position
+
+  const navigate = useNavigate()
 
   const [basket, setBasket] = useState([]);
   const [userData, setUserData] = useState({
@@ -136,6 +138,9 @@ export const Checkout = () => {
       const response = await createOrder(data);
   
       console.log("checkout", response.data);
+      toast.success('order received');
+
+      navigate("/")
     } catch (error) {
       console.log("Error during order creation:", error.response.data);
     }
@@ -423,12 +428,12 @@ export const Checkout = () => {
                           </div>
                         </label>
                       </div>
-                      <a
+                      <Link
                         onClick={fetchData}
-                        className="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase d-flex justify-center mt-30 py-3 px-3 w-100"
+                        className="butn bg-green2 cursor-pointer text-white radius-4 fw-500 fsz-12 text-uppercase d-flex justify-center mt-30 py-3 px-3 w-100"
                       >
                         <span  > place order </span>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>

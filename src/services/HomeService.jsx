@@ -98,6 +98,7 @@ export async function apiGetBanner() {
   });
 }
 
+
 export async function apiGetBrands(params = {}) {
   return ApiService.fetchData({
     url: "/brand",
