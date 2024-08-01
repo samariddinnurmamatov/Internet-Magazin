@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from 'react';
 import Container from '../../components/shared/Container';
-import { apiUserInfo, apiUserInfoEdit, apiUserPasswordUpd } from '../../services/AuthService';
+import { apiLogout, apiUserInfo, apiUserInfoEdit, apiUserPasswordUpd } from '../../services/AuthService';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import Person from "../../assets/person-remov.png"
@@ -85,6 +85,26 @@ export const Profile = () => {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      const response = await apiLogout();
+      console.log('Logout response:', response);
+      if (response) {
+        toast.success('Logged out successfully.');
+        localStorage.removeItem('token'); // Clear the token from localStorage
+        localStorage.removeItem('user');
+        localStorage.removeItem('products');
+        localStorage.removeItem('like');
+        navigate('/login'); // Navigate to login page
+      } else {
+        toast.error('Failed to log out.');
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+      toast.error('Failed to log out.');
+    }
+  };
+
   return (
     <Fragment>
       <div className="home-style3 profile-pg-1 py-10">
@@ -111,11 +131,11 @@ export const Profile = () => {
                         <span> Account info </span> <GrNext />
                       </button>
                     </li>
-                    <li className="nav-item" role="presentation">
+                    {/* <li className="nav-item" role="presentation">
                       <button className="nav-link" id="pills-prof2-tab" data-bs-toggle="pill" data-bs-target="#pills-prof2">
                         <span> My order </span> <GrNext />
                       </button>
-                    </li>
+                    </li> */}
                     <li className="nav-item" role="presentation">
                       <button className="nav-link" id="pills-prof4-tab" data-bs-toggle="pill" data-bs-target="#pills-prof4">
                         <span> Change password </span> <GrNext />
@@ -173,17 +193,21 @@ export const Profile = () => {
 
                             </div>
                           </div>
-                          <div className="col-lg-12">
+                          <div className="col-lg-12 flex gap-4">
                             <button className="butn bg-green2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-20 py-3 px-5" onClick={handleUpdateUser}
                             >
                               <span> save </span>
+                            </button>
+                            <button className="butn bg-red2 text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-20 py-3 px-5"  onClick={handleLogout}
+                            >
+                              <span> Log Out </span>
                             </button>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="tab-pane fade" id="pills-prof2">
+                  {/* <div className="tab-pane fade" id="pills-prof2">
                     <div className="orders-tab">
                       <h4 className="fw-bold text-capitalize mb-30"> Orders History </h4>
                       <div className="orders">
@@ -257,7 +281,7 @@ export const Profile = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
 
                   <div className="tab-pane fade" id="pills-prof4">
                     <div className="changepass-tab">
