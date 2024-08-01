@@ -79,7 +79,7 @@ const SingleProduct = () => {
 
             } catch (error) {
                 console.error('Error fetching data:', error);
-                
+
                 const likes = session.get("like");
                 if (likes) setFavorites(likes.map(fav => fav));
             }
@@ -194,8 +194,8 @@ const SingleProduct = () => {
     return (
         <Fragment>
             <main className=" home-style3 py-3 sin-prod-pg-1">
-
                 <Container>
+
                     <section className="tc-breadcrumb-style6 p-30 radius-4 bg-white mt-3 wow fadeInUp" style={{ visibility: "visible", animationName: "fadeInUp" }}>
                         <nav aria-label="breadcrumb">
                             <ol className="breadcrumb fw-bold mb-0">
@@ -204,6 +204,7 @@ const SingleProduct = () => {
                             </ol>
                         </nav>
                     </section>
+
                     <section className="product-main-details p-30 radius-4 bg-white mt-3 wow fadeInUp" style={{ visibility: "visible", animationName: "fadeInUp" }}>
                         <div className="row">
                             <div className="col-lg-5">
@@ -213,13 +214,17 @@ const SingleProduct = () => {
                                         <div className="icons">
                                             <span className="icon icon-plus"><FaPlus /></span>
                                             <div className="collapse-icons">
-                                                <a href="" className="icon icon-plus"><IoSync /></a>
+                                                <a href="#" className="icon icon-plus"><IoSync /></a>
                                                 <span onClick={() => handleAddToBasket(product.id)} className="icon icon-plus"><FaCartShopping /></span>
-                                                <span onClick={() => isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id)}
+                                                <span onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id)
+                                                }}
                                                     className="icon icon-plus fav-btn">{isFavorite(product.id) ? <FaHeart /> : <FaRegHeart />}</span>
                                             </div>
                                         </div>
                                     </div>
+
                                     <div className="swiper-container gallery-top  swiper-initialized swiper-horizontal swiper-pointer-events swiper-backface-hidden">
                                         <div className="swiper-wrapper d-flex justify-between" id="swiper-wrapper-b9daa792d61038498" aria-live="polite" style={{ transform: "translate3d(0px, 0px, 0px);" }}>
                                             <div className="swiper-slide swiper-slide-active" role="group" aria-label="1 / 3" style={{ width: "524px", marginRight: "10px;" }}>
@@ -329,8 +334,11 @@ const SingleProduct = () => {
                                         }}> <span> Add To Cart </span> </a>
 
                                         <div className="d-flex color-666 fsz-13 py-3 border-bottom">
-                                            <a href="#" className="me-4 pe-4 border-end d-flex items-center gap-2">{isFavorite(product.id) ? <FaHeart className="color-green2 me-1 display" /> : <FaRegHeart />} Wishlist added </a>
-                                            <a href="" className="d-flex items-center gap-2"><FaRedoAlt className="me-1 display" />Compare </a>
+                                            <a href="#" onClick={(e) => {
+                                                e.stopPropagation();
+                                                isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id)
+                                            }} className="me-4 pe-4 border-end d-flex items-center gap-2">{isFavorite(product.id) ? <FaHeart className="color-green2 me-1 display" /> : <FaRegHeart />} Wishlist added </a>
+                                            <a href="#" className="d-flex items-center gap-2"><FaRedoAlt className="me-1 display" />Compare </a>
                                         </div>
                                     </div>
                                 </div>
@@ -546,7 +554,7 @@ const SingleProduct = () => {
                         <div className="products-content">
                             <div className="products-slider swiper-initialized swiper-horizontal swiper-pointer-events swiper-backface-hidden">
                                 <div className="swiper-wrapper" id="swiper-wrapper-a0530a2e6781cfb0" aria-live="off" >
-                                    {products.length > 0 ? 
+                                    {products.length > 0 ?
                                         products.map((product) => (
 
                                             <Link to={`/single_product/${product.id}`} className="swiper-slide swiper-slide-active" role="group" aria-label="1 / 6" style={{ width: "236px" }}>
