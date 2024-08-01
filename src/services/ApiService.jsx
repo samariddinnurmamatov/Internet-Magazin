@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { BASE_URL } from '../utils/constants';
 
-const API_BASE_URL = BASE_URL;
+
+const API_BASE_URL = import.meta.env.VITE_API;
 
 const ApiService = {
-  fetchData: async ({ url, method, data, params}) => {
+  fetchData: async ({ url, method, data, params }) => {
     const token = localStorage.getItem('token');
     const headers = {
       'Content-Type': 'application/json',
@@ -20,7 +20,6 @@ const ApiService = {
       });
 
 
-      
       return response.data;
     } catch (error) {
       console.error("API Error:", error);

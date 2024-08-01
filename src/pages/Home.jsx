@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import ContentLoader from "react-content-loader"
 
 import Head1 from "../assets/common/img/head/head_1-1.png";
 import Head11 from "../assets/common/img/head/head_1-1.png";
@@ -15,12 +16,13 @@ import { IoSync } from "react-icons/io5";
 import { FaEye } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
 import { FaRegEnvelope } from "react-icons/fa";
-import { apiDeleteFavourites, apiGetBasket, apiGetBrands, apiGetCategory, apiGetCategoryOfProduct, apiGetFavourites, apiGetProducts, apiPostBasket, apiPostFavourites, apiUpdateBasket } from "../services/HomeService";
+import { apiDeleteFavourites, apiGetBasket, apiGetBrands, apiGetBanner, apiGetCategory, apiGetCategoryOfProduct, apiGetFavourites, apiGetProducts, apiPostBasket, apiPostFavourites, apiUpdateBasket } from "../services/HomeService";
 import { CiSearch } from "react-icons/ci";
 import { MdOutlineAddShoppingCart } from "react-icons/md";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { session } from "../services/session";
+import ProductCard from "../components/productcard";
 
 
 
@@ -31,9 +33,10 @@ const Home = () => {
     const [favorites, setFavorites] = useState([]);
     const [basket, setBasket] = useState([]);
     const [categoryOfProduct, setCategoryOfProduct] = useState([]);
+    const [banner, setBanner] = useState([]);
     const [activeCategory, setActiveCategory] = useState('');
     const [isToken, setIsToken] = useState(false);
-    // for the categories to appear when the internet is down
+
     const [isOverflowing, setIsOverflowing] = useState(false);
     const containerRef = useRef(null);
 
@@ -45,17 +48,19 @@ const Home = () => {
 
         const fetchData = async () => {
             try {
-                const [categoryData, productData, brandData, categoryProduct] = await Promise.all([
+                const [categoryData, productData, brandData, categoryProduct, banner] = await Promise.all([
                     apiGetCategory(),
                     apiGetProducts(),
                     apiGetBrands(),
                     apiGetCategoryOfProduct(1),
+                    apiGetBanner()
                 ]);
 
                 if (categoryData.success) setCategories(categoryData.data);
                 if (productData.success) setProducts(productData.data);
                 if (brandData.success) setBrands(brandData.data);
                 if (categoryProduct.success) setCategoryOfProduct(categoryProduct.data);
+                if (banner.success) setBanner(banner.data);
 
                 console.log(categoryProduct.data)
             } catch (error) {
@@ -82,6 +87,7 @@ const Home = () => {
 
                 const likes = session.get("like");
                 if (likes) setFavorites(likes.map(fav => fav));
+
             }
         };
 
@@ -107,10 +113,12 @@ const Home = () => {
         try {
             const productData = await apiGetCategoryOfProduct(categoryid);
             if (productData.success) setCategoryOfProduct(productData.data);
+            return productData.data;
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
+
 
 
     const handleLike = async (productId) => {
@@ -153,6 +161,7 @@ const Home = () => {
         }
     };
 
+
     const handleAddToBasket = async (productIdBasket) => {
         const existingProduct = basket.find(item => item.product_id === productIdBasket);
         try {
@@ -186,44 +195,21 @@ const Home = () => {
         [favorites]
     );
 
-    function Arrow(props) {
-        const disabled = props.disabled ? " arrow--disabled" : ""
-        return (
-          <svg
-            onClick={props.onClick}
-            className={`arrow ${
-              props.left ? "arrow--left" : "arrow--right"
-            } ${disabled}`}
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            {props.left && (
-              <path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z" />
-            )}
-            {!props.left && (
-              <path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z" />
-            )}
-          </svg>
-        )
-      }
-      
-
 
     return (
         <Fragment>
             <main style={{ height: "auto", marginBottom: "50px" }}>
-
                 <section className="tc-header-style1 mt-4">
                     <div className="container">
                         <div className="content">
                             <div className="row">
-                                <div className="col-lg-8">
-                                    <div className="main-slider">
+                                <div className="col-lg-12">
+                                    <div className="main-slider rounded-3xl">
                                         <div className="swiper-wrapper">
-                                            <div className="swiper-slide">
+                                            <div className="swiper-slide w-full">
                                                 <div className="slide-card">
                                                     <div className="img th-450">
-                                                        <img src={Head1} alt="" className="img-cover" />
+                                                        <img src={Head11} alt="" className="w-full" />
                                                     </div>
                                                     <div className="info text-white">
                                                         <div className="cont">
@@ -234,10 +220,10 @@ const Home = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="swiper-slide">
+                                            <div className="swiper-slide w-full ">
                                                 <div className="slide-card">
                                                     <div className="img th-450">
-                                                        <img src={Head11} alt="" className="img-cover" />
+                                                        <img src={Head11} alt="" className="w-full" />
                                                     </div>
                                                     <div className="info text-white">
                                                         <div className="cont">
@@ -256,21 +242,62 @@ const Home = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-lg-4">
-                                    <div className="card-overlay card-center">
-                                        <div className="img th-450">
-                                            <img src={Head2} alt="" className="img-cover" />
-                                        </div>
-                                        <div className="info text-white p-50">
-                                            <div className="cont">
-                                                <h3 className="fsz-30"> Humidifying Fan </h3>
-                                                <p className="fsz-13 mt-1"> From $299  </p>
+
+                                {
+                                    banner.length > 0 ?
+                                        banner.length((prod) => (
+
+                                            <div className="col-lg-6">
+                                                <div className="card-overlay wow fadeInUp slow" data-wow-delay="0.2s">
+                                                    <div className="img th-230">
+                                                        <img src={prod.image} alt="" className="img-cover" />
+                                                    </div>
+                                                    <div className="info color-000 p-30">
+                                                        <div className="cont">
+                                                            <h3 className="fsz-30"> {prod.category.name_uz} </h3>
+                                                        </div>
+                                                        <Link to={`/category/${prod.category.id}`} className="butn px-4 py-2 bg-dark text-white rounded-pill fw-600 fsz-12 mt-30"> <span> Show category </span> </Link>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div className="butn px-5 py-3 bg-white color-000 rounded-pill fw-600"> <span> Discover Now </span> </div>
+                                        )) :
+                                        <div className="row  d-flex justify-around mb-2">
+                                            <div className="col-lg-6 mb-3">
+                                                <ContentLoader
+                                                    speed={2}
+                                                    width="100%"
+                                                    height={220}
+                                                    // viewBox="0 0 100 220"
+                                                    backgroundColor="#e4e4e7"
+                                                    foregroundColor="#f3f4f6"
+                                                    className="w-full"
+                                                >
+
+                                                    <rect x="48" y="8" rx="3" ry="3" width="100%" height="220" />
+                                                </ContentLoader>
+                                            </div>
+                                            <div className="col-lg-6 mb-3">
+                                                <ContentLoader
+                                                    speed={2}
+                                                    width="100%"
+                                                    height={220}
+                                                    // viewBox="0 0 100 220"
+                                                    backgroundColor="#e4e4e7"
+                                                    foregroundColor="#f3f4f6"
+                                                    className="w-full"
+                                                >
+
+                                                    <rect x="48" y="8" rx="3" ry="3" width="100%" height="220" />
+                                                </ContentLoader>
+                                            </div>
+
                                         </div>
-                                    </div>
-                                </div>
-                                <div className="col-lg-6">
+
+                                }
+
+
+
+                                {/* <div className="col-lg-6">
                                     <div className="card-overlay wow fadeInUp slow" data-wow-delay="0.2s">
                                         <div className="img th-230">
                                             <img src={Head3} alt="" className="img-cover" />
@@ -297,7 +324,7 @@ const Home = () => {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
 
                             </div>
                         </div>
@@ -337,8 +364,18 @@ const Home = () => {
                                             className={`cat-card d-flex flex-col items-center w-24 ${isOverflowing ? 'hidden' : ''}`}
                                             style={{ display: isOverflowing ? 'none' : 'flex' }}
                                         >
-                                            <div className="img h-24 w-full bg-gray-200"></div>
-                                            <p style={{ background: "#efefef" }} className="fsz-13 fw-bold mt-2 w-full h-4"></p>
+                                            <ContentLoader
+                                                speed={2}
+                                                width={110}
+                                                height={130}
+                                                // viewBox="0 0 40 160"
+                                                backgroundColor="#e4e4e7"
+                                                foregroundColor="#f3f4f6"
+                                        >
+                                                <circle cx="50" cy="50" r="50" />
+                                                <rect x="0" y="110" rx="3" ry="3" width="100" height="10" />
+
+                                            </ContentLoader>
                                         </Link>
                                     ))}
                                 </div>
@@ -358,49 +395,51 @@ const Home = () => {
                                 {products.length > 0 ?
 
                                     products.map((product) => (
-                                        <a href={`/single_product/${product.id}`} className="column-sm" key={product.id}>
-                                            <div className="deal-card">
-                                                <div className="top">
-                                                    <div className="icons">
-                                                        <div
-                                                            className={`icon fav ${isFavorite(product.id) ? 'liked' : ''}`}
-                                                            onClick={() => isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id)}
-                                                        >
-                                                            {isFavorite(product.id) ? <FaHeart /> : <FaRegHeart />}
-                                                        </div>
-                                                        <Link href="/" className="icon"><IoSync /></Link>
-                                                        <a href={product.image} className="icon" data-fancybox="deal"><FaEye /></a>
-                                                    </div>
-                                                </div>
-                                                <div className="img th-140 mb-20 d-block">
-                                                    <img src={product.image} alt="" className="img-contain" />
-                                                </div>
-                                                <div className="info">
-                                                    <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase"> 15% OFF </span>
-                                                    <a href={`/single_product/${product.id}`} className="title fsz-14 mt-15 fw-600 hover-blue1"> {product.name_uz} </a>
 
-                                                    <p className="price color-red1 mt-2 fsz-20"> ${product.price}  </p>
-                                                    <span className="old-price color-999 text-decoration-line-through ms-2 fsz-16"> $619.00 </span>
-                                                    <div className="progress mt-20">
-                                                        <div className="progress-bar bg-blue1" role="progressbar" style={{ width: "25%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                    <p className="fsz-12 mt-3"> Sold: 24 / 80 </p>
-                                                </div>
-                                                <a href="#0" className="cart-btn addCart" onClick={() => {
+                                        <ProductCard product={product} />
+                                        // <a href={`/single_product/${product.id}`} className="column-sm" key={product.id}>
+                                        //     <div className="deal-card">
+                                        //         <div className="top">
+                                        //             <div className="icons">
+                                        //                 <div
+                                        //                     className={`icon fav ${isFavorite(product.id) ? 'liked' : ''}`}
+                                        //                     onClick={() => isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id)}
+                                        //                 >
+                                        //                     {isFavorite(product.id) ? <FaHeart /> : <FaRegHeart />}
+                                        //                 </div>
+                                        //                 <Link href="/" className="icon"><IoSync /></Link>
+                                        //                 <a href={product.image} className="icon" data-fancybox="deal"><FaEye /></a>
+                                        //             </div>
+                                        //         </div>
+                                        //         <div className="img th-140 mb-20 d-block">
+                                        //             <img src={product.image} alt="" className="img-contain" />
+                                        //         </div>
+                                        //         <div className="info">
+                                        //             <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase"> 15% OFF </span>
+                                        //             <a href={`/single_product/${product.id}`} className="title fsz-14 mt-15 fw-600 hover-blue1"> {product.name_uz} </a>
 
-                                                    isToken ?
-                                                        handleAddToBasket(product.id)
-                                                        :
-                                                        session.add("products", product.id);
-                                                    toast.success('Product added to basket!');
+                                        //             <p className="price color-red1 mt-2 fsz-20"> ${product.price}  </p>
+                                        //             <span className="old-price color-999 text-decoration-line-through ms-2 fsz-16"> $619.00 </span>
+                                        //             <div className="progress mt-20">
+                                        //                 <div className="progress-bar bg-blue1" role="progressbar" style={{ width: "25%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                        //             </div>
+                                        //             <p className="fsz-12 mt-3"> Sold: 24 / 80 </p>
+                                        //         </div>
+                                        //         <a href="#0" className="cart-btn addCart" onClick={() => {
+
+                                        //             isToken ?
+                                        //                 handleAddToBasket(product.id)
+                                        //                 :
+                                        //                 session.add("products", product.id);
+                                        //             toast.success('Product added to basket!');
 
 
-                                                }}
-                                                >
-                                                    <MdOutlineAddShoppingCart className="me-1" />Add To Cart
-                                                </a>
-                                            </div>
-                                        </a>
+                                        //         }}
+                                        //         >
+                                        //             <MdOutlineAddShoppingCart className="me-1" />Add To Cart
+                                        //         </a>
+                                        //     </div>
+                                        // </a>
                                     )) :
                                     <div
                                         ref={containerRef}
@@ -410,7 +449,19 @@ const Home = () => {
                                         {Array.from({ length: 5 }).map((_, index) => (
                                             <div key={index}
                                                 style={{ display: isOverflowing ? 'none' : 'flex' }}
-                                                className={`h-72 border border-black rounded-lg w-56 bg-gray-200 ${isOverflowing ? 'hidden' : ''}`} ></div>
+                                                className={` ${isOverflowing ? 'hidden' : ''}`} >
+                                                <ContentLoader
+                                                    speed={2}
+                                                    width={230}
+                                                    height={320}
+                                                    // viewBox="0 0 280 160"
+                                                    backgroundColor="#e4e4e7"
+                                                    foregroundColor="#f3f4f6"
+                                                >
+                                                    <rect x="0" y="0" rx="0" ry="0" width="230" height="320" />
+
+                                                </ContentLoader>
+                                            </div>
                                         ))}
                                     </div>
                                 }
@@ -465,13 +516,19 @@ const Home = () => {
                                                                 <img src={product.image} alt="" className="img-contain" />
                                                             </div>
                                                             <div className="info ">
-                                                                <div className="">
-
-                                                                    <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase"> 15% OFF </span>
-                                                                </div>
+                                                                {
+                                                                    product.discount && <div className="">
+                                                                        <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase">
+                                                                            {product.percentege.sum ? `-${product.percentege.sum}` : `${product.discount.percentage}% OFF`}
+                                                                        </span>
+                                                                    </div>
+                                                                }
                                                                 <a href={`/single_product/${product.id}`} className="title fsz-14 mt-15 fw-600 hover-blue1"> {product.name_uz} </a>
-
-                                                                <p className="price color-red1 mt-2 fsz-20"> ${product.price} <span className="old-price color-999 text-decoration-line-through ms-2 fsz-16"> $619.00 </span> </p>
+                                                                {
+                                                                    product.discount &&
+                                                                    <div className="title fsz-14 mt-15 fw-600"> {product.discount.name} </div>
+                                                                }
+                                                                <p className="price color-red1 mt-2 fsz-20"> ${product.discounted_price && product.price} <span className="old-price color-999 text-decoration-line-through ms-2 fsz-16"> {!product.discounted_price} </span> </p>
                                                                 <div className="progress mt-20">
                                                                     <div className="progress-bar bg-blue1" role="progressbar" style={{ width: "25%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                                                 </div>
@@ -499,7 +556,19 @@ const Home = () => {
                                                 {Array.from({ length: 5 }).map((_, index) => (
                                                     <div key={index}
                                                         style={{ display: isOverflowing ? 'none' : 'flex' }}
-                                                        className={`h-72 border border-black rounded-lg w-56 bg-gray-200 ${isOverflowing ? 'hidden' : ''}`} ></div>
+                                                        className={` ${isOverflowing ? 'hidden' : ''}`} >
+                                                        <ContentLoader
+                                                            speed={2}
+                                                            width={230}
+                                                            height={320}
+                                                            // viewBox="0 0 280 160"
+                                                            backgroundColor="#e4e4e7"
+                                                            foregroundColor="#f3f4f6"
+                                                                >
+                                                            <rect x="0" y="0" rx="0" ry="0" width="230" height="320" />
+
+                                                        </ContentLoader>
+                                                    </div>
                                                 ))}
                                             </div>}
                                     </div>
@@ -553,7 +622,19 @@ const Home = () => {
                                             {Array.from({ length: 5 }).map((_, index) => (
                                                 <div key={index}
                                                     style={{ display: isOverflowing ? 'none' : 'flex' }}
-                                                    className={`h-48 border border-black rounded-xl w-56 bg-gray-200 ${isOverflowing ? 'hidden' : ''}`} ></div>
+                                                    className={` ${isOverflowing ? 'hidden' : ''}`} >
+                                                        <ContentLoader
+                                                    speed={2}
+                                                    width={224}
+                                                    height={192}
+                                                    // viewBox="0 0 280 160"
+                                                    backgroundColor="#e4e4e7"
+                                                    foregroundColor="#f3f4f6"
+                                                >
+                                                    <rect x="0" y="0" rx="0" ry="0" width="224" height="192" />
+
+                                                </ContentLoader>
+                                                    </div>
                                             ))}
                                         </div>}
                                 </div>
@@ -577,10 +658,21 @@ const Home = () => {
                                     className="flex overflow-hidden gap-2 ps-5"
                                     style={{ whiteSpace: 'nowrap' }}
                                 >
-                                    {Array.from({ length: 5 }).map((_, index) => (
+                                    {Array.from({ length: 10 }).map((_, index) => (
                                         <div key={index}
                                             style={{ display: isOverflowing ? 'none' : 'flex' }}
-                                            className={`h-8 border border-black rounded-xl w-24 bg-gray-200 ${isOverflowing ? 'hidden' : ''}`} ></div>
+                                            className={` ${isOverflowing ? 'hidden' : ''}`} >
+                                                <ContentLoader
+                                                    speed={2}
+                                                    width={100}
+                                                    height={30}
+                                                    backgroundColor="#e4e4e7"
+                                                    foregroundColor="#f3f4f6"
+                                                >
+                                                    <rect x="0" y="0" rx="0" ry="0" width="100" height="30" />
+
+                                                </ContentLoader>
+                                            </div>
                                     ))}
                                 </div>
                             }

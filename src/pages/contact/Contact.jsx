@@ -74,12 +74,12 @@ export const Contact = () => {
                                                 <div className="form-check">
                                                     <input className="form-check-input" type="checkbox" value="" id="account" />
                                                     <label className="form-check-label" htmlFor="account">
-                                                        I want to receive news and updates once in a while. By submitting, I’m agreed to the <a href="#" className="color-green2 text-decoration-underline"> Terms & Conditions </a>
+                                                        I want to receive news and updates once in a while. By submitting, I’m agreed to the <a href="#" className="color-blue1 text-decoration-underline"> Terms & Conditions </a>
                                                     </label>
                                                 </div>
                                             </div>
                                             <div className="col-lg-12">
-                                                <a href="#" className="butn bg-green2 d-flex items-center justify-center text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-50 py-3"> <span> send message </span> </a>
+                                                <a href="#" className="butn bg-blue1 d-flex items-center justify-center text-white radius-4 fw-500 fsz-12 text-uppercase text-center mt-50 py-3"> <span> send message </span> </a>
                                             </div>
                                         </div>
                                     </div>
@@ -97,7 +97,7 @@ export const Contact = () => {
                                                 <a href="#"> (+025) 3886 25 16 </a>
                                             </li>
                                             <li>
-                                                <a href="#" className="color-green2 text-decoration-underline"> hello@swattechmart.com </a>
+                                                <a href="#" className="color-blue1 text-decoration-underline"> hello@swattechmart.com </a>
                                             </li>
                                         </ul>
                                         <small className="fsz-12 color-666 text-uppercase mb-20 mt-50"> united kingdom (branch) </small>
@@ -109,7 +109,7 @@ export const Contact = () => {
                                                 <a href="#"> (+718) 895-5350 </a>
                                             </li>
                                             <li>
-                                                <a href="#" className="color-green2 text-decoration-underline"> contact@swattechmart.co.uk </a>
+                                                <a href="#" className="color-blue1 text-decoration-underline"> contact@swattechmart.co.uk </a>
                                             </li>
                                         </ul>
                                         <div className="social-icons mt-50">
