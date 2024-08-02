@@ -429,8 +429,8 @@ const Home = () => {
                                                         <div className="progress-bar bg-blue1" role="progressbar" style={{ width: "25%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </div>
-                                                <a href="#0" className="cart-btn addCart" onClick={() => {
-
+                                                <a href="#0" className="cart-btn addCart" onClick={(e) => {
+                                                        e.stopPropagation();
                                                     isToken ?
                                                         handleAddToBasket(product.id)
                                                         :
@@ -489,7 +489,10 @@ const Home = () => {
                             {categories.map(category => (
 
                                 <li className="nav-item" role="presentation" key={category.id}>
-                                    <button onClick={() => { fetchProductData(category.id) }} className={`nav-link ${activeCategory === category.id ? 'active' : ''}`} id="pills-tab1-tab" data-bs-toggle="pill" data-bs-target="#pills-tab1" type="button" role="tab" aria-selected="true">{category.name_uz}</button>
+                                    <button onClick={(e) => { 
+                                        e.stopPropagation();
+                                        fetchProductData(category.id)
+                                         }} className={`nav-link ${activeCategory === category.id ? 'active' : ''}`} id="pills-tab1-tab" data-bs-toggle="pill" data-bs-target="#pills-tab1" type="button" role="tab" aria-selected="true">{category.name_uz}</button>
                                 </li>
                             ))}
                         </ul>
@@ -510,7 +513,10 @@ const Home = () => {
                                                                     <a
                                                                         href="#0"
                                                                         className={`icon fav ${isFavorite(product.id) ? 'liked' : ''}`}
-                                                                        onClick={() => isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id)}
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id)
+                                                                        }}
                                                                     >
                                                                         {isFavorite(product.id) ? <FaHeart /> : <FaRegHeart />}
                                                                     </a>
@@ -531,7 +537,8 @@ const Home = () => {
                                                                     <div className="progress-bar bg-blue1" role="progressbar" style={{ width: "25%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                                                 </div>
                                                             </div>
-                                                            <a href="#0" className="cart-btn addCart" onClick={() => {
+                                                            <a href="#0" className="cart-btn addCart" onClick={(e) => {
+                                                                e.stopPropagation();
                                                                 isToken ?
                                                                     handleAddToBasket(product.id)
                                                                     :
