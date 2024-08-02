@@ -13,39 +13,39 @@ const Favorites = () => {
     const [favorites, setFavorites] = useState([]);
     let products =[];
 
-    useEffect(() => {
-
-        const fetchLiked = async () => {
-            const token = session.get("token");
-            setIsToken(!!token)
-      
-            try {
-                const response = await apiGetFavourites();
-                if (response) {
-                    setFavorites(response.data); 
-                    console.log(response.data)
-                  } else {
-                    console.error('Invalid favorites data structure:', response);
-                  }
-            } catch (error) {
-
-                console.error('Error fetching basket:', error);
-        
-                const basketProd = session.get("like") || [];
-                console.log(basketProd);
-        
-                for (const product of basketProd) {
-                  try {
-                    const singleProduct = await apiGetSingleProduct(product);
-                    products.push(singleProduct);
-                  } catch (singleProductError) {
-                    console.error('Error fetching single product in favorite:', singleProductError);
-                  }
-                }
-                setFavorites(products);
-                console.log("like =>", products);
+    const fetchLiked = async () => {
+        const token = session.get("token");
+        setIsToken(!!token)
+  
+        try {
+            const response = await apiGetFavourites();
+            if (response) {
+                setFavorites(response.data); 
+                console.log(response.data)
+              } else {
+                console.error('Invalid favorites data structure:', response);
               }
-        };
+        } catch (error) {
+
+            console.error('Error fetching basket:', error);
+    
+            const basketProd = session.get("like") || [];
+            console.log(basketProd);
+    
+            for (const product of basketProd) {
+              try {
+                const singleProduct = await apiGetSingleProduct(product);
+                products.push(singleProduct);
+              } catch (singleProductError) {
+                console.error('Error fetching single product in favorite:', singleProductError);
+              }
+            }
+            setFavorites(products);
+            console.log("like =>", products);
+          }
+    };
+
+    useEffect(() => {
 
         fetchLiked();
     }, []);
@@ -59,13 +59,20 @@ const Favorites = () => {
             });
         } catch (error) {
             console.error('Error removing from favorites:', error);
-            session.remove("like",id)
-            setFavorites(() => {
-                const likes = session.get("likes") || []; // Ensure likes is an array
-                const updatedLikes = likes.filter(favorite => favorite !== id);
-                store.set("like", updatedLikes); // Update the session storage if necessary
-                return updatedLikes;
-            });        }
+            console.log('SSS', id);
+            session.remove("like",id);
+            
+            
+
+            // setFavorites(() => {
+            //     const likes = session.get("likes") || []; // Ensure likes is an array
+            //     const updatedLikes = likes.filter(favorite => favorite !== id);
+            //     // store.set("like", updatedLikes); // Update the session storage if necessary
+            //     return updatedLikes;
+            // });  
+            
+            fetchLiked();
+        }
     };
 
 

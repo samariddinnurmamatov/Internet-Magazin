@@ -510,8 +510,8 @@ const Home = () => {
                                                         <div className="product-card">
                                                             <div className="top">
                                                                 <div className="icons">
-                                                                    <a
-                                                                        href="#0"
+                                                                    <div
+                                                                
                                                                         className={`icon fav ${isFavorite(product.id) ? 'liked' : ''}`}
                                                                         onClick={(e) => {
                                                                             e.stopPropagation();
@@ -519,7 +519,7 @@ const Home = () => {
                                                                         }}
                                                                     >
                                                                         {isFavorite(product.id) ? <FaHeart /> : <FaRegHeart />}
-                                                                    </a>
+                                                                    </div>
                                                                     <a href="#0" className="icon"><IoSync /></a>
                                                                     <a href={product.image} className="icon" data-fancybox="deal"><FaEye /></a>
                                                                 </div>
