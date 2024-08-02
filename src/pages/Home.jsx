@@ -34,16 +34,18 @@ const Home = () => {
     const [basket, setBasket] = useState([]);
     const [categoryOfProduct, setCategoryOfProduct] = useState([]);
     const [banner, setBanner] = useState([]);
-    const [activeCategory, setActiveCategory] = useState('');
+    const [activeCategory, setActiveCategory] = useState();
     const [isToken, setIsToken] = useState(false);
 
     const [isOverflowing, setIsOverflowing] = useState(false);
     const containerRef = useRef(null);
+    
 
 
     useEffect(() => {
         const token = session.get("token");
-        setIsToken(!!token)
+        setIsToken(!!token);
+
 
         const fetchData = async () => {
             try {
@@ -59,10 +61,8 @@ const Home = () => {
                 if (productData.success) setProducts(productData.data);
                 if (brandData.success) setBrands(brandData.data);
                 if (categoryProduct.success) setCategoryOfProduct(categoryProduct.data);
-                if (bannerData.success) {
-                    setBanner(bannerData.data)
-                };
-                
+                if (bannerData.success)setBanner(bannerData.data)   ;
+                setActiveCategory(categoryOfProduct.data[0].id);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -218,7 +218,7 @@ const Home = () => {
                                                         <div className="cont">
                                                             <h2 className="fsz-35 fw-200"> EKO 40 <br /> Android TV </h2>
                                                             <p className="fsz-12 mt-15 text-uppercase"> Smart Full HD Android TV  with Google Assistant  </p>
-                                                            <div className="butn px-5 py-3 bg-blue1 text-white rounded-pill mt-60 fw-600"> <span> Shop Now </span> </div>
+                                                            <div className="butn px-5 py-3 bg-blue1 text-white rounded-pill mt-60 fw-600 w-48"> <div> Shop Now </div> </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -232,7 +232,7 @@ const Home = () => {
                                                         <div className="cont">
                                                             <h2 className="fsz-35 fw-200"> EKO 40 <br /> Android TV </h2>
                                                             <p className="fsz-12 mt-15 text-uppercase"> Smart Full HD Android TV  with Google Assistant  </p>
-                                                            <div className="butn px-5 py-3 bg-blue1 text-white rounded-pill mt-60 fw-600"> <span> Shop Now </span> </div>
+                                                            <div className="butn px-5 py-3 bg-blue1 text-white rounded-pill mt-60 fw-600 w-48"> <div> Shop Now </div> </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -420,15 +420,14 @@ const Home = () => {
                                                     <img src={product.image} alt="" className="img-contain" />
                                                 </div>
                                                 <div className="info">
-                                                    <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase"> 15% OFF </span>
+                                                    {/* <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase"> 15% OFF </span> */}
                                                     <a href={`/single_product/${product.id}`} className="title fsz-14 mt-15 fw-600 hover-blue1"> {product.name_uz} </a>
 
                                                     <p className="price color-red1 mt-2 fsz-20"> ${product.price}  </p>
-                                                    <span className="old-price color-999 text-decoration-line-through ms-2 fsz-16"> $619.00 </span>
+                                                    {/* <span className="old-price color-999 text-decoration-line-through ms-2 fsz-16"> $619.00 </span> */}
                                                     <div className="progress mt-20">
                                                         <div className="progress-bar bg-blue1" role="progressbar" style={{ width: "25%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
-                                                    <p className="fsz-12 mt-3"> Sold: 24 / 80 </p>
                                                 </div>
                                                 <a href="#0" className="cart-btn addCart" onClick={() => {
 
@@ -523,15 +522,14 @@ const Home = () => {
                                                                 <img src={product.image} alt="" className="img-contain" />
                                                             </div>
                                                             <div className="info">
-                                                                <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase"> 15% OFF </span>
+                                                                {/* <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase"> 15% OFF </span> */}
                                                                 <a href={`/single_product/${product.id}`} className="title fsz-14 mt-15 fw-600 hover-blue1"> {product.name_uz} </a>
 
                                                                 <p className="price color-red1 mt-2 fsz-20"> ${product.price}  </p>
-                                                                <span className="old-price color-999 text-decoration-line-through ms-2 fsz-16"> $619.00 </span>
+                                                                {/* <span className="old-price color-999 text-decoration-line-through ms-2 fsz-16"> $619.00 </span> */}
                                                                 <div className="progress mt-20">
                                                                     <div className="progress-bar bg-blue1" role="progressbar" style={{ width: "25%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                                                 </div>
-                                                                <p className="fsz-12 mt-3"> Sold: 24 / 80 </p>
                                                             </div>
                                                             <a href="#0" className="cart-btn addCart" onClick={() => {
                                                                 isToken ?

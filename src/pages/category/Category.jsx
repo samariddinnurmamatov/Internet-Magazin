@@ -1,13 +1,14 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Link, useParams } from 'react-router-dom';
-import { apiDeleteFavourites, apiGetBasket, apiGetCategory, apiGetCategoryId, apiGetFavourites, apiPostBasket, apiPostFavourites, apiUpdateBasket } from '../../services/HomeService';
+import { apiDeleteFavourites, apiGetBanner, apiGetBasket, apiGetCategory, apiGetCategoryId, apiGetFavourites, apiPostBasket, apiPostFavourites, apiUpdateBasket } from '../../services/HomeService';
 import Container from '../../components/shared/Container';
 
 import { IoSync } from 'react-icons/io5';
 import { FaAngleRight, FaEye, FaHeart, FaRegHeart, FaRegStar } from 'react-icons/fa';
 import { MdOutlineAddShoppingCart } from 'react-icons/md';
 
+import ContentLoader from "react-content-loader"
 import { toast } from 'react-toastify';
 import "./category.css";
 
@@ -17,6 +18,7 @@ const Category = () => {
     const [category, setCategories] = useState([]);
     const [favorites, setFavorites] = useState([]);
     const [basket, setBasket] = useState([]);
+    const [banner, setBanner] = useState([]);
 
     const [isOverflowing, setIsOverflowing] = useState(false);
     const containerRef = useRef(null);
@@ -25,13 +27,19 @@ const Category = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [categoryData, categoryDataId] = await Promise.all([
+                const [categoryData, categoryDataId, bannerData] = await Promise.all([
                     apiGetCategory(),
                     apiGetCategoryId(id),
+                    apiGetBanner()
+
                 ]);
 
                 if (categoryData.success) setCategories(categoryData.data);
                 if (categoryDataId.success) setCategoriesId(categoryDataId.data);
+                if (bannerData.success) setBanner(bannerData.data);
+                console.log(categoryDataId.data);
+                console.log(categoryDataId.data[0].discount.percentage)
+
 
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -144,48 +152,74 @@ const Category = () => {
                     </section>
 
 
-                    <section className="tc-header-style6 p-30 radius-4 bg-white mt-3 wow fadeInUp">
+                    <section className="tc-header-style1 mt-4 bg-white p-30 wow radius-4">
                         <h6 className="fsz-18 fw-bold text-uppercase mb-30"> top cell phones &amp; tablets </h6>
-                        <div className="row gx-2">
-                            <div className="col-lg-7 mt-3 mt-lg-0">
-                                <div className="sub-banner">
-                                    <div className="img">
-                                        <img src="https://ui-themez.smartinnovates.net/items/swoo_html/inner_pages/assets/img/banner1.png" alt="" className="img-cover" />
-                                    </div>
-                                    <div className="info">
-                                        <div className="row">
-                                            <div className="col-7">
-                                                <h6 className="fsz-24"> redmi note 12 Pro+ 5g </h6>
-                                                <small className="fsz-12 color-666 mt-10"> Rise to the challenge </small>
+
+                        <div className="container">
+                            <div className="content">
+                                <div className="row">
+
+
+                                    {
+                                        banner.length > 1 ?
+                                            banner.map((ban) => (
+                                                    <div className="col-lg-6">
+                                                        <div className="card-overlay wow fadeInUp slow" data-wow-delay="0.2s">
+                                                            <div className="img th-230">
+                                                                <img src={ban.image} alt="" className="img-cover" />
+                                                            </div>
+                                                            <div className="info color-000 p-30">
+                                                                <div className="cont">
+                                                                    <h3 className="fsz-30"> {ban.category.name_uz} </h3>
+                                                                </div>
+                                                                <Link to={`/category/${ban.category.id}`} className="butn px-4 py-2 bg-dark text-white rounded-pill fw-600 fsz-12 mt-30"> <span> Show category </span> </Link>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                
+                                            )) :
+                                            <div className="row  d-flex justify-around mb-2">
+                                                <div className="col-lg-6 mb-3">
+                                                    <ContentLoader
+                                                        speed={2}
+                                                        width="100%"
+                                                        height={220}
+                                                        // viewBox="0 0 100 220"
+                                                        backgroundColor="#e4e4e7"
+                                                        foregroundColor="#f3f4f6"
+                                                        className="w-full"
+                                                    >
+
+                                                        <rect x="48" y="8" rx="3" ry="3" width="100%" height="220" />
+                                                    </ContentLoader>
+                                                </div>
+                                                <div className="col-lg-6 mb-3">
+                                                    <ContentLoader
+                                                        speed={2}
+                                                        width="100%"
+                                                        height={220}
+                                                        // viewBox="0 0 100 220"
+                                                        backgroundColor="#e4e4e7"
+                                                        foregroundColor="#f3f4f6"
+                                                        className="w-full"
+                                                    >
+
+                                                        <rect x="48" y="8" rx="3" ry="3" width="100%" height="220" />
+                                                    </ContentLoader>
+                                                </div>
+
                                             </div>
-                                            <div className="col-5 text-end">
-                                                <a href="https://ui-themez.smartinnovates.net/items/swoo_html/inner_pages/single_product.html" className="butn px-3 py-2 bg-000 text-white radius-4 fw-500 fsz-12 text-uppercase d-flex justify-center hover-bg-green2"> <span> Shop Now </span> </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-5 mt-3 mt-lg-0">
-                                <div className="sub-banner">
-                                    <div className="img">
-                                        <img src="https://ui-themez.smartinnovates.net/items/swoo_html/inner_pages/assets/img/banner1.png" alt="" className="img-cover" />
-                                    </div>
-                                    <div className="info">
-                                        <div className="row">
-                                            <div className="col-7">
-                                                <h6 className="fsz-24"> redmi note 12 Pro+ 5g </h6>
-                                                <small className="fsz-12 color-666 mt-10"> Rise to the challenge </small>
-                                            </div>
-                                            <div className="col-5 text-end">
-                                                <a href="https://ui-themez.smartinnovates.net/items/swoo_html/inner_pages/single_product.html" className="butn px-3 py-2 bg-000 text-white radius-4 fw-500 fsz-12 d-flex justify-center text-uppercase hover-bg-green2"> <span> Shop Now </span> </a>
-                                            </div>
-                                        </div>
-                                    </div>
+
+                                    }
+
+
+
+
+
                                 </div>
                             </div>
                         </div>
                     </section>
-
 
 
 
@@ -200,7 +234,7 @@ const Category = () => {
                                         <Link key={category.id} to={`/category/${category.id}`} className="number-item">
                                             <div className="inf">
                                                 <h6 className="fsz-14 fw-bold mb-0 sm-title"> {category.name_uz} </h6>
-                                                <small className="fsz-12 color-666"> {category.stock} Items </small>
+                                                <small className="fsz-12 color-666"> {categoryId.length} Items </small>
                                             </div>
                                             <div className="img">
                                                 <img src={category.image} alt="" className="img-contain" />
@@ -231,43 +265,51 @@ const Category = () => {
                             <div className="title mb-40">
                                 <h3 className="fsz-30 me-lg-5"> Best Weekly Deals </h3>
                             </div>
-                            <div className="d-flex items-center gap-4">
+                            <div className="d-flex items-center gap-4 flex-wrap justify-content-evenly">
                                 {categoryId.length > 0 ?
                                     categoryId.map((product) => (
-                                        <div className="column-sm" key={product.id}>
-                                            <div className="deal-card">
+                                        <Link to={`/single_product/${product.id}`} className="column-sm w-48" key={product.id}>
+                                            <div className="deal-card ">
                                                 <div className="top">
                                                     <div className="icons">
-                                                        <a
-                                                            href="#0"
+                                                        <div
                                                             className={`icon fav ${isFavorite(product.id) ? 'liked' : ''}`}
-                                                            onClick={() => isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id)}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id)
+                                                            }}
                                                         >
                                                             {isFavorite(product.id) ? <FaHeart /> : <FaRegHeart />}
-                                                        </a>
+                                                        </div>
                                                         <a href="#0" className="icon"><IoSync /></a>
                                                         <a href={product.image} className="icon" data-fancybox="deal"><FaEye /></a>
                                                     </div>
                                                 </div>
-                                                <a href="../inner_pages/single_product.html" className="img th-140 mb-20 d-block">
+                                                <a href={`/single_product/${product.id}`} className="img th-140 mb-20 d-block">
                                                     <img src={product.image} alt="" className="img-contain" />
                                                 </a>
                                                 <div className="info">
-                                                    <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase"> 15% OFF </span>
-                                                    <a href="../inner_pages/single_product.html" className="title fsz-14 mt-15 fw-600 hover-blue1"> {product.name_uz} </a>
                                                     
+                                                        <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase">  % OFF </span>
+
+                                                    
+                                                    
+                                                    <a href={`/single_product/${product.id}`} className="title fsz-14 mt-15 fw-600 hover-blue1"> {product.name_uz} </a>
+
                                                     <p className="price color-red1 mt-2 fsz-20"> ${product.price}  </p>
                                                     <span className="old-price color-999 text-decoration-line-through ms-2 fsz-16"> $619.00 </span>
                                                     <div className="progress mt-20">
                                                         <div className="progress-bar bg-blue1" role="progressbar" style={{ width: "25%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
-                                                    <p className="fsz-12 mt-3"> Sold: 24 / 80 </p>
                                                 </div>
-                                                <a href="#0" className="cart-btn addCart" onClick={() => handleAddToBasket(product.id)}>
+                                                <div className="cart-btn addCart" onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleAddToBasket(product.id)
+                                                }}>
                                                     <MdOutlineAddShoppingCart className="me-1" />Add To Cart
-                                                </a>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </Link>
                                     )) :
                                     <div
                                         ref={containerRef}
