@@ -99,7 +99,7 @@ export const Contact = () => {
                                                 <a href="#">+998 (90) 009 99 16 </a>
                                             </li>
                                             <li>
-                                                <a href="#" className="color-blue1 text-decoration-underline"> samariddinnurmamatov@gmail.com </a>
+                                                <a href="#" className="color-blue1 text-decoration-underline"> info@elmag.uz </a>
                                             </li>
                                         </ul>
                                         {/* <small className="fsz-12 color-666 text-uppercase mb-20 mt-50"> united kingdom (branch) </small>

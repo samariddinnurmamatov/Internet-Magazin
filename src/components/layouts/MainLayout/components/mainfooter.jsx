@@ -80,7 +80,8 @@ const MainFooter = () => {
                                     {/* <small className="fsz-12 text-uppercase"> hotline 24/7 </small> */}
                                     <h5 className="fw-bold color-blue1 mb-20" style={{fontSize: "23px"}}>+998 (90) 009 99 16 </h5>
                                     <a href="#"> ул. Чиланзар 2/2, г. Ташкент, Узбекистан <br /> NY  </a>
-                                    <a href="#"> samariddinnurmamatov@gmail.com </a>
+                                    <br />
+                                    <a href="#"> info@elmag.uz </a>
                                 </div>
                             </div>
                             <div className="col-lg-3">
