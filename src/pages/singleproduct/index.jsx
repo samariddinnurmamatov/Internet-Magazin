@@ -37,7 +37,8 @@ import { Link, useParams } from "react-router-dom";
 import { apiGetSingleProduct, apiPostBasket, apiUpdateBasket, apiPostFavourites, apiGetFavourites, apiGetProducts } from "../../services/HomeService";
 import { toast } from "react-toastify";
 import { session } from "../../services/session";
-
+import ContentLoader from "react-content-loader"
+import { MdOutlineAddShoppingCart } from "react-icons/md";
 
 
 const SingleProduct = () => {
@@ -48,7 +49,20 @@ const SingleProduct = () => {
     const [count, setCount] = useState(1);
     const [isToken, setIsToken] = useState(false);
     const [products, setProducts] = useState([]);
+    const [isOverflowing, setIsOverflowing] = useState(false);
+    const [visibleCount, setVisibleCount] = useState(10);
 
+    const showMoreProducts = () => {
+        setVisibleCount(prevCount => prevCount + 10);
+    };
+
+    function truncateDescription(description, limit) {
+        const words = description.split(' ');
+        if (words.length > limit) {
+          return words.slice(0, limit).join(' ') + '...';
+        }
+        return description;
+      }
 
 
     useEffect(() => {
@@ -112,10 +126,14 @@ const SingleProduct = () => {
                 const updatedBasketItem = await apiUpdateBasket({ product_id: productIdBasket, quantity: existingProduct.quantity + 1 });
                 if (updatedBasketItem.success) {
                     setBasket(prevBasket => prevBasket.map(item => item.product_id === productIdBasket ? { ...item, quantity: item.quantity + 1 } : item));
-                    toast.success('Product quantity updated in basket!');
+                    toast.success('Product quantity updated in basket!', {
+                        position: "bottom-right"
+                      });
                 } else {
                     console.error('Error updating basket:', updatedBasketItem);
-                    toast.error('Error updating basket.');
+                    toast.error('Error updating basket.', {
+                        position: "bottom-right"
+                      });
                 }
             } else {
                 const newBasketItem = await apiPostBasket({ product_id: productIdBasket, quantity: 1 });
@@ -124,12 +142,16 @@ const SingleProduct = () => {
                     // toast.success('Product added to basket!');
                 } else {
                     console.error('Error adding to basket:', newBasketItem);
-                    toast.error('Error adding to basket.');
+                    toast.error('Error adding to basket.', {
+                        position: "bottom-right"
+                      });
                 }
             }
         } catch (error) {
             console.error('Error adding to basket:', error);
-            toast.error('Error adding to basket.');
+            toast.error('Error adding to basket.', {
+                position: "bottom-right"
+              });
         }
     };
 
@@ -138,7 +160,9 @@ const SingleProduct = () => {
             session.add("like", productId);
             setFavorites(prevFavorites => [...prevFavorites, productId]);
 
-            toast.success('Product liked');
+            toast.success('Product liked', {
+                position: "bottom-right"
+              });
 
             await apiPostFavourites({ product_id: productId });
         } catch (error) {
@@ -151,7 +175,9 @@ const SingleProduct = () => {
             session.remove("like", productId);
 
             setFavorites(prevFavorites => prevFavorites.filter(id => id !== productId));
-            toast.success('Product unliked');
+            toast.success('Product unliked', {
+                position: "bottom-right"
+              });
 
             await apiDeleteFavourites(productId);
         } catch (error) {
@@ -206,7 +232,7 @@ const SingleProduct = () => {
                     </section>
 
                     <section className="product-main-details p-30 radius-4 bg-white mt-3 wow fadeInUp" style={{ visibility: "visible", animationName: "fadeInUp" }}>
-                        <div className="row">
+                        <div className="row" style={{display: "flex", justifyContent: "space-between"}}>
                             <div className="col-lg-5">
                                 <div className="img-slider">
                                     <div className="top-title">
@@ -232,7 +258,7 @@ const SingleProduct = () => {
                                                     <img src={product.image} alt="" />
                                                 </div>
                                             </div>
-                                            <div className="swiper-slide swiper-slide-next" role="group" aria-label="2 / 3" style={{ width: "524px", marginRight: "10px" }}>
+                                            {/* <div className="swiper-slide swiper-slide-next" role="group" aria-label="2 / 3" style={{ width: "524px", marginRight: "10px" }}>
                                                 <div className="img">
                                                     <img src={Prod2} alt="" />
                                                 </div>
@@ -241,7 +267,7 @@ const SingleProduct = () => {
                                                 <div className="img">
                                                     <img src={Prod2} alt="" />
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         </div>
                                         <span className="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
                                     <div className="swiper-container gallery-thumbs swiper-initialized swiper-horizontal swiper-pointer-events swiper-free-mode swiper-backface-hidden swiper-thumbs">
@@ -251,7 +277,7 @@ const SingleProduct = () => {
                                                     <img src={product.image} alt="" />
                                                 </div>
                                             </div>
-                                            <div className="swiper-slide swiper-slide-visible swiper-slide-next" role="group" aria-label="2 / 3" style={{ width: "88.8px", marginRight: "20px" }}>
+                                            {/* <div className="swiper-slide swiper-slide-visible swiper-slide-next" role="group" aria-label="2 / 3" style={{ width: "88.8px", marginRight: "20px" }}>
                                                 <div className="img">
                                                     <img src={Prod2} alt="" />
                                                 </div>
@@ -260,7 +286,7 @@ const SingleProduct = () => {
                                                 <div className="img">
                                                     <img src={Prod3} alt="" />
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         </div>
                                         <span className="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
                                 </div>
@@ -297,7 +323,7 @@ const SingleProduct = () => {
                                         <h5 className="fsz-30 fw-bold"> ${product.price} </h5>
                                         <div className="affirm fsz-12 lh-1 d-flex align-items-end py-3 border-bottom">
                                         </div>
-                                        <p className="fsz-12 mt-3"><FaCheckCircle className="color-green2 me-1" />In stock </p>
+                                        <p className="fsz-12 mt-3"><FaCheckCircle className="color-green2 me-1" />{product.stock}</p>
                                         <div className="add-more">
                                             <button
                                                 className="qt-minus text-xl"
@@ -329,7 +355,9 @@ const SingleProduct = () => {
                                                 handleAddToBasket(product.id)
                                                 :
                                                 session.add("products", product.id);
-                                            toast.success('Product added to basket!');
+                                            toast.success('Product added to basket!', {
+                                                position: "bottom-right"
+                                              });
 
                                         }}> <span> Add To Cart </span> </a>
 
@@ -346,7 +374,7 @@ const SingleProduct = () => {
                         </div>
                     </section>
 
-                    <section className="product-text-details p-30 radius-4 bg-white mt-3 wow fadeInUp mb-3" style={{ visibility: "hidden", animationName: "none" }}>
+                    {/* <section className="product-text-details p-30 radius-4 bg-white mt-3 wow fadeInUp mb-3" style={{ visibility: "hidden", animationName: "none" }}>
                         <ul className="nav nav-pills mb-50" id="pills-tab" role="tablist">
                             <li className="nav-item" role="presentation">
                                 <button className="nav-link active" id="pills-tab1-tab" data-bs-toggle="pill" data-bs-target="#pills-tab1">description</button>
@@ -548,45 +576,86 @@ const SingleProduct = () => {
                                 </div>
                             </div>
                         </div>
-                    </section>
-                    <section className="related-products p-30 radius-4 bg-white mt-3 wow fadeInUp mb-3" style={{ visibility: "hidden", animationName: "none" }}>
-                        <h6 className="fsz-18 fw-bold text-uppercase"> related products </h6>
-                        <div className="products-content">
-                            <div className="products-slider swiper-initialized swiper-horizontal swiper-pointer-events swiper-backface-hidden">
-                                <div className="swiper-wrapper" id="swiper-wrapper-a0530a2e6781cfb0" aria-live="off" >
-                                    {products.length > 0 ?
-                                        products.map((product) => (
+                    </section> */}
 
-                                            <Link to={`/single_product/${product.id}`} className="swiper-slide swiper-slide-active" role="group" aria-label="1 / 6" style={{ width: "236px" }}>
-                                                <div className="product-card">
-                                                    <div className="top-inf">
-                                                        <div onClick={() => isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id)} className="fav-btn d-grid place-items-center">{isFavorite(product.id) ? <FaHeart /> : <FaRegHeart />}</div>
-                                                    </div>
-                                                    <div className="img">
-                                                        <img src={product.image} alt="" className="img-contain main-image" />
-                                                    </div>
-                                                    <div className="info">
-
-                                                        <h6> <a href={`/single_product/${product.id}`} className="prod-title fsz-14 fw-bold mt-2 hover-green2"> {product.name_uz} </a> </h6>
-                                                        <div className="price mt-15">
-                                                            <h5 className="fsz-18 color-red1 fw-600"> {product.price} </h5>
-                                                            <span className="old fsz-14 color-666 text-decoration-line-through"> $859.00 </span>
-                                                        </div>
-                                                        <p className="fsz-12 mt-2"><FaCheckCircle className="color-green2 me-1" />{product.stock}</p>
-                                                    </div>
-                                                </div>
+                    <section className=" tc-weekly-deals-style1 mt-3">
+                        {/* <div className="container"> */}
+                            <div className="content">
+                            <div className="title mb-40">
+                                <h3 className="fsz-30 me-lg-5">Related Products</h3>
+                            </div>
+                            <div className="deals-cards">
+                                {products.length > 0 ? (
+                                <>
+                                    {products.slice(0, visibleCount).map((product) => (
+                                    <a href={`/single_product/${product.id}`} className="column-sm" key={product.id}>
+                                        <div className="deal-card">
+                                        <div className="top">
+                                            <div className="icons">
+                                            <Link
+                                                className={`icon fav ${isFavorite(product.id) ? 'liked' : ''}`}
+                                                onClick={(e) => {
+                                                e.stopPropagation();
+                                                isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id);
+                                                }}
+                                            >
+                                                {isFavorite(product.id) ? <FaHeart color="red" /> : <FaRegHeart />}
                                             </Link>
-                                        ))
-                                        :
-                                        <div className="">hello</div>
-
-                                    }
-
+                                            </div>
+                                        </div>
+                                        <div className="img th-140 mb-20 d-block">
+                                            <img src={product.image} alt="" className="img-contain" />
+                                        </div>
+                                        <div className="info">
+                                            <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase">15% OFF</span>
+                                            <a href={`/single_product/${product.id}`} className="title fsz-14 mt-15 fw-600 hover-blue1">{product.name_uz}</a>
+                                            <a href={`/single_product/${product.id}`} className="title fsz-14 mt-15 fw-600 hover-blue1">{truncateDescription(product.description_uz, 2)}</a>
+                                            <p className="price color-red1 mt-2 fsz-20">${product.price}</p>
+                                            <span className="old-price color-999 text-decoration-line-through fsz-16">
+                                                {product.discounted_price ? `$${product.discounted_price}` : ''}
+                                            </span>
+                                        </div>
+                                        <Link className="cart-btn addCart" onClick={(e) => {
+                                            e.stopPropagation();
+                                            isToken ? handleAddToBasket(product.id) : session.add("products", product.id);
+                                            toast.success('Product added to basket!', {
+                                                position: "bottom-right"
+                                              });
+                                        }}>
+                                            <MdOutlineAddShoppingCart className="me-1" />Add To Cart
+                                        </Link>
+                                        </div>
+                                    </a>
+                                    ))}
+                                    {visibleCount < products.length && (
+                                    //   <button onClick={showMoreProducts} className="btn-show-more mt-3">
+                                    //     Show More
+                                    //   </button>
+                                        <div className="text-center mt-30 cursor-pointer w-full flex justify-center" onClick={showMoreProducts}>
+                                            <p className="butn px-5 py-3 bg-white color-000 rounded-pill fw-600"> <span> Yana Ko'rsatish (10) </span> </p>
+                                        </div>
+                                    )}
+                                </>
+                                ) : (
+                                <div className="flex overflow-hidden gap-2 ps-5" style={{ whiteSpace: 'nowrap' }}>
+                                    {Array.from({ length: 5 }).map((_, index) => (
+                                    <div key={index} className={`${isOverflowing ? 'hidden' : ''}`}>
+                                        <ContentLoader
+                                        speed={2}
+                                        width={230}
+                                        height={320}
+                                        backgroundColor="#e4e4e7"
+                                        foregroundColor="#f3f4f6"
+                                        >
+                                        <rect x="0" y="0" rx="0" ry="0" width="230" height="320" />
+                                        </ContentLoader>
+                                    </div>
+                                    ))}
                                 </div>
-                                <span className="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
-                            <div className="swiper-button-next" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-a0530a2e6781cfb0" aria-disabled="false"></div>
-                            <div className="swiper-button-prev swiper-button-disabled" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-a0530a2e6781cfb0" aria-disabled="true"></div>
-                        </div>
+                                )}
+                            </div>
+                            </div>
+                        {/* </div> */}
                     </section>
                 </Container>
 

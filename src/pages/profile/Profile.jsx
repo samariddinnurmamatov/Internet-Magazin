@@ -37,7 +37,9 @@ export const Profile = () => {
         setPhoneNumber(phone_number);
         setPhoneNumber(phone_number);
       } else {
-        toast.error('Failed to fetch user data.');
+        toast.error('Failed to fetch user data.', {
+          position: "bottom-right"
+        });
       }
     } catch (error) {
       // toast.error('Failed to fetch user data.');
@@ -56,13 +58,19 @@ export const Profile = () => {
       const response = await apiUserInfoEdit(updatedUserData);
       console.log('Update response:', response);
       if (response.message) {
-        toast.success('User data updated successfully.');
+        toast.success('User data updated successfully.', {
+          position: "bottom-right"
+        });
         fetchUserData(); // Fetch updated user data
       } else {
-        toast.error('Failed to update user data.');
+        toast.error('Failed to update user data.', {
+          position: "bottom-right"
+        });
       }
     } catch (error) {
-      toast.error('Failed to update user data.');
+      toast.error('Failed to update user data.', {
+        position: "bottom-right"
+      });
     }
   };
 
@@ -76,12 +84,18 @@ export const Profile = () => {
       const response = await apiUserPasswordUpd(passwordData);
       console.log('Password change response:', response);
       if (response.message) {
-        toast.success('Password changed successfully.');
+        toast.success('Password changed successfully.', {
+          position: "bottom-right"
+        });
       } else {
-        toast.error('Failed to change password.');
+        toast.error('Failed to change password.', {
+          position: "bottom-right"
+        });
       }
     } catch (error) {
-      toast.error('Failed to change password.');
+      toast.error('Failed to change password.', {
+        position: "bottom-right"
+      });
     }
   };
 
@@ -90,18 +104,24 @@ export const Profile = () => {
       const response = await apiLogout();
       console.log('Logout response:', response);
       if (response) {
-        toast.success('Logged out successfully.');
+        toast.success('Logged out successfully.', {
+          position: "bottom-right"
+        });
         localStorage.removeItem('token'); // Clear the token from localStorage
         localStorage.removeItem('user');
         localStorage.removeItem('products');
         localStorage.removeItem('like');
         navigate('/login'); // Navigate to login page
       } else {
-        toast.error('Failed to log out.');
+        toast.error('Failed to log out.', {
+          position: "bottom-right"
+        });
       }
     } catch (error) {
       console.error('Logout error:', error);
-      toast.error('Failed to log out.');
+      toast.error('Failed to log out.', {
+        position: "bottom-right"
+      });
     }
   };
 
@@ -175,12 +195,12 @@ export const Profile = () => {
 
                             </div>
                           </div>
-                          <div className="col-lg-12">
+                          {/* <div className="col-lg-12">
                             <div className="form-group mb-4">
                               <label> Email Address <span className="color-red1"> * </span> </label>
                               <input type="text" className="form-control" placeholder="" value="swoo@gmail.com" />
                             </div>
-                          </div>
+                          </div> */}
                           <div className="col-lg-12">
                             <div className="form-group mb-4">
                               <label> Phone Number <span className="color-666"> (Optional) </span> </label>

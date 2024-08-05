@@ -10,6 +10,7 @@ import { MdOutlineAddShoppingCart } from 'react-icons/md';
 
 import { toast } from 'react-toastify';
 import "./category.css";
+import { session } from '../../services/session';
 
 const Category = () => {
     const { id } = useParams();
@@ -20,9 +21,12 @@ const Category = () => {
 
     const [isOverflowing, setIsOverflowing] = useState(false);
     const containerRef = useRef(null);
-
+    const [isToken, setIsToken] = useState(false);
 
     useEffect(() => {
+        const token = session.get("token");
+        setIsToken(!!token)
+
         const fetchData = async () => {
             try {
                 const [categoryData, categoryDataId] = await Promise.all([
@@ -32,7 +36,7 @@ const Category = () => {
 
                 if (categoryData.success) setCategories(categoryData.data);
                 if (categoryDataId.success) setCategoriesId(categoryDataId.data);
-
+                
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -54,6 +58,10 @@ const Category = () => {
 
             } catch (error) {
                 console.error('Error fetching data:', error);
+
+                const likes = session.get("like");
+                if (likes) setFavorites(likes.map(fav => fav));
+
             }
         };
 
@@ -77,25 +85,50 @@ const Category = () => {
 
     const handleLike = async (productId) => {
         try {
-            await apiPostFavourites({ product_id: productId });
-            setFavorites(prevFavorites => [...prevFavorites, productId]);
-            toast.success('Product liked!');
+            if (isToken) {
+                await apiPostFavourites({ product_id: productId });
+                // Check if productId is already in favorites to avoid duplicates
+                setFavorites(prevFavorites => {
+                    if (prevFavorites.includes(productId)) return prevFavorites;
+                    toast.success('Product liked', {
+                        position: "bottom-right"
+                      });
+
+                    return [...prevFavorites, productId];
+                });
+            } else {
+                session.add("like", productId);
+                // Check if productId is already in favorites to avoid duplicates
+                setFavorites(prevFavorites => {
+                    if (prevFavorites.includes(productId)) return prevFavorites;
+                    return [...prevFavorites, productId];
+                });
+            }
         } catch (error) {
             console.error('Error liking product:', error);
-            toast.error('Error liking product.');
+            // Optional: provide user feedback
         }
     };
 
+
     const handleUnlike = async (productId) => {
         try {
-            await apiDeleteFavourites(productId);
+            if (isToken) {
+
+            }
+            session.remove("like", productId);
+
             setFavorites(prevFavorites => prevFavorites.filter(id => id !== productId));
-            toast.success('Product unliked!');
+            toast.success('Product unliked', {
+                position: "bottom-right"
+              });
+
+            await apiDeleteFavourites(productId);
         } catch (error) {
             console.error('Error unliking product:', error);
-            toast.error('Error unliking product.');
         }
     };
+
 
     const handleAddToBasket = async (productIdBasket) => {
         const existingProduct = basket.find(item => item.product_id === productIdBasket);
@@ -104,24 +137,32 @@ const Category = () => {
                 const updatedBasketItem = await apiUpdateBasket({ product_id: productIdBasket, quantity: existingProduct.quantity + 1 });
                 if (updatedBasketItem.success) {
                     setBasket(prevBasket => prevBasket.map(item => item.product_id === productIdBasket ? { ...item, quantity: item.quantity + 1 } : item));
-                    toast.success('Product quantity updated in basket!');
+                    toast.success('Product quantity updated in basket!', {
+                        position: "bottom-right"
+                      });
                 } else {
                     console.error('Error updating basket:', updatedBasketItem);
-                    toast.error('Error updating basket.');
+                    toast.error('Error updating basket.', {
+                        position: "bottom-right"
+                      });
                 }
             } else {
                 const newBasketItem = await apiPostBasket({ product_id: productIdBasket, quantity: 1 });
                 if (newBasketItem.success) {
                     setBasket(prevBasket => [...prevBasket, { product_id: productIdBasket, quantity: 1 }]);
-                    toast.success('Product added to basket!');
+                    // toast.success('Product added to basket!');
                 } else {
                     console.error('Error adding to basket:', newBasketItem);
-                    toast.error('Error adding to basket.');
+                    toast.error('Error adding to basket.', {
+                        position: "bottom-right"
+                      });
                 }
             }
         } catch (error) {
             console.error('Error adding to basket:', error);
-            toast.error('Error adding to basket.');
+            toast.error('Error adding to basket.', {
+                position: "bottom-right"
+              });
         }
     };
 
@@ -129,6 +170,15 @@ const Category = () => {
         () => (productId) => favorites.includes(productId),
         [favorites]
     );
+
+    function truncateDescription(description, limit) {
+        const words = description.split(' ');
+        if (words.length > limit) {
+          return words.slice(0, limit).join(' ') + '...';
+        }
+        return description;
+      }
+
 
     return (
         <Fragment>
@@ -150,17 +200,17 @@ const Category = () => {
                             <div className="col-lg-7 mt-3 mt-lg-0">
                                 <div className="sub-banner">
                                     <div className="img">
-                                        <img src="https://ui-themez.smartinnovates.net/items/swoo_html/inner_pages/assets/img/banner1.png" alt="" className="img-cover" />
+                                        <img src="https://media.istockphoto.com/id/1150125924/fr/photo/radar-de-vitesse-de-la-police-de-la-circulation-sur-un-poteau-dans-la-ville-sur-la-route.jpg?s=170667a&w=0&k=20&c=QXWwJiH3nPN-7rRXycnhHpb0qRfZ2pfY9SCOxwQlaX0=" alt="" className="img-cover" />
                                     </div>
                                     <div className="info">
                                         <div className="row">
-                                            <div className="col-7">
+                                            {/* <div className="col-7">
                                                 <h6 className="fsz-24"> redmi note 12 Pro+ 5g </h6>
                                                 <small className="fsz-12 color-666 mt-10"> Rise to the challenge </small>
-                                            </div>
-                                            <div className="col-5 text-end">
+                                            </div> */}
+                                            {/* <div className="col-5 text-end">
                                                 <a href="https://ui-themez.smartinnovates.net/items/swoo_html/inner_pages/single_product.html" className="butn px-3 py-2 bg-000 text-white radius-4 fw-500 fsz-12 text-uppercase d-flex justify-center hover-bg-green2"> <span> Shop Now </span> </a>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                 </div>
@@ -168,17 +218,17 @@ const Category = () => {
                             <div className="col-lg-5 mt-3 mt-lg-0">
                                 <div className="sub-banner">
                                     <div className="img">
-                                        <img src="https://ui-themez.smartinnovates.net/items/swoo_html/inner_pages/assets/img/banner1.png" alt="" className="img-cover" />
+                                        <img src="https://www.spot.uz/media/img/2018/12/dqPh3e15445075045887_l.jpg" alt="" className="img-cover" />
                                     </div>
                                     <div className="info">
                                         <div className="row">
-                                            <div className="col-7">
+                                            {/* <div className="col-7">
                                                 <h6 className="fsz-24"> redmi note 12 Pro+ 5g </h6>
                                                 <small className="fsz-12 color-666 mt-10"> Rise to the challenge </small>
-                                            </div>
-                                            <div className="col-5 text-end">
+                                            </div> */}
+                                            {/* <div className="col-5 text-end">
                                                 <a href="https://ui-themez.smartinnovates.net/items/swoo_html/inner_pages/single_product.html" className="butn px-3 py-2 bg-000 text-white radius-4 fw-500 fsz-12 d-flex justify-center text-uppercase hover-bg-green2"> <span> Shop Now </span> </a>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                 </div>
@@ -218,10 +268,6 @@ const Category = () => {
                                                 className={`h-24 border border-black rounded-lg w-56 bg-gray-200 ${isOverflowing ? 'hidden' : ''}`} ></div>
                                         ))}
                                     </div>}
-
-
-
-
                         </div>
                     </section>
 
@@ -231,62 +277,70 @@ const Category = () => {
                             <div className="title mb-40">
                                 <h3 className="fsz-30 me-lg-5"> Best Weekly Deals </h3>
                             </div>
-                            <div className="d-flex items-center gap-4">
-                                {categoryId.length > 0 ?
-                                    categoryId.map((product) => (
+                            {categoryId.length > 0 ? (
+                                <div className="grid grid-cols-5 items-center gap-3">
+                                    {categoryId.map((product) => (
                                         <div className="column-sm" key={product.id}>
-                                            <div className="deal-card">
-                                                <div className="top">
-                                                    <div className="icons">
-                                                        <a
-                                                            href="#0"
-                                                            className={`icon fav ${isFavorite(product.id) ? 'liked' : ''}`}
-                                                            onClick={() => isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id)}
-                                                        >
-                                                            {isFavorite(product.id) ? <FaHeart /> : <FaRegHeart />}
-                                                        </a>
-                                                        <a href="#0" className="icon"><IoSync /></a>
-                                                        <a href={product.image} className="icon" data-fancybox="deal"><FaEye /></a>
+                                            <Link to={`/single_product/${product.id}`} style={{ width: "100%" }}>
+                                                <div className="deal-card">
+                                                    <div className="top">
+                                                        <div className="icons">
+                                                            <a
+                                                                href="#0"
+                                                                className={`icon fav ${isFavorite(product.id) ? 'liked' : ''}`}
+                                                                onClick={() => isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id)}
+                                                            >
+                                                                {isFavorite(product.id) ? <FaHeart color='red' /> : <FaRegHeart />}
+                                                            </a>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <a href="../inner_pages/single_product.html" className="img th-140 mb-20 d-block">
-                                                    <img src={product.image} alt="" className="img-contain" />
-                                                </a>
-                                                <div className="info">
-                                                    <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase"> 15% OFF </span>
-                                                    <a href="../inner_pages/single_product.html" className="title fsz-14 mt-15 fw-600 hover-blue1"> {product.name_uz} </a>
-                                                    
-                                                    <p className="price color-red1 mt-2 fsz-20"> ${product.price}  </p>
-                                                    <span className="old-price color-999 text-decoration-line-through ms-2 fsz-16"> $619.00 </span>
-                                                    <div className="progress mt-20">
-                                                        <div className="progress-bar bg-blue1" role="progressbar" style={{ width: "25%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <a href={`/single_product/${product.id}`} className="img th-140 mb-20 d-block">
+                                                        <img src={product.image} alt="" className="img-contain" />
+                                                    </a>
+                                                    <div className="info">
+                                                        <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase"> 15% OFF </span>
+                                                        <a href={`/single_product/${product.id}`} className="title fsz-14 mt-15 fw-600 hover-blue1"> {product.name_uz} </a>
+                                                        <a href={`/single_product/${product.id}`} className="title fsz-14 mt-15 fw-600 hover-blue1"> {truncateDescription(product.description_uz, 1)}  </a>
+                                                        <p className="price color-red1 mt-2 fsz-20"> ${product.price} </p>
+                                                        {product.discounted_price && (
+                                                        <span className="old-price color-999 text-decoration-line-through fsz-16">
+                                                            ${product.discounted_price}
+                                                        </span>
+                                                    )}
                                                     </div>
-                                                    <p className="fsz-12 mt-3"> Sold: 24 / 80 </p>
+                                                    <a href="#0" className="cart-btn addCart" onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        isToken ?
+                                                            handleAddToBasket(product.id)
+                                                            :
+                                                            session.add("products", product.id);
+                                                        toast.success('Product added to basket!', {
+                                                            position: "bottom-right"
+                                                          });
+                                                    }}>
+                                                        <MdOutlineAddShoppingCart className="me-1" />Add To Cart
+                                                    </a>
                                                 </div>
-                                                <a href="#0" className="cart-btn addCart" onClick={() => handleAddToBasket(product.id)}>
-                                                    <MdOutlineAddShoppingCart className="me-1" />Add To Cart
-                                                </a>
-                                            </div>
+                                            </Link>
                                         </div>
-                                    )) :
-                                    <div
-                                        ref={containerRef}
-                                        className="flex overflow-hidden gap-2 ps-5"
-                                        style={{ whiteSpace: 'nowrap' }}
-                                    >
-                                        {Array.from({ length: 5 }).map((_, index) => (
-                                            <div key={index}
-                                                style={{ display: isOverflowing ? 'none' : 'flex' }}
-                                                className={`h-72 border border-black rounded-lg w-56 bg-gray-200 ${isOverflowing ? 'hidden' : ''}`} ></div>
-                                        ))}
-                                    </div>
-                                }
-                            </div>
-                            {/* <div className="text-center mt-30">
-                                <a href="../inner_pages/products.html" className="butn py-3 bg-white color-000 rounded-pill fw-600"> <span> See All Products (63) </span> </a>
-                            </div> */}
+                                    ))}
+                                </div>
+                            ) : (
+                                <div
+                                    ref={containerRef}
+                                    className="flex overflow-hidden gap-2 ps-5"
+                                    style={{ whiteSpace: 'nowrap' }}
+                                >
+                                    {Array.from({ length: 5 }).map((_, index) => (
+                                        <div key={index}
+                                            style={{ display: isOverflowing ? 'none' : 'flex' }}
+                                            className={`h-72 border border-black rounded-lg w-56 bg-gray-200 ${isOverflowing ? 'hidden' : ''}`}></div>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </section>
+
 
 
                 </Container>

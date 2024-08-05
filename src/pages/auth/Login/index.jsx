@@ -43,7 +43,9 @@ const Login = () => {
         try {
             const response = await apiLogin(formData);
             if (response.success) {
-                toast.success("Login successful!");
+                toast.success("Login successful!", {
+                    position: "bottom-right"
+                  });
                 localStorage.setItem('token', response.token);
                 localStorage.setItem('user', JSON.stringify(response.user));
 
@@ -57,10 +59,14 @@ const Login = () => {
                 setFormData(initialFormData); 
                 navigate("/profile"); 
             } else {
-                toast.error(response.message || "Login failed. Please check your information.");
+                toast.error(response.message || "Login failed. Please check your information.", {
+                    position: "bottom-right"
+                  });
             }
         } catch (err) {
-            toast.error("Login failed. Please check your information.");
+            toast.error("Login failed. Please check your information.", {
+                position: "bottom-right"
+              });
         }
     };
 

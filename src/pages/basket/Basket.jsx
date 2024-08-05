@@ -21,24 +21,45 @@ const Basket = () => {
   const [count, setCount] = useState(1);
 
   useEffect(() => {
-    const fetchLiked = async () => {
+    const fetchData = async () => {
       const token = session.get("token");
       setIsToken(!!token);
-      try {
-        const [favoritesData] = await Promise.all([apiGetFavourites()]);
 
-        if (favoritesData) setFavorites(favoritesData.data.map(fav => fav.id));
+      if (token) {
+        // Fetch from server if logged in
+        try {
+          const [favoritesData, basketData] = await Promise.all([
+            apiGetFavourites(),
+            apiGetBasket(),
+          ]);
 
-        const response = await apiGetBasket();
+          if (favoritesData) setFavorites(favoritesData.data.map(fav => fav.id));
+          if (basketData && basketData.data) {
+            setBasket(basketData.data);
+          } else {
+            console.error('Invalid basket data structure:', basketData);
+          }
+        } catch (error) {
+          console.error('Error fetching data:', error);
+          // Fallback to local data
+          const likes = session.get("like");
+          if (likes) setFavorites(likes.map(fav => fav));
 
-        if (response && response.data) {
-          setBasket(response.data);
-        } else {
-          console.error('Invalid basket data structure:', response);
+          const basketProd = session.get("products") || [];
+          const products = [];
+
+          for (const product of basketProd) {
+            try {
+              const singleProduct = await apiGetSingleProduct(product);
+              products.push(singleProduct);
+            } catch (singleProductError) {
+              console.error('Error fetching single product:', singleProductError);
+            }
+          }
+          setBasket(products);
         }
-      } catch (error) {
-        console.error('Error fetching basket:', error);
-
+      } else {
+        // Fetch local data if not logged in
         const likes = session.get("like");
         if (likes) setFavorites(likes.map(fav => fav));
 
@@ -48,64 +69,91 @@ const Basket = () => {
         for (const product of basketProd) {
           try {
             const singleProduct = await apiGetSingleProduct(product);
-            console.log("singleProduct", singleProduct)
             products.push(singleProduct);
           } catch (singleProductError) {
             console.error('Error fetching single product:', singleProductError);
           }
         }
-
         setBasket(products);
       }
     };
 
-    fetchLiked();
+    fetchData();
   }, []);
 
   const handleQuantityChange = async (productId, change) => {
-    setBasket((prevBasket) =>
-      prevBasket.map((item) =>
-        item.id === productId
-          ? { ...item, data: { ...item.data, quantity: Math.max((item.data.quantity || 1) + change, 1) } }
-          : item
-      )
-    );
+    // Update the quantity locally
+    setBasket((prevBasket) => {
+      return prevBasket.map((item) => {
+        if (item.id === productId) {
+          const newQuantity = Math.max((parseInt(item.quantity) || 1) + change, 1); // Ensure quantity is at least 1
+          if (newQuantity === 0) {
+            handleRemove(productId); // Remove the item if quantity is 0
+            return null; // Remove item from local state update
+          }
+          return { ...item, quantity: newQuantity.toString() };
+        }
+        return item;
+      }).filter(item => item !== null); // Filter out null values
+    });
 
-    // try {
-    //   await apiUpdateBasket({
-    //     product_id: productId,
-    //     quantity: change,
-    //   });
-    // } catch (error) {
-    //   console.error('Error updating quantity:', error);
-    // }
+    // Update the quantity on the backend
+    try {
+      const itemToUpdate = basket.find(item => item.id === productId);
+      if (itemToUpdate) {
+        const newQuantity = (parseInt(itemToUpdate.quantity) || 1) + change;
+        if (newQuantity === 0) {
+          await handleRemove(productId); // Remove the item if quantity is 0
+          return; // Exit the function if item is removed
+        }
+
+        if (isToken) {
+          await apiUpdateBasket({
+            product_id: productId,
+            quantity: newQuantity,
+          });
+
+          // Fetch the updated basket to ensure the frontend is in sync
+          const response = await apiGetBasket();
+          if (response && response.data) {
+            setBasket(response.data);
+          }
+        } else {
+          // Update local storage if not logged in
+          const basketProd = session.get("products") || [];
+          const updatedBasket = basketProd.map(prod => prod === productId ? { ...itemToUpdate, quantity: newQuantity.toString() } : prod);
+          session.set("products", updatedBasket);
+          setBasket(updatedBasket);
+        }
+      }
+    } catch (error) {
+      console.error('Error updating quantity:', error);
+    }
   };
 
   const handleRemove = async (id) => {
     try {
-      await apiDeleteBasket(id);
-      setBasket((prevBasket) => prevBasket.filter(item => item.id !== id));
+      if (isToken) {
+        await apiDeleteBasket(id);
+        setBasket((prevBasket) => prevBasket.filter(item => item.id !== id));
+      } else {
+        const bas = session.get("products") || [];
+        const updatedData = bas.filter((bass) => bass !== id);
+        store.set("products", updatedData);
+
+        const products = [];
+        for (const product of updatedData) {
+          try {
+            const singleProduct = await apiGetSingleProduct(product);
+            products.push(singleProduct);
+          } catch (singleProductError) {
+            console.error('Error fetching single product:', singleProductError);
+          }
+        }
+        setBasket(products);
+      }
     } catch (error) {
       console.error('Error removing item from basket:', error);
-
-      const bas = session.get("products", id);
-      const updatedData = bas.filter((bass) => bass !== id);
-      console.log("bas", bas, id, updatedData)
-      store.set("products", updatedData)
-      const products = [];
-
-      for (const product of updatedData) {
-        try {
-          const singleProduct = await apiGetSingleProduct(product);
-          products.push(singleProduct);
-        } catch (singleProductError) {
-          console.error('Error fetching single product:', singleProductError);
-        }
-      }
-
-      setBasket(products);
-
-
     }
   };
 
@@ -114,12 +162,10 @@ const Basket = () => {
       if (isToken) {
         await apiPostFavourites({ product_id: productId });
         setFavorites(prevFavorites => [...prevFavorites, productId]);
-      }
-      else {
+      } else {
         session.add("like", productId);
         setFavorites(prevFavorites => [...prevFavorites, productId]);
       }
-
     } catch (error) {
       console.error('Error liking product:', error);
     }
@@ -127,9 +173,12 @@ const Basket = () => {
 
   const handleUnlike = async (productId) => {
     try {
-      session.remove("like", productId);
+      if (isToken) {
+        await apiDeleteFavourites(productId);
+      } else {
+        session.remove("like", productId);
+      }
       setFavorites(prevFavorites => prevFavorites.filter(id => id !== productId));
-      await apiDeleteFavourites(productId);
     } catch (error) {
       console.error('Error unliking product:', error);
     }
@@ -153,11 +202,10 @@ const Basket = () => {
   };
 
   const handleDecrement = () => {
-    if (count > 0) { // negative count ni oldini olish
+    if (count > 0) { // Prevent negative count
       setCount(count - 1);
     }
   };
-
 
   return (
     <div className="home-style3 cart-pg-1 py-3">
@@ -203,15 +251,11 @@ const Basket = () => {
                               <h5 className="fsz-18 color-red1 fw-600"> ${isToken ? item.price : item.data.price} </h5>
                             </div>
                             <div className="add-more mt-3">
-                              {/* <span className="qt-minus" onClick={() => handleQuantityChange(item.id, -1)}><FaMinus /></span>
-                                <input type="text" className="qt border-0" value={isToken ? (item.quantity ? item.quantity : "1") : "1"}
-                                  readOnly />
-                                <span className="qt-plus" onClick={() => handleQuantityChange(item.id, 1)}><FaPlus /></span> */}
                               <button
                                 className="qt-minus text-xl"
                                 onClick={() => {
-                                  handleDecrement()
-                                  handleQuantityChange(item.id, -1)
+                                  handleDecrement();
+                                  handleQuantityChange(item.id, -1);
                                 }}
                               >
                                 -
@@ -219,14 +263,14 @@ const Basket = () => {
                               <input
                                 type="text"
                                 className="qt border-0"
-                                value={count}
+                                value={isToken ? item.quantity : item.data.quantity}
                                 readOnly
                               />
                               <button
                                 className="qt-plus text-xl"
                                 onClick={() => {
-                                  handleIncrement()
-                                  handleQuantityChange(item.id, 1)
+                                  handleIncrement();
+                                  handleQuantityChange(item.id, 1);
                                 }}
                               >
                                 +
@@ -251,9 +295,9 @@ const Basket = () => {
                         <strong className="color-000 text-uppercase">
                           Order total:
                         </strong>
-                        <strong className="color-000">
+                        <h6 className="fsz-20 fw-600 color-red1">
                           ${calculateTotalPrice().toFixed(2)}
-                        </strong>
+                        </h6>
                       </div>
                       <div className="btns pt-3">
                         <div className="row justify-content-center">
@@ -285,5 +329,3 @@ const Basket = () => {
 };
 
 export default Basket;
-
-

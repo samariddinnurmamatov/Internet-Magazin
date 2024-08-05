@@ -81,7 +81,7 @@ const About = () => {
               </div>
             </div>
           </section>
-          <section className="tc-about-cards"> 
+          {/* <section className="tc-about-cards"> 
             <div className="row container ">
               <div className="col-lg-4 mt-3 radius-4 bg-white" >
                 <div className="about-card  wow fadeInUp" style={{
@@ -134,7 +134,7 @@ const About = () => {
                 </div>
               </div>
             </div>
-          </section>
+          </section> */}
 
 
 
@@ -230,7 +230,7 @@ const About = () => {
           <section className="tc-banner-style3 mt-3 mb-3">
             <div className="banner-card text-center">
               <h6 className="d-block d-lg-inline-flex align-items-center fw-400 fsz-18 lh-5">
-                <img src="assets/img/star.png" alt="" className="icon-30 me-2" />
+                {/* <img src="assets/img/star.png" alt="" className="icon-30 me-2" /> */}
                 Member get
                 <span className="text-uppercase text-color">
                   FREE SHIPPING*

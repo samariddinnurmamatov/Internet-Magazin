@@ -59,16 +59,16 @@ const MainFooter = () => {
                     <div className="foot-icons py-5 border-bottom">
                         <div className="row">
                             <div className="col-lg-3 border-end">
-                                <p className="fsz-14 text-uppercase"> <span className="icon color-blue1 me-3"><FaShippingFast /></span> Free Shipping over $99  </p>
+                                <p className="fsz-14 text-uppercase flex"> <span className="icon color-blue1 me-3"><FaShippingFast /></span> Free Shipping over $99  </p>
                             </div>
                             <div className="col-lg-3 border-end">
-                                <p className="fsz-14 text-uppercase ps-lg-3"> <span className="icon color-blue1 me-3"><FaRedoAlt /></span> 30 Days money back  </p>
+                                <p className="fsz-14 text-uppercase flex ps-lg-3"> <span className="icon color-blue1 me-3"><FaRedoAlt /></span> 30 Days money back  </p>
                             </div>
                             <div className="col-lg-3 border-end">
-                                <p className="fsz-14 text-uppercase ps-lg-3"> <span className="icon color-blue1 me-3"><IoShieldCheckmark /></span> 100% Secure Payment  </p>
+                                <p className="fsz-14 text-uppercase flex ps-lg-3"> <span className="icon color-blue1 me-3"><IoShieldCheckmark /></span> 100% Secure Payment  </p>
                             </div>
                             <div className="col-lg-3">
-                                <p className="fsz-14 text-uppercase ps-lg-3"> <span className="icon color-blue1 me-3"><FaComments /></span> 24/7 Dedicated Support  </p>
+                                <p className="fsz-14 text-uppercase flex ps-lg-3"> <span className="icon color-blue1 me-3"><FaComments /></span> 24/7 Dedicated Support  </p>
                             </div>
                         </div>
                     </div>
@@ -78,9 +78,9 @@ const MainFooter = () => {
                                 <div className="foot-info">
                                     <h6 className="fw-bold mb-30 text-capitalize"> Dora - Online Electronic Market </h6>
                                     <small className="fsz-12 text-uppercase"> hotline 24/7 </small>
-                                    <h5 className="fw-bold color-blue1 mb-20"> (025) 3686 25 16 </h5>
-                                    <a href="#"> 257 Thatcher Road St, Brooklyn, Manhattan, <br /> NY 10092 </a>
-                                    <a href="#"> contact@swateletro.com </a>
+                                    <h5 className="fw-bold color-blue1 mb-20" style={{fontSize: "23px"}}>+998 (90) 009 99 16 </h5>
+                                    <a href="#"> ул. Чиланзар 2/2, г. Ташкент, Узбекистан <br /> NY  </a>
+                                    <a href="#"> samariddinnurmamatov@gmail.com </a>
                                     <div className="foot-social mt-40">
                                         <a href="#"><FaFacebookF /> </a>
                                         <a href="#"><FaInstagram /></a>
@@ -94,7 +94,7 @@ const MainFooter = () => {
                                     <ul className="links d-flex flex-col gap-2 color-gray-500">
                                         {categories.map(category => (
 
-                                        <li> <a href={`/category/${category.id}`}> {category.name_uz} </a> </li>
+                                        <li key={category.id}> <a href={`/category/${category.id}`}> {category.name_uz} </a> </li>
                                         ))}
 
                                     </ul>
@@ -108,7 +108,7 @@ const MainFooter = () => {
                                         <li> <a href="/contact"> Contact </a> </li>
                                         <li> <a href="#"> Career </a> </li>
                                         <li> <a href="#"> Blog </a> </li>
-                                        <li> <a href="#"> Sitemap </a> </li>
+                                        {/* <li> <a href="#"> Sitemap </a> </li> */}
                                         <li> <a href="#"> Store Locations </a> </li>
                                     </ul>
                                 </div>
@@ -122,7 +122,7 @@ const MainFooter = () => {
                                         <li> <a href="#"> Terms & Conditions </a> </li>
                                         <li> <a href="#"> Trach Order </a> </li>
                                         <li> <a href="#"> FAQs </a> </li>
-                                        <li> <a href="#"> My Account </a> </li>
+                                        {/* <li> <a href="#"> My Account </a> </li> */}
                                         <li> <a href="#"> Product Support </a> </li>
                                     </ul>
                                 </div>
@@ -146,7 +146,7 @@ const MainFooter = () => {
                     <div className="container">
                         <div className="flex items-center justify-between">
                             <div className="col-lg-4 text-center text-lg-start">
-                                <p className="color-666"> © 2024 <a href="#" className="fw-bold color-000"> Dora </a>. All Rights Reserved </p>
+                                <p className="color-666"> © 2024  <a href="#" className="fw-bold color-000"><span> </span>  Dora </a>. All Rights Reserved </p>
                             </div>
                             <div className="d-flex col-lg-3 text-center  my-lg-0">
 

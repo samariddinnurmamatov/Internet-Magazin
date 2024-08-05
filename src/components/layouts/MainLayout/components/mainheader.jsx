@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import HeaderLogo from "../../../../assets/common/img/logo-1.png";
+import HeaderLogo from "../../../../assets/common/img/elmag.svg";
 import HeaderEn from "../../../../assets/common/img/eng-1.png";
 import { CiSearch } from "react-icons/ci";
 import { IoIosCall } from "react-icons/io";
@@ -28,24 +28,24 @@ const Mainheader = () => {
 
         const fetchData = async () => {
             try {
-                if (isToken) {
-                    const basketresponse = await apiGetBasket();
+                // if (isToken) {
+                //     const basketresponse = await apiGetBasket();
 
-                    setBasket(basketresponse.data.length)
-                } else {
-                    const basketresponse = session.get("products");
-                    setBasket(basketresponse.length);
+                //     setBasket(basketresponse.data.length)
+                // } else {
+                //     const basketresponse = session.get("products");
+                //     setBasket(basketresponse.length);
 
-                }
-                if (isToken) {
-                    const likeresponse = await apiGetFavourites();
-                    setLike(likeresponse.data.length);
+                // }
+                // if (isToken) {
+                //     const likeresponse = await apiGetFavourites();
+                //     setLike(likeresponse.data.length);
 
-                } else {
-                    const likeresponse = session.get("like");
-                    setBasket(basketresponse.length);
+                // } else {
+                //     const likeresponse = session.get("like");
+                //     setBasket(basketresponse.length);
 
-                }
+                // }
                 
 
             } catch (error) {
@@ -81,28 +81,28 @@ const Mainheader = () => {
 
     return (
         <Fragment>
-            <header className="bg-white sticky d-none d-lg-block top-0 z-50 w-full px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32">
+            <header className="bg-white sticky d-none d-lg-block top-0 z-50 w-full py-3 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32">
                 <nav className="navbar container tc-navbar-style1 navbar-expand-lg navbar-light">
                     <div className="d-flex items-center justify-between w-full ">
-                        <a className="navbar-brand" href="/" >
-                            <img src={HeaderLogo} alt="" className="logo" />
-                        </a>
+                        <Link to="/" >
+                            <img src={HeaderLogo} alt="" className="logo" style={{width: "200px"}} />
+                        </Link>
                         <div className="d-flex gap-2">
 
                             <div className="d-flex">
                                 <Link to="/" className="dropdown-item" style={{ width: "100%" }}>Home</Link>
                                 <Link to="/about" className="dropdown-item" style={{ width: "100%" }}>About</Link>
                                 <Link to="/contact" className="dropdown-item" style={{ width: "100%" }}>Contact</Link>
-                                {categories.length > 0 && categories.map(category => (
+                                {/* {categories.length > 0 && categories.map(category => (
                                 <Link to={`/category/${category.id}`} className="dropdown-item" style={{ width: "100%" }}>{category.name_uz}</Link>
 
-                                ))}
+                                ))} */}
                             </div>
                         </div>
 
                         <div className="d-flex gap-4 lg:none ">
                             <a href=""> <LuRefreshCcw className="icon-r" /></a>
-                            <a href="tel:(025)36862516"> <LuPhoneCall className="icon-r" /></a>
+                            <a href="tel:+998900099916"> <LuPhoneCall className="icon-r" /></a>
 
                             <div className="relative">
                                 <Link to="/profile"> <LuUser2 className="icon-r" />  </Link>

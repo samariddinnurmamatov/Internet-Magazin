@@ -66,10 +66,14 @@ export const Checkout = () => {
           street: "" // Set default or fetched values if available
         });
       } else {
-        toast.error('Failed to fetch user data.');
+        toast.error('Failed to fetch user data.', {
+          position: "bottom-right"
+        });
       }
     } catch (error) {
-      toast.error('Failed to fetch user data.');
+      toast.error('Failed to fetch user data.', {
+        position: "bottom-right"
+      });
     }
   };
 
@@ -138,7 +142,9 @@ export const Checkout = () => {
       const response = await createOrder(data);
   
       console.log("checkout", response.data);
-      toast.success('order received');
+      toast.success('order received', {
+        position: "bottom-right"
+      });
 
       navigate("/")
     } catch (error) {
@@ -238,7 +244,7 @@ export const Checkout = () => {
                             />
                           </div>
                         </div>
-                        <div className="col-lg-12">
+                        {/* <div className="col-lg-12">
                           <div className="form-group mb-4">
                             <label htmlFor="">
                               Viloyat
@@ -253,9 +259,9 @@ export const Checkout = () => {
                               <option value=""> Surxondaryo </option>
                             </select>
                           </div>
-                        </div>
+                        </div> */}
 
-                        <div className="col-lg-12">
+                        {/* <div className="col-lg-12">
                           <div className="form-group mb-4">
                             <label htmlFor="">
                               Tuman/Shahar
@@ -270,9 +276,9 @@ export const Checkout = () => {
                               <option value=""> Qumqurg'on </option>
                             </select>
                           </div>
-                        </div>
+                        </div> */}
 
-                        <div className="col-lg-12">
+                        {/* <div className="col-lg-12">
                           <div className="form-group mb-4">
                             <label htmlFor=""> Street Address </label>
                             <input
@@ -289,7 +295,7 @@ export const Checkout = () => {
                               placeholder="Apartment, suite, unit, etc (Optional)"
                             />
                           </div>
-                        </div>
+                        </div> */}
                        
                         
                         <div className="col-lg-12">
@@ -323,7 +329,7 @@ export const Checkout = () => {
                           </MapContainer>
                         </div>
 
-                        <div className="col-lg-12">
+                        {/* <div className="col-lg-12">
                           <div className="form-check">
                             <input
                               className="form-check-input"
@@ -338,7 +344,7 @@ export const Checkout = () => {
                               Create an account?
                             </label>
                           </div>
-                        </div>
+                        </div> */}
                        
                       </div>
                     </div>

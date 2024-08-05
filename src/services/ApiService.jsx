@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { BASE_URL } from '../utils/constants';
 
 
-const API_BASE_URL = import.meta.env.VITE_API;
+const API_BASE_URL = BASE_URL;
 
 const ApiService = {
   fetchData: async ({ url, method, data, params }) => {

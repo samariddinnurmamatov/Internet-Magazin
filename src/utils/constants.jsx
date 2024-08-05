@@ -1,1 +1,1 @@
-// export const BASE_URL = "https://www.work.dora.uz/api"
+export const BASE_URL = "https://backend.elmag.uz/api"

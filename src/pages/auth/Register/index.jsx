@@ -45,14 +45,20 @@ const Register = () => {
             const response = await apiRegister(formData);
             console.log(response);
             if (response.message) {
-                toast.success("Registration successful! Please login.");
+                toast.success("Registration successful! Please login.", {
+                  position: "bottom-right"
+                });
                 setFormData(initialFormData); // Inputlarni to'zalash
                 navigate("/login");
             } else {
-                toast.error("Register failed. Please check your information.");
+                toast.error("Register failed. Please check your information.", {
+                  position: "bottom-right"
+                });
             }
         } catch (err) {
-            toast.error("Registration failed. Please check your information.");
+            toast.error("Registration failed. Please check your information.", {
+              position: "bottom-right"
+            });
         } 
     };
 

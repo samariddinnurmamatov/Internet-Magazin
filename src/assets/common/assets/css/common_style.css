@@ -524,7 +524,7 @@ input:focus {
 }
 .col-lg-3 {
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
 }
 .mob-navigation ul li a {
   position: relative;
