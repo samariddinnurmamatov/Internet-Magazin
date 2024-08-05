@@ -99,7 +99,7 @@ const MainFooter = () => {
                                 <div className="links-item mt-5 mt-lg-0">
                                     <h6 className="fsz-18 mb-30"> Company </h6>
                                     <ul className="links">
-                                        <li> <a href="/about"> About Dora </a> </li>
+                                        <li> <a href="/about"> About </a> </li>
                                         {/* <li> <a href="#"> Career </a> </li> */}
                                         {/* <li> <a href="#"> Blog </a> </li> */}
                                         {/* <li> <a href="#"> Sitemap </a> </li> */}
