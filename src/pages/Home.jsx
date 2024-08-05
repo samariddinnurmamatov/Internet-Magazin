@@ -528,151 +528,151 @@ const Home = () => {
                 </section>
 
                 <section className="tc-best-seller-style1 wow fadeInUp slow" data-wow-delay="0.2s">
-            <div className="container">
-                <div className="title mb-40">
-                    <div className="row align-items-center">
-                        <div className="col-lg-8">
-                            <h3 className="fsz-30">Best Seller</h3>
+                    <div className="container">
+                        <div className="title mb-40">
+                            <div className="row align-items-center">
+                                <div className="col-lg-8">
+                                    <h3 className="fsz-30">Best Seller</h3>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                <ul className="nav nav-pills mb-40" id="pills-tabs" role="tablist">
-                    {categories.map((category) => (
-                        <li className="nav-item" role="presentation" key={category.id}>
-                            <button
-                                onClick={() => {
-                                    setActiveCategory(category.id); // Set the active category
-                                    fetchProductData(category.id);
-                                }}
-                                className={`nav-link ${activeCategory === category.id ? 'active' : ''}`}
-                                id={`pills-tab-${category.id}-tab`}
-                                data-bs-toggle="pill"
-                                data-bs-target={`#pills-tab-${category.id}`}
-                                type="button"
-                                role="tab"
-                                aria-selected={activeCategory === category.id}
+                        <ul className="nav nav-pills mb-40" id="pills-tabs" role="tablist">
+                            {categories.map((category) => (
+                                <li className="nav-item" role="presentation" key={category.id}>
+                                    <button
+                                        onClick={() => {
+                                            setActiveCategory(category.id); // Set the active category
+                                            fetchProductData(category.id);
+                                        }}
+                                        className={`nav-link ${activeCategory === category.id ? 'active' : ''}`}
+                                        id={`pills-tab-${category.id}-tab`}
+                                        data-bs-toggle="pill"
+                                        data-bs-target={`#pills-tab-${category.id}`}
+                                        type="button"
+                                        role="tab"
+                                        aria-selected={activeCategory === category.id}
+                                    >
+                                        {category.name_uz}
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+
+                        <div className="tab-content" id="pills-tabContent1">
+                            <div
+                                className="tab-pane fade show active"
+                                id={`pills-tab-${activeCategory}`}
+                                role="tabpanel"
+                                aria-labelledby={`pills-tab-${activeCategory}-tab`}
                             >
-                                {category.name_uz}
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-
-                <div className="tab-content" id="pills-tabContent1">
-                    <div
-                        className="tab-pane fade show active"
-                        id={`pills-tab-${activeCategory}`}
-                        role="tabpanel"
-                        aria-labelledby={`pills-tab-${activeCategory}-tab`}
-                    >
-                        <div className="products-slider">
-                            {displayedProducts.length > 0 ? (
-                                <div className="swiper-wrapper grid grid-cols-5 gap-3">
-                                    {displayedProducts.map((product) => (
-                                        <div className="swiper-slide" key={product.id} style={{ width: "100%" }}>
-                                            <a
-                                                href={`/single_product/${product.id}`}
-                                                className="product-card"
-                                                style={{ display: 'block' }}
-                                            >
-                                                <div className="top">
-                                                    <div className="icons">
+                                <div className="products-slider">
+                                    {displayedProducts.length > 0 ? (
+                                        <div className="swiper-wrapper grid grid-cols-5 gap-3">
+                                            {displayedProducts.map((product) => (
+                                                <div className="swiper-slide" key={product.id} style={{ width: "100%" }}>
+                                                    <a
+                                                        href={`/single_product/${product.id}`}
+                                                        className="product-card"
+                                                        style={{ display: 'block' }}
+                                                    >
+                                                        <div className="top">
+                                                            <div className="icons">
+                                                                <Link
+                                                                    className={`icon fav ${isFavorite(product.id) ? 'liked' : ''}`}
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation(); // Prevents click from propagating to parent link
+                                                                        isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id);
+                                                                    }}
+                                                                >
+                                                                    {isFavorite(product.id) ? <FaHeart color="red" /> : <FaRegHeart />}
+                                                                </Link>
+                                                            </div>
+                                                        </div>
+                                                        <div className="img th-140 mb-20 d-block">
+                                                            <img src={product.image} alt={product.name_uz} className="img-contain" />
+                                                        </div>
+                                                        <div className="info" style={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
+                                                            <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase">15% OFF</span>
+                                                            <a href={`/single_product/${product.id}`} className="title fsz-14 mt-15 fw-600 hover-blue1">{product.name_uz}</a>
+                                                            <a href={`/single_product/${product.id}`} className="title fsz-14 mt-15 fw-600 hover-blue1">{truncateDescription(product.description_uz, 3)}</a>
+                                                            <p className="price color-red1 mt-2 fsz-20">${product.price}</p>
+                                                            {product.discounted_price && (
+                                                                <span className="old-price color-999 text-decoration-line-through fsz-16">
+                                                                    ${product.discounted_price}
+                                                                </span>
+                                                            )}
+                                                        </div>
                                                         <Link
-                                                            className={`icon fav ${isFavorite(product.id) ? 'liked' : ''}`}
+                                                            className="cart-btn addCart"
                                                             onClick={(e) => {
                                                                 e.stopPropagation(); // Prevents click from propagating to parent link
-                                                                isFavorite(product.id) ? handleUnlike(product.id) : handleLike(product.id);
+                                                                if (isToken) {
+                                                                    handleAddToBasket(product.id);
+                                                                } else {
+                                                                    session.add("products", product.id);
+                                                                }
+                                                                toast.success('Product added to basket!', {
+                                                                    position: "bottom-right"
+                                                                });
                                                             }}
                                                         >
-                                                            {isFavorite(product.id) ? <FaHeart color="red" /> : <FaRegHeart />}
+                                                            <MdOutlineAddShoppingCart className="me-1" /> Add To Cart
                                                         </Link>
-                                                    </div>
+                                                    </a>
                                                 </div>
-                                                <div className="img th-140 mb-20 d-block">
-                                                    <img src={product.image} alt={product.name_uz} className="img-contain" />
-                                                </div>
-                                                <div className="info" style={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
-                                                    <span className="label fsz-11 py-1 px-3 rounded-pill bg-red1 text-white text-uppercase">15% OFF</span>
-                                                    <a href={`/single_product/${product.id}`} className="title fsz-14 mt-15 fw-600 hover-blue1">{product.name_uz}</a>
-                                                    <a href={`/single_product/${product.id}`} className="title fsz-14 mt-15 fw-600 hover-blue1">{truncateDescription(product.description_uz, 3)}</a>
-                                                    <p className="price color-red1 mt-2 fsz-20">${product.price}</p>
-                                                    {product.discounted_price && (
-                                                        <span className="old-price color-999 text-decoration-line-through fsz-16">
-                                                            ${product.discounted_price}
-                                                        </span>
-                                                    )}
-                                                </div>
-                                                <Link
-                                                    className="cart-btn addCart"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation(); // Prevents click from propagating to parent link
-                                                        if (isToken) {
-                                                            handleAddToBasket(product.id);
-                                                        } else {
-                                                            session.add("products", product.id);
-                                                        }
-                                                        toast.success('Product added to basket!', {
-                                                            position: "bottom-right"
-                                                          });
-                                                    }}
-                                                >
-                                                    <MdOutlineAddShoppingCart className="me-1" /> Add To Cart
-                                                </Link>
-                                            </a>
+                                            ))}
                                         </div>
-                                    ))}
+                                    ) : (
+                                        <div className="flex overflow-hidden gap-2 ps-5" style={{ whiteSpace: 'nowrap' }}>
+                                        {Array.from({ length: 5 }).map((_, index) => (
+                                        <div key={index} className={`${isOverflowing ? 'hidden' : ''}`}>
+                                            <ContentLoader
+                                            speed={2}
+                                            width={230}
+                                            height={320}
+                                            backgroundColor="#e4e4e7"
+                                            foregroundColor="#f3f4f6"
+                                            >
+                                            <rect x="0" y="0" rx="0" ry="0" width="230" height="320" />
+                                            </ContentLoader>
+                                        </div>
+                                        ))}
+                                    </div>
+                                    )}
                                 </div>
-                            ) : (
-                                <div className="flex overflow-hidden gap-2 ps-5" style={{ whiteSpace: 'nowrap' }}>
-                                {Array.from({ length: 5 }).map((_, index) => (
-                                <div key={index} className={`${isOverflowing ? 'hidden' : ''}`}>
-                                    <ContentLoader
-                                    speed={2}
-                                    width={230}
-                                    height={320}
-                                    backgroundColor="#e4e4e7"
-                                    foregroundColor="#f3f4f6"
+
+                                {/* Pagination Controls */}
+                                <div className="pagination flex gap-4 justify-between" style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                                    <button
+                                        onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                        disabled={currentPage === 1}
+                                        className={`px-3 py-1 rounded-md ${currentPage === 1 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
                                     >
-                                    <rect x="0" y="0" rx="0" ry="0" width="230" height="320" />
-                                    </ContentLoader>
+                                        Previous
+                                    </button>
+                                    {/* {Array.from({ length: totalPages }, (_, index) => (
+                                        <button
+                                            key={index + 1}
+                                            onClick={() => handlePageChange(index + 1)}
+                                            className={`px-3 py-1 rounded-md ${currentPage === index + 1 ? 'bg-gray-400 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'} ${currentPage === index + 1 ? 'font-bold' : ''}`}
+                                        >
+                                            {index + 1}
+                                        </button>
+                                    ))} */}
+                                    <button
+                                        onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                                        disabled={currentPage === totalPages}
+                                        className={`px-4 py-2 rounded-md ${currentPage === totalPages ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
+                                    >
+                                        Next
+                                    </button>
                                 </div>
-                                ))}
+
                             </div>
-                            )}
                         </div>
-
-                        {/* Pagination Controls */}
-                        <div className="pagination flex gap-4 justify-between" style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-                            <button
-                                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                                disabled={currentPage === 1}
-                                className={`px-3 py-1 rounded-md ${currentPage === 1 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
-                            >
-                                Previous
-                            </button>
-                            {/* {Array.from({ length: totalPages }, (_, index) => (
-                                <button
-                                    key={index + 1}
-                                    onClick={() => handlePageChange(index + 1)}
-                                    className={`px-3 py-1 rounded-md ${currentPage === index + 1 ? 'bg-gray-400 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'} ${currentPage === index + 1 ? 'font-bold' : ''}`}
-                                >
-                                    {index + 1}
-                                </button>
-                            ))} */}
-                            <button
-                                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                                disabled={currentPage === totalPages}
-                                className={`px-4 py-2 rounded-md ${currentPage === totalPages ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
-                            >
-                                Next
-                            </button>
-                        </div>
-
                     </div>
-                </div>
-            </div>
-        </section>
+                </section>
 
 
 

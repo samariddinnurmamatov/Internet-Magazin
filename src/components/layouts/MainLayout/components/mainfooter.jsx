@@ -77,18 +77,13 @@ const MainFooter = () => {
                             <div className="col-lg-4">
                                 <div className="foot-info">
                                     <h6 className="fw-bold mb-30 text-capitalize"> Dora - Online Electronic Market </h6>
-                                    <small className="fsz-12 text-uppercase"> hotline 24/7 </small>
+                                    {/* <small className="fsz-12 text-uppercase"> hotline 24/7 </small> */}
                                     <h5 className="fw-bold color-blue1 mb-20" style={{fontSize: "23px"}}>+998 (90) 009 99 16 </h5>
                                     <a href="#"> ул. Чиланзар 2/2, г. Ташкент, Узбекистан <br /> NY  </a>
                                     <a href="#"> samariddinnurmamatov@gmail.com </a>
-                                    <div className="foot-social mt-40">
-                                        <a href="#"><FaFacebookF /> </a>
-                                        <a href="#"><FaInstagram /></a>
-                                        <a href="#"><FaYoutube /></a>
-                                    </div>
                                 </div>
                             </div>
-                            <div className="col-lg-2">
+                            <div className="col-lg-3">
                                 <div className="links-item mt-5 mt-lg-0">
                                     <h6 className="fsz-18 mb-30"> Top Categories </h6>
                                     <ul className="links d-flex flex-col gap-2 color-gray-500">
@@ -100,16 +95,15 @@ const MainFooter = () => {
                                     </ul>
                                 </div>
                             </div>
-                            <div className="col-lg-2">
+                            <div className="col-lg-3">
                                 <div className="links-item mt-5 mt-lg-0">
                                     <h6 className="fsz-18 mb-30"> Company </h6>
                                     <ul className="links">
                                         <li> <a href="/about"> About Dora </a> </li>
-                                        <li> <a href="/contact"> Contact </a> </li>
-                                        <li> <a href="#"> Career </a> </li>
-                                        <li> <a href="#"> Blog </a> </li>
+                                        {/* <li> <a href="#"> Career </a> </li> */}
+                                        {/* <li> <a href="#"> Blog </a> </li> */}
                                         {/* <li> <a href="#"> Sitemap </a> </li> */}
-                                        <li> <a href="#"> Store Locations </a> </li>
+                                        {/* <li> <a href="#"> Store Locations </a> </li> */}
                                     </ul>
                                 </div>
                             </div>
@@ -117,17 +111,16 @@ const MainFooter = () => {
                                 <div className="links-item mt-5 mt-lg-0">
                                     <h6 className="fsz-18 mb-30"> Help Center </h6>
                                     <ul className="links">
-                                        <li> <a href="#"> Customer Service </a> </li>
-                                        <li> <a href="#"> Policy </a> </li>
-                                        <li> <a href="#"> Terms & Conditions </a> </li>
-                                        <li> <a href="#"> Trach Order </a> </li>
-                                        <li> <a href="#"> FAQs </a> </li>
-                                        {/* <li> <a href="#"> My Account </a> </li> */}
-                                        <li> <a href="#"> Product Support </a> </li>
+                                        <li> <a href="/contact"> Contact </a> </li>
                                     </ul>
+                                    <div className="foot-social mt-40">
+                                        <a href="#"><FaFacebookF /> </a>
+                                        <a href="#"><FaInstagram /></a>
+                                        <a href="#"><FaYoutube /></a>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="col-lg-2">
+                            {/* <div className="col-lg-2">
                                 <div className="links-item mt-5 mt-lg-0">
                                     <h6 className="fsz-18 mb-30"> Partner </h6>
                                     <ul className="links">
@@ -137,7 +130,7 @@ const MainFooter = () => {
                                         <li> <a href="#"> Partnership </a> </li>
                                     </ul>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </Container>
@@ -148,9 +141,10 @@ const MainFooter = () => {
                             <div className="col-lg-4 text-center text-lg-start">
                                 <p className="color-666"> © 2024  <a href="#" className="fw-bold color-000"><span> </span>  Dora </a>. All Rights Reserved </p>
                             </div>
-                            <div className="d-flex col-lg-3 text-center  my-lg-0">
+                            <div className="d-flex col-lg-3 text-center gap-4 my-lg-0">
 
                                 <img src={Payme} alt="" className="mx-2 w-32 " />
+                                <img src='https://images.seeklogo.com/logo-png/53/2/uzum-market-logo-png_seeklogo-531745.png' alt="" className="mx-2 w-32 " />
                             </div>
 
                         </div>
